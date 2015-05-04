@@ -51,6 +51,14 @@
       }
       watch();
 
+      function hasAction(){
+        if(scope.viewActions && scope.viewActions.length > 0){
+          return true;
+        }else{
+          return false;
+        }
+      }
+
       if(scope.actions instanceof Array){
         scope.viewActions = [];
         for(var i=0;i<scope.actions.length;i++){
@@ -112,12 +120,12 @@
         var header = table.createTHead();
         var row = header.insertRow(0);
         scope.selectedMax = keys.length-1;
-        //if(scope.viewActions && scope.viewActions.length > 0){
+        if(hasAction()){
           var thCheck = document.createElement('th');
           thCheck.setAttribute('class', 'has-checkbox');
           thCheck.innerHTML = createCheckbox(-1,i,'hulp');
           row.appendChild(thCheck);
-        //}
+        }
 
         for(var k=0;k<keys.length;k++){
           if(keys[k] && keys[k].checked && keys[k].visible){
@@ -230,19 +238,19 @@
                   row = body.rows[j];
                 }else{
                   row = body.insertRow(j);
-                  //if(scope.viewActions && scope.viewActions.length > 0){
+                  if(hasAction()){
                     var check = row.insertCell(0);
                     // var index = scope.ngModel.indexOf(content[j]);
                     var index = j;
                     check.innerHTML = createCheckbox(index,j);
-                  //}
+                  }
                 }
                 var val = content[j][scope.headers[i].field];
                 var cell;
                 if(scope.viewActions && scope.viewActions.length > 0){
                   cell = row.insertCell(1);
                 }else{
-                  cell = row.insertCell(1);
+                  cell = row.insertCell(0);
                 }
                 cell.innerHTML = val;
             }
