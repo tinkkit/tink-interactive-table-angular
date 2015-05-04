@@ -18,7 +18,7 @@
       allowColumnReorder:'=?'
     },
     link:function(scope,element){
-      if(!angular.isDefined(scope.ngModel) || scope.ngModel === null || !scope.ngModel instanceof Array ){
+      if(!angular.isDefined(scope.ngModel) || scope.ngModel === null || scope.ngModel instanceof Array === false ){
         scope.ngModel = [];
       }
       if(!scope.headers || scope.headers.length < 1 ){
@@ -90,7 +90,7 @@
       //which sorting is happening
       scope.sorting = {field:'',direction:1};
       //preview headers
-      if(!scope.headers instanceof Array){
+      if(scope.headers instanceof Array === false){
         scope.headers = [];
       }
       //function that runs at the beginning to handle the headers.
@@ -114,6 +114,7 @@
         scope.selectedMax = keys.length-1;
         //if(scope.viewActions && scope.viewActions.length > 0){
           var thCheck = document.createElement('th');
+          thCheck.setAttribute('class', 'has-checkbox');
           thCheck.innerHTML = createCheckbox(-1,i,'hulp');
           row.appendChild(thCheck);
         //}
