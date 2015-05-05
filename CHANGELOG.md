@@ -21,6 +21,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added checkbox class
 
+### Changed
+- Made actions optional
+
 
 
 ## [1.0.0] - 2015-04-23
