@@ -7,7 +7,7 @@
 
   <!-- checkboxlist in pop-up-menu -->
   <ul ng-model="viewer" class="table-interactive-cols" >
-    <li ng-repeat="header in viewer | filter:{ visible: true }" >
+    <li ng-repeat="header in viewer" >
       <div class="checkbox is-selectable is-draggable" ng-class="{selected:selected===$index}">
         <input type="checkbox" ng-model="header.checked" ng-change="headerChange()" id="{{header.alias}}" name="{{header.alias}}" value="{{header.alias}}" checked="">
         <label for="{{header.alias}}"><span class="draggable-elem" ng-class="{selected:selected===$index}" ng-click="select($event,$index)" >{{header.alias}}</span></label>

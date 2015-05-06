@@ -23,7 +23,6 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-xs-12">
-          <tink-interactive-table ng-model="data" data-allow-column-reorder="true" headers="headers" actions="actions" items-per-page="pages" class="table-interactive"></tink-interactive-table>
         </div>
       </div>
     </div>
@@ -46,25 +45,12 @@
 <script src="bower_components/Sortable/Sortable.js"></script>
 <script src="bower_components/tink-popover-angular/dist/tink-popover-angular.js"></script>
 <!-- endbower -->
-
+<div tink-inter>test</div>
 <script src="scripts/directives/tink-pagination.js"></script>
 <script src="scripts/directives/tink-reorder.js"></script>
-<table tink-reorder tink-pagination-key="pag1" tink-sort-table="ctrl.rapporten.data" class="table-responsive table-interactive">
-       <thead>
-           <tr>
-               <th>Firstname</th>
-               <th>Lastname</th>
-               <th>Username</th>
-           </tr>
-       </thead>
-       <tbody>
-           <tr ng-repeat="rapport in data" class="clickableTableRow">
-               <td>{{ rapport.firstname }}</td>
-               <td>{{ rapport.lastname }}</td>
-               <td>{{ rapport.username }}</td>
-           </tr>
-       </tbody>
-   </table>
+<tink-interactive-table ng-model="data" data-allow-column-reorder="true" headers="headers" actions="actions" items-per-page="pages" class="table-interactive"></tink-interactive-table>
+
+
 <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 <button ng-click="changenums()">klick hier</button>
 <script>
@@ -72,7 +58,7 @@
     try {
       myApp = angular.module('tink.interactivetable');
     } catch (e) {
-      myApp = angular.module('tink.interactivetable', []);
+      myApp = angular.module('tink.interactivetable', ['tink.popover']);
     }
   myApp.controller('ctrl', ['$scope', function(scope) {
      // Override default items per page

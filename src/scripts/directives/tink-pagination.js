@@ -3,7 +3,7 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', []);
+    module = angular.module('tink.interactivetable', ['tink.popover']);
   }
   module.directive('tinkPagination',[function(){
   return{
@@ -63,7 +63,6 @@
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        console.log('tink-pagination-'+$scope.tinkPaginationId);
         $scope.tinkChange($scope.tinkCurrentPage,function(){
           $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
         })
@@ -97,7 +96,6 @@
 
     }],
     link:function(scope,element,attrs,ctrl){
-     
     }
   };
   }]).filter('limitNum', ['$filter', function($filter) {
@@ -109,10 +107,8 @@
    };
   }]).directive('tinkPaginationKey',['$rootScope',function(rootScope){
     return {
-      link:function($scope,element,attrs){console.log(attrs.tinkPaginationKey)
-        console.log('tink-pagination-'+attrs.tinkPaginationKey)
+      link:function($scope,element,attrs){
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
-          console.log(value,element)
           if(value === 'loading'){
             element.addClass('is-loading');
           }else if(value === 'ready'){

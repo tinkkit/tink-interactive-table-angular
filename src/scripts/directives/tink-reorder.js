@@ -3,20 +3,65 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', []);
+    module = angular.module('tink.interactivetable', ['tink.popover']);
   }
-  module.directive('tinkReorder',[function(){
-    return {
-      restrict:'EA',
-      link:function(scope,element,attrs,ctrl){
-       console.log(element)
-       console.log($(element).find('tbody'))
-       $(element).find('tbody');
-       setTimeout(function(){
-        $(element).find('tbody tr:first').remove();
-       },200)
-      }
-    };
+  module.directive('tinkInteractiveTable',['$compile',function($compile){
+  return{
+    restrict:'EA',
+    templateUrl:'templates/reorder.html',
+    scope:{
+      ngModel:'=',
+      headers:'='
+    },
+    link:function(scope,element,attrs,ctrl){
+      scope.nums = 1;
+
+        scope.createTable = function(){
+          var table = document.createElement('table');
+          createHeaders(table,scope.headers);
+          createBody(table,scope.ngModel);
+          
+          var tableEl = element.find('table');
+          tableEl.replaceWith(table); // old code: $('table').replaceWith($(table));
+          $compile(table)(scope);
+        }
+
+        function createBody(table,content){
+          var body = table.createTBody();
+          for(var i=scope.headers.length-1;i>=0;i--){
+            for(var j=0;j<content.length;j++){
+                var row;
+              if(body.rows[j]){
+                row = body.rows[j];
+              }else{
+                row = body.insertRow(j);
+              }
+              var val = content[j][scope.headers[i].field];
+              var cell = row.insertCell(0);
+              cell.innerHTML = val;
+            }
+          }
+        }
+
+        function createHeaders(tableEl,headers){
+          var header = tableEl.createTHead();
+          var row = header.insertRow(0);
+          
+          for(var i=0;i<headers.length;i++){
+            
+            //take alias of field of the headers
+            var val = headers[i].alias || headers[i].field;
+            var th = document.createElement('th');
+            th.innerHTML = val;
+            row.appendChild(th);
+          }
+        }
+
+        scope.viewer = scope.headers;
+
+        scope.createTable();
+    }
+  };
   }]).directive('tinkShiftSort',['$timeout',function(timeout){
   return {
     restirct:'A',
@@ -46,3 +91,4 @@
   };
 }]);
 })();
+
