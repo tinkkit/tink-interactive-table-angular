@@ -1,0 +1,27 @@
+<!-- Top information bar for table -->
+
+<div class="bar">
+  <div class="bar-section">
+    <!-- <div class="bar-section-left">
+      <strong>{{numFirst}} - {{numLast}}</strong> van {{itemLength}}
+    </div> -->
+    <ul class="bar-section-right">
+      <li>
+        <button data-ng-if="viewActions && selectedCheck" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
+      </li>
+      <li>
+        <button data-ng-if="allowColumnReorder === true" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- placeholder for table -->
+<table tink-pagination-key="directivePag">
+
+
+
+</table>
+
+<tink-pagination tink-pagination-id="directivePag" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>

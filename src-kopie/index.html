@@ -47,32 +47,14 @@
 <script src="bower_components/tink-popover-angular/dist/tink-popover-angular.js"></script>
 <!-- endbower -->
 
-<script src="scripts/directives/tink-pagination.js"></script>
-<script src="scripts/directives/tink-reorder.js"></script>
-<table tink-reorder tink-pagination-key="pag1" tink-sort-table="ctrl.rapporten.data" class="table-responsive table-interactive">
-       <thead>
-           <tr>
-               <th>Firstname</th>
-               <th>Lastname</th>
-               <th>Username</th>
-           </tr>
-       </thead>
-       <tbody>
-           <tr ng-repeat="rapport in data" class="clickableTableRow">
-               <td>{{ rapport.firstname }}</td>
-               <td>{{ rapport.lastname }}</td>
-               <td>{{ rapport.username }}</td>
-           </tr>
-       </tbody>
-   </table>
-<tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
-<button ng-click="changenums()">klick hier</button>
+<script src="scripts/directives/tink-pagination-angular.js"></script>
+
 <script>
   var myApp;
     try {
       myApp = angular.module('tink.interactivetable');
     } catch (e) {
-      myApp = angular.module('tink.interactivetable', []);
+      myApp = angular.module('tink.interactivetable', ['ngLodash','tink.popover']);
     }
   myApp.controller('ctrl', ['$scope', function(scope) {
      // Override default items per page
@@ -160,11 +142,6 @@
         checked: true
       }
     ];
-    scope.nums=3;
-    scope.changenums = function(){
-      scope.nums = scope.nums+1;
-    }
-    scope.perpageValue=[10,20,25,30,45]
 
     // Some actions that become available when you check one or multiple rows
    scope.actions = [
