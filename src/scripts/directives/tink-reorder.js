@@ -12,19 +12,29 @@
     scope:{
       ngModel:'=',
       tinkHeaders:'=',
-      tinkActions:'='
+      tinkActions:'=',
+      tinkColumnReorder:'='
     },
     link:function(scope,element,attrs,ctrl){
       scope.checkB = [];
 
       var currentSort = {field:null,order:null};
 
-      function hasAction(){
+      scope.hasAction = function(){
+        if(scope.viewActions && scope.viewActions instanceof Array && scope.viewActions.length > 0){
+          return true;
+        }
+          return false;
+      }
+      scope.hasReoder = function(){
+        if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
+          return false;
+        }
         return true;
       }
-
+        
         scope.buildTable = function(){
-          console.log('build',currentSort)
+          changeAction();
           //Create a new table object
           var table = document.createElement('table');
           $(table).addClass('table-interactive');
@@ -41,9 +51,8 @@
 
           //create a copy for the headers
           //scope.tinkHeaders = scope.tinkHeaders;
-          scope.checkB = scope.createArray(scope.ngModel.length);
+          scope.checkB = scope.createArray(scope.ngModel.length);          
           fullChecked();
-          changeAction();
           var tableEl = element.find('table');
           tableEl.replaceWith(table);
           $compile(table)(scope);
@@ -71,14 +80,14 @@
                 }else{
                   row = body.insertRow(j);
                   //If we have action add a checkbox.
-                  if(hasAction()){
+                  if(scope.hasAction()){
                     var check = row.insertCell(0);
                     check.innerHTML = createCheckbox(j,j);
                   }
                 }
                 var val = content[j][scope.tinkHeaders[i].field];
                 var cell;
-                if(hasAction()){
+                if(scope.hasAction()){
                   cell = row.insertCell(1);
                 }else{
                   cell = row.insertCell(0);
@@ -114,7 +123,7 @@
             var header = tableEl.createTHead();
             var row = header.insertRow(0);
             
-            if(hasAction()){
+            if(scope.hasAction()){
               var thCheck = document.createElement('th');
               thCheck.setAttribute('class', 'has-checkbox');
               thCheck.innerHTML = createCheckbox(-1,-1,'hulp');
