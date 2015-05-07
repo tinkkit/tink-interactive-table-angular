@@ -3,7 +3,7 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
   }
   module.directive('tinkPagination',[function(){
   return{
@@ -14,7 +14,7 @@
       tinkItemsPerPage:'=',
       tinkItemsPerPageValues:'=',
       tinkCurrentPage:'=',
-      tinkChange:'&',
+      tinkChange:'=',
       tinkPaginationId:'@'
     },
     controllerAs:'ctrl',
@@ -108,11 +108,15 @@
   }]).directive('tinkPaginationKey',['$rootScope',function(rootScope){
     return {
       link:function($scope,element,attrs){
+        
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
+
           if(value === 'loading'){
-            element.addClass('is-loading');
+            console.log($(element).find('table.table-interactive'));
+            $(element).find('table.table-interactive').addClass('is-loading');
           }else if(value === 'ready'){
-            element.removeClass('is-loading'); 
+            console.log($(element).find('table.table-interactive'));
+            $(element).find('table.table-interactive').removeClass('is-loading'); 
           }
           
         })

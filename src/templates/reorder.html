@@ -8,6 +8,8 @@
     <ul class="bar-section-right">
       <li>
         <button data-ng-if="viewActions && selectedCheck" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
+      }
+      }
       </li>
       <li>
         <button tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
@@ -18,10 +20,10 @@
 
 
 <!-- placeholder for table -->
-<table tink-pagination-key="directivePag">
+<table class="table-interactive" tink-pagination-key="directivePag">
 
 
 
 </table>
 
-<tink-pagination tink-pagination-id="directivePag" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
+<!--<tink-pagination tink-pagination-id="directivePag" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>-->

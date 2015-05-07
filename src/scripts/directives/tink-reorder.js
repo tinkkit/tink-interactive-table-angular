@@ -3,63 +3,248 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
   }
-  module.directive('tinkInteractiveTable',['$compile',function($compile){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
   return{
     restrict:'EA',
     templateUrl:'templates/reorder.html',
     scope:{
       ngModel:'=',
-      headers:'='
+      tinkHeaders:'=',
+      tinkActions:'='
     },
     link:function(scope,element,attrs,ctrl){
-      scope.nums = 1;
+      scope.checkB = [];
 
-        scope.createTable = function(){
+      var currentSort = {field:null,order:null};
+
+      function hasAction(){
+        return true;
+      }
+
+        scope.buildTable = function(){
+          console.log('build',currentSort)
+          //Create a new table object
           var table = document.createElement('table');
-          createHeaders(table,scope.headers);
+          $(table).addClass('table-interactive');
+          $(table).attr('tink-sort-table','ngModel');
+          $(table).attr('tink-callback','sortHeader');
+          if(currentSort.field){console.log(currentSort)
+            $(table).attr('tink-init-sort',currentSort.field);
+            $(table).attr('tink-init-sort-order',currentSort.order)
+          }
+          //Create the headers of the table
+          createHeaders(table,scope.tinkHeaders);
+          //create the body of the table
           createBody(table,scope.ngModel);
-          
+
+          //create a copy for the headers
+          //scope.tinkHeaders = scope.tinkHeaders;
+          scope.checkB = scope.createArray(scope.ngModel.length);
+          fullChecked();
+          changeAction();
           var tableEl = element.find('table');
-          tableEl.replaceWith(table); // old code: $('table').replaceWith($(table));
+          tableEl.replaceWith(table);
           $compile(table)(scope);
+        };
+
+        function createCheckbox(row,i,hulp){
+        if(!hulp){
+          hulp ='';
         }
+        var checkbox = '<div class="checkbox">'+
+                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+row+'" name="'+row+'" value="'+row+'">'+
+                          '<label for="'+row+'"></label>'+
+                        '</div>';
+        return checkbox;
+      }
 
         function createBody(table,content){
-          var body = table.createTBody();
-          for(var i=scope.headers.length-1;i>=0;i--){
-            for(var j=0;j<content.length;j++){
+          if(scope.tinkHeaders instanceof Array && content instanceof Array){
+            var body = table.createTBody();
+            for(var i=scope.tinkHeaders.length-1;i>=0;i--){
+              for(var j=0;j<content.length;j++){
                 var row;
-              if(body.rows[j]){
-                row = body.rows[j];
-              }else{
-                row = body.insertRow(j);
+                if(body.rows[j]){
+                  row = body.rows[j];
+                }else{
+                  row = body.insertRow(j);
+                  //If we have action add a checkbox.
+                  if(hasAction()){
+                    var check = row.insertCell(0);
+                    check.innerHTML = createCheckbox(j,j);
+                  }
+                }
+                var val = content[j][scope.tinkHeaders[i].field];
+                var cell;
+                if(hasAction()){
+                  cell = row.insertCell(1);
+                }else{
+                  cell = row.insertCell(0);
+                }
+                $(cell).attr('ng-if','tinkHeaders['+i+'].checked');
+                cell.innerHTML = val;
               }
-              var val = content[j][scope.headers[i].field];
-              var cell = row.insertCell(0);
-              cell.innerHTML = val;
+            }
+          }
+        }
+
+        function changeAction(){
+          if(scope.tinkActions instanceof Array){
+            scope.viewActions = [];
+            for(var i=0;i<scope.tinkActions.length;i++){
+              var action = scope.tinkActions[i];
+              scope.viewActions.push({name:action.name,callback:function(){
+                var checked = [];
+                for(var i=0;i<scope.ngModel.length;i++){
+                  if(scope.checkB[i] && scope.checkB[i]._checked===true){
+                    checked.push(scope.ngModel[i]);
+                  }
+                }
+                scope.close();
+                action.callback(checked,uncheckAll);
+              }});
             }
           }
         }
 
         function createHeaders(tableEl,headers){
-          var header = tableEl.createTHead();
-          var row = header.insertRow(0);
-          
-          for(var i=0;i<headers.length;i++){
+          if(scope.tinkHeaders instanceof Array && headers instanceof Array){
+            var header = tableEl.createTHead();
+            var row = header.insertRow(0);
             
-            //take alias of field of the headers
-            var val = headers[i].alias || headers[i].field;
-            var th = document.createElement('th');
-            th.innerHTML = val;
-            row.appendChild(th);
+            if(hasAction()){
+              var thCheck = document.createElement('th');
+              thCheck.setAttribute('class', 'has-checkbox');
+              thCheck.innerHTML = createCheckbox(-1,-1,'hulp');
+              row.appendChild(thCheck);
+            }
+
+            for(var i=0;i<headers.length;i++){            
+              //take alias of field of the headers
+              var val = headers[i].alias || headers[i].field;
+              var th = document.createElement('th');
+              th.innerHTML = val;
+              $(th).attr('ng-if','tinkHeaders['+i+'].checked');
+              if(headers[i].sort){
+                $(th).attr('tink-sort-header',headers[i].field);
+              }
+
+              row.appendChild(th);
+            }
           }
         }
 
-        scope.viewer = scope.headers;
+        scope.sortHeader = function(field,order){
+          currentSort.field = field;
+          if(order === 1){
+            currentSort.order = 'asc';   
+          }else{
+            currentSort.order = 'desc';   
+          }
+                      
+        }
 
-        scope.createTable();
+        function fullChecked(){
+          var length = 0;
+          for(var i=0;i<scope.ngModel.length;i++){
+            if(scope.checkB[i] && scope.checkB[i]._checked){
+                length+=1;
+              }
+            }
+            if(!scope.checkB[-1]){
+              scope.checkB[-1] = {};
+            }
+            if(length !== 0){
+              scope.selectedCheck = true;
+            }else{
+              scope.selectedCheck = false;
+            }
+            if(length === scope.ngModel.length){
+              scope.checkB[-1]._checked = true;
+            }else{
+              scope.checkB[-1]._checked = false;
+            }
+        }
+
+        function uncheckAll(){
+          for(var i=0;i<viewable.length;i++){
+            if(scope.checkB[i] && scope.checkB[i]._checked===true){
+              scope.checkB[i]._checked = false;
+            }
+          }
+          if(scope.checkB[-1]){
+              scope.checkB[-1]._checked = false;
+            }
+        }
+
+        scope.createArray = function(num){
+          var array = [];
+          for(var i=0;i<num;i++){
+            array[i] = {};
+          }
+          return array;
+        };
+
+        scope.checkChange = function(i){
+          if(i === -1){
+            var check = scope.checkB[-1]._checked;
+            angular.forEach(scope.checkB,function(val){
+              val._checked = check;
+              scope.selectedCheck = check;
+            });
+          }else{
+            if(scope.checkB[-1]){
+              scope.checkB[-1]._checked = false;
+            }
+            fullChecked();
+          }
+        };
+
+        //function will be called when pressing arrow for order change
+        scope.arrowUp = function(){
+          if(scope.selected > 0){
+            scope.tinkHeaders.swap(scope.selected,scope.selected-1);
+            scope.selected-=1;
+            scope.buildTable();
+          }console.log(scope.tinkHeaders)
+        }
+        //function will be called when pressing arrow for order change
+        scope.arrowDown = function(){
+          if(scope.selected < scope.tinkHeaders.length-1){
+            scope.tinkHeaders.swap(scope.selected,scope.selected+1);
+            scope.selected+=1;
+            scope.buildTable();
+          }
+        }
+
+        scope.close = function(){
+          $rootScope.$broadcast('popover-open', { group: 'option-table',el:$('<div><div>') });
+        };
+
+        //If you check/uncheck a checbox in de kolom popup this function will be fired.
+        scope.headerChange = function(){console.log('build')
+          scope.buildTable();
+        };
+        //If you select an other kolom name in de kolumn popup this function will be fired.
+        scope.select = function(e,index){
+          //Prevent the default to disable checkbox behaviour.
+          e.preventDefault();
+          //Changed the selected index.
+          scope.selected = index;
+        };
+
+        scope.$watch('ngModel',function(){
+          scope.buildTable();
+        },true);
+
+        //added this to swap elements easly
+        Array.prototype.swap = function(a, b) {
+          var temp = this[a];
+          this[a] = this[b];
+          this[b] = temp;
+        };
     }
   };
   }]).directive('tinkShiftSort',['$timeout',function(timeout){
@@ -78,9 +263,9 @@
           },
           onUpdate: function (evt) {
             scope.$apply(function(){
-              var old = scope.headers[evt.oldIndex];
-              scope.headers[evt.oldIndex] = scope.headers[evt.newIndex];
-              scope.headers[evt.newIndex] = old;
+              var old = scope.tinkHeaders[evt.oldIndex];
+              scope.tinkHeaders.splice(evt.oldIndex, 1);
+              scope.tinkHeaders.splice(evt.newIndex, 0,old);
               scope.selected = evt.newIndex;
               scope.buildTable();
             });
