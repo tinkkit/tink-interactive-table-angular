@@ -23,7 +23,6 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-xs-12">
-          <tink-interactive-table ng-model="data" data-allow-column-reorder="true" headers="headers" actions="actions" items-per-page="pages" class="table-interactive"></tink-interactive-table>
         </div>
       </div>
     </div>
@@ -44,21 +43,97 @@
 <script src="bower_components/ng-lodash/build/ng-lodash.js"></script>
 <script src="bower_components/Sortable/Sortable.js"></script>
 <script src="bower_components/tink-popover-angular/dist/tink-popover-angular.js"></script>
+<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
+<script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>
 <!-- endbower -->
+<div tink-inter>test</div>
+<script src="scripts/directives/tink-pagination.js"></script>
+<script src="scripts/directives/tink-reorder.js"></script>
 
-<script src="scripts/directives/tink-interactive-table-angular.js"></script>
 
+<tink-interactive-table tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="false" tink-actions="actions" items-per-page="pages" class="table-interactive"></tink-interactive-table>
+
+<tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
+
+
+<button ng-click="changenums()">klick hier</button>
 <script>
   var myApp;
     try {
       myApp = angular.module('tink.interactivetable');
     } catch (e) {
-      myApp = angular.module('tink.interactivetable', ['ngLodash','tink.popover']);
+      myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
     }
-  myApp.controller('ctrl', ['$scope', function(scope) {
+  myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
      // Override default items per page
     scope.pages = '5, 10, 25';
 
+    scope.changed = function(ind,next){
+      timeout(function() {
+        scope.data = [
+          {
+            firstname: 'Bert',
+            lastname: 'Van Proeyen',
+            username: '@trianglejuice'
+          },
+          {
+            firstname: 'Lisa',
+            lastname: 'Wuyts',
+            username: '@pxlpanic'
+          },
+          {
+            firstname: 'DEon',
+            lastname: 'De Mulder',
+            username: '@clopin'
+          },
+          {
+            firstname: 'Vincent',
+            lastname: 'Bouillart',
+            username: '@BouillartV'
+          },
+          {
+            firstname: 'Lisa',
+            lastname: 'Hermans',
+            username: '@tomhermans'
+          },
+          {
+            firstname: 'flippo',
+            lastname: 'Van Gestel',
+            username: '@flippovg'
+          },
+          {
+            firstname: 'Bert',
+            lastname: 'Van Proeyen',
+            username: '@trianglejuice'
+          },
+          {
+            firstname: 'Tom',
+            lastname: 'Wuyts',
+            username: '@pxlpanic'
+          },
+          {
+            firstname: 'DEon',
+            lastname: 'De Mulder',
+            username: '@clopin'
+          },
+          {
+            firstname: 'Vincent',
+            lastname: 'Bouillart',
+            username: '@BouillartV'
+          },
+          {
+            firstname: 'Tom',
+            lastname: 'Hermans',
+            username: '@tomhermans'
+          },
+          {
+            firstname: 'flippo',
+            lastname: 'Van Gestel',
+            username: '@flippovg'
+          }
+        ];
+      }, 250);
+    }
     // Data model
     scope.data = [
       {
@@ -128,12 +203,14 @@
       {
         field: 'firstname',
         alias: 'Voornaam',
-        checked: true
+        checked: true,
+        sort:true
       },
       {
         field: 'lastname',
         alias: 'Achternaam',
-        checked: false
+        checked: false,
+        sort:true
       },
       {
         field: 'username',
@@ -141,13 +218,18 @@
         checked: true
       }
     ];
+    scope.nums=3;
+    scope.changenums = function(){
+      scope.nums = scope.nums+1;
+    }
+    scope.perpageValue=[10,20,25,30,45]
 
     // Some actions that become available when you check one or multiple rows
    scope.actions = [
       {
         name: 'remove',
         callback: function(items) {
-          angular.forEach(items, function(val) {
+          angular.forEach(items, function(val) {console.log('ohoho',scope.data.indexOf(val))
             scope.data.splice(scope.data.indexOf(val),1);
           });
         }
