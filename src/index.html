@@ -63,7 +63,7 @@
     try {
       myApp = angular.module('tink.interactivetable');
     } catch (e) {
-      myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+      myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
     }
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
      // Override default items per page

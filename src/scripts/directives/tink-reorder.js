@@ -3,7 +3,7 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
   module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
   return{
@@ -15,7 +15,7 @@
       tinkActions:'=',
       tinkColumnReorder:'='
     },
-    link:function(scope,element,attrs,ctrl){
+    link:function(scope,element){
       scope.checkB = [];
 
       var currentSort = {field:null,order:null};
@@ -25,13 +25,13 @@
           return true;
         }
           return false;
-      }
+      };
       scope.hasReoder = function(){
         if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
           return false;
         }
         return true;
-      }
+      };
         
         scope.buildTable = function(){
           changeAction();
@@ -40,9 +40,9 @@
           $(table).addClass('table-interactive');
           $(table).attr('tink-sort-table','ngModel');
           $(table).attr('tink-callback','sortHeader');
-          if(currentSort.field){console.log(currentSort)
+          if(currentSort.field){
             $(table).attr('tink-init-sort',currentSort.field);
-            $(table).attr('tink-init-sort-order',currentSort.order)
+            $(table).attr('tink-init-sort-order',currentSort.order);
           }
           //Create the headers of the table
           createHeaders(table,scope.tinkHeaders);
@@ -153,7 +153,7 @@
             currentSort.order = 'desc';   
           }
                       
-        }
+        };
 
         function fullChecked(){
           var length = 0;
@@ -178,7 +178,7 @@
         }
 
         function uncheckAll(){
-          for(var i=0;i<viewable.length;i++){
+          for(var i=0;i<scope.ngModel.length;i++){
             if(scope.checkB[i] && scope.checkB[i]._checked===true){
               scope.checkB[i]._checked = false;
             }
@@ -217,8 +217,8 @@
             scope.tinkHeaders.swap(scope.selected,scope.selected-1);
             scope.selected-=1;
             scope.buildTable();
-          }console.log(scope.tinkHeaders)
-        }
+          }
+        };
         //function will be called when pressing arrow for order change
         scope.arrowDown = function(){
           if(scope.selected < scope.tinkHeaders.length-1){
@@ -226,14 +226,14 @@
             scope.selected+=1;
             scope.buildTable();
           }
-        }
+        };
 
         scope.close = function(){
           $rootScope.$broadcast('popover-open', { group: 'option-table',el:$('<div><div>') });
         };
 
         //If you check/uncheck a checbox in de kolom popup this function will be fired.
-        scope.headerChange = function(){console.log('build')
+        scope.headerChange = function(){
           scope.buildTable();
         };
         //If you select an other kolom name in de kolumn popup this function will be fired.

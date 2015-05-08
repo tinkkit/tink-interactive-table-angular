@@ -3,9 +3,9 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
-  module.directive('tinkPagination',[function(){
+  module.directive('tinkPagination',['lodash',function(_){
   return{
     restrict:'EA',
     templateUrl:'templates/pagination.html',
@@ -46,26 +46,26 @@
         $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
           $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
         });
-      }
+      };
 
       ctrl.setPage = function(page){
         $scope.tinkCurrentPage = page;
         sendMessage();
-      }
+      };
 
       ctrl.setPrev = function(){
         if($scope.tinkCurrentPage > 1){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage -1;
         }
         sendMessage(); 
-      }
+      };
 
       ctrl.setNext = function(){
         if($scope.tinkCurrentPage < ctrl.pages){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage +1;
         }
         sendMessage(); 
-      }
+      };
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
@@ -98,13 +98,11 @@
           arrayNums.push(ctrl.pages);
         }
         return arrayNums;
-      }
+      };
 
-    }],
-    link:function(scope,element,attrs,ctrl){
-    }
+    }]
   };
-  }]).filter('limitNum', ['$filter', function($filter) {
+  }]).filter('limitNum', [function() {
    return function(input, limit) {
       if (input > limit) {
           return limit;
@@ -125,10 +123,10 @@
             $(element).find('table.table-interactive').removeClass('is-loading'); 
           }
           
-        })
+        });
 
       }
-    }
+    };
 
-  }])
+  }]);
 })();
