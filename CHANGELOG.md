@@ -13,8 +13,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.0.1] - 2015-05-08
+### Fixed
+- perPage callback
 
+## [2.0.0] - 2015-05-08
 
+### Added
+- Pagination lazyload
+- Full controll of pagination
+
+### Changed
+- Refactored component
+- Extracted pagination
 
 ## [1.0.2] - 2015-05-??
 
