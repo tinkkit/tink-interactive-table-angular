@@ -42,6 +42,12 @@
         }
       };
 
+      ctrl.perPageChange = function(){
+        $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+        });
+      }
+
       ctrl.setPage = function(page){
         $scope.tinkCurrentPage = page;
         sendMessage();
@@ -63,9 +69,9 @@
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange($scope.tinkCurrentPage,function(){
+        $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
           $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        })
+        });
       }
 
       ctrl.calculatePages = function(){
