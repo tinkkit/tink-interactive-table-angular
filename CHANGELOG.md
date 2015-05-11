@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
-## [2.0.1] - 2015-05-08
+## [2.0.1] - 2015-05-11
 
 ### Added
 - init type sort
