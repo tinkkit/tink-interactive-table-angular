@@ -44,6 +44,9 @@
             $(table).attr('tink-init-sort',currentSort.field);
             $(table).attr('tink-init-sort-order',currentSort.order);
           }
+          if(currentSort.type){
+            $(table).attr('tink-init-sort-type',currentSort.type);
+          }
           //Create the headers of the table
           createHeaders(table,scope.tinkHeaders);
           //create the body of the table
@@ -145,8 +148,10 @@
           }
         }
 
-        scope.sortHeader = function(field,order){
+        scope.sortHeader = function(field,order,type){
+          currentSort = {};
           currentSort.field = field;
+          currentSort.type = type;
           if(order === 1){
             currentSort.order = 'asc';   
           }else{
