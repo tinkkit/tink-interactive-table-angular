@@ -3,9 +3,9 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
-  module.directive('tinkPagination',[function(){
+  module.directive('tinkPagination',['lodash',function(_){
   return{
     restrict:'EA',
     templateUrl:'templates/pagination.html',
@@ -42,30 +42,36 @@
         }
       };
 
+      ctrl.perPageChange = function(){
+        $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+        });
+      };
+
       ctrl.setPage = function(page){
         $scope.tinkCurrentPage = page;
         sendMessage();
-      }
+      };
 
       ctrl.setPrev = function(){
         if($scope.tinkCurrentPage > 1){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage -1;
         }
         sendMessage(); 
-      }
+      };
 
       ctrl.setNext = function(){
         if($scope.tinkCurrentPage < ctrl.pages){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage +1;
         }
         sendMessage(); 
-      }
+      };
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange($scope.tinkCurrentPage,function(){
+        $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
           $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        })
+        });
       }
 
       ctrl.calculatePages = function(){
@@ -92,13 +98,11 @@
           arrayNums.push(ctrl.pages);
         }
         return arrayNums;
-      }
+      };
 
-    }],
-    link:function(scope,element,attrs,ctrl){
-    }
+    }]
   };
-  }]).filter('limitNum', ['$filter', function($filter) {
+  }]).filter('limitNum', [function() {
    return function(input, limit) {
       if (input > limit) {
           return limit;
@@ -119,19 +123,19 @@
             $(element).find('table.table-interactive').removeClass('is-loading'); 
           }
           
-        })
+        });
 
       }
-    }
+    };
 
-  }])
+  }]);
 })();
 ;'use strict';
 (function(module) {
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
   module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
   return{
@@ -143,7 +147,7 @@
       tinkActions:'=',
       tinkColumnReorder:'='
     },
-    link:function(scope,element,attrs,ctrl){
+    link:function(scope,element){
       scope.checkB = [];
 
       var currentSort = {field:null,order:null};
@@ -153,13 +157,13 @@
           return true;
         }
           return false;
-      }
+      };
       scope.hasReoder = function(){
         if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
           return false;
         }
         return true;
-      }
+      };
         
         scope.buildTable = function(){
           changeAction();
@@ -168,9 +172,12 @@
           $(table).addClass('table-interactive');
           $(table).attr('tink-sort-table','ngModel');
           $(table).attr('tink-callback','sortHeader');
-          if(currentSort.field){console.log(currentSort)
+          if(currentSort.field){
             $(table).attr('tink-init-sort',currentSort.field);
-            $(table).attr('tink-init-sort-order',currentSort.order)
+            $(table).attr('tink-init-sort-order',currentSort.order);
+          }
+          if(currentSort.type){
+            $(table).attr('tink-init-sort-type',currentSort.type);
           }
           //Create the headers of the table
           createHeaders(table,scope.tinkHeaders);
@@ -273,15 +280,17 @@
           }
         }
 
-        scope.sortHeader = function(field,order){
+        scope.sortHeader = function(field,order,type){
+          currentSort = {};
           currentSort.field = field;
+          currentSort.type = type;
           if(order === 1){
             currentSort.order = 'asc';   
           }else{
             currentSort.order = 'desc';   
           }
                       
-        }
+        };
 
         function fullChecked(){
           var length = 0;
@@ -306,7 +315,7 @@
         }
 
         function uncheckAll(){
-          for(var i=0;i<viewable.length;i++){
+          for(var i=0;i<scope.ngModel.length;i++){
             if(scope.checkB[i] && scope.checkB[i]._checked===true){
               scope.checkB[i]._checked = false;
             }
@@ -345,8 +354,8 @@
             scope.tinkHeaders.swap(scope.selected,scope.selected-1);
             scope.selected-=1;
             scope.buildTable();
-          }console.log(scope.tinkHeaders)
-        }
+          }
+        };
         //function will be called when pressing arrow for order change
         scope.arrowDown = function(){
           if(scope.selected < scope.tinkHeaders.length-1){
@@ -354,14 +363,14 @@
             scope.selected+=1;
             scope.buildTable();
           }
-        }
+        };
 
         scope.close = function(){
           $rootScope.$broadcast('popover-open', { group: 'option-table',el:$('<div><div>') });
         };
 
         //If you check/uncheck a checbox in de kolom popup this function will be fired.
-        scope.headerChange = function(){console.log('build')
+        scope.headerChange = function(){
           scope.buildTable();
         };
         //If you select an other kolom name in de kolumn popup this function will be fired.
@@ -418,7 +427,7 @@
   'use strict';
 
   $templateCache.put('templates/pagination.html',
-    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:ctrl.tinkTotalItems}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=\"\" data-ng-model=tinkItemsPerPage> <option data-ng-repeat=\"items in ctrl.itemsPerPage()\" data-ng-bind=items>{{items}}</option> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
+    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:ctrl.tinkTotalItems}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage> <option data-ng-repeat=\"items in ctrl.itemsPerPage()\">{{items}}</option> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
   );
 
 
