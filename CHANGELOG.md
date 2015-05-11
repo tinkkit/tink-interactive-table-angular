@@ -14,6 +14,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 ## [2.0.1] - 2015-05-08
+
+### Added
+- init type sort
+
 ### Fixed
 - perPage callback
 
