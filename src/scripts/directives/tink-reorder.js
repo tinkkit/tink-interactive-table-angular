@@ -125,9 +125,8 @@
         }
 
         scope.rowClick=function(i){
-          console.log('clicked',i,scope.ngModel[i])
           scope.tinkRowClick.call(null,{$element:scope.ngModel[i]});
-        }
+        };
 
         function createHeaders(tableEl,headers){
           if(scope.tinkHeaders instanceof Array && headers instanceof Array){
