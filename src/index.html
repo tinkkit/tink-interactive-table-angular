@@ -52,7 +52,7 @@
 <script src="scripts/directives/tink-reorder.js"></script>
 
 
-<tink-interactive-table tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="false" tink-actions="actions"></tink-interactive-table>
+<tink-interactive-table tink-row-click="clicked($element)" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="false" tink-actions="actions"></tink-interactive-table>
 
 <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 
@@ -68,7 +68,9 @@
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
      // Override default items per page
     scope.pages = '5, 10, 25';
-
+    scope.clicked = function(click){
+      console.log(click,'clicked');
+    }
     scope.changed = function(chaged,next){
       console.log(chaged);
     }

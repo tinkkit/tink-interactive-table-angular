@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.1.0] - 2015-05-20
+
+### Added
+- Row click callback
+
 ## [2.0.1] - 2015-05-11
 
 ### Added

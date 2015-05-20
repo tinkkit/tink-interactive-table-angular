@@ -13,7 +13,8 @@
       ngModel:'=',
       tinkHeaders:'=',
       tinkActions:'=',
-      tinkColumnReorder:'='
+      tinkColumnReorder:'=',
+      tinkRowClick:'&'
     },
     link:function(scope,element){
       scope.checkB = [];
@@ -80,9 +81,11 @@
                 var row;
                 if(body.rows[j]){
                   row = body.rows[j];
+                  //row
                 }else{
                   row = body.insertRow(j);
                   //If we have action add a checkbox.
+                  $(row).attr('ng-click','rowClick('+j+')');
                   if(scope.hasAction()){
                     var check = row.insertCell(0);
                     check.innerHTML = createCheckbox(j,j);
@@ -119,6 +122,11 @@
               }});
             }
           }
+        }
+
+        scope.rowClick=function(i){
+          console.log('clicked',i,scope.ngModel[i])
+          scope.tinkRowClick.call(null,{$element:scope.ngModel[i]});
         }
 
         function createHeaders(tableEl,headers){
