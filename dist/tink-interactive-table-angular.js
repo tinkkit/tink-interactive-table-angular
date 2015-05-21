@@ -146,7 +146,8 @@
       tinkHeaders:'=',
       tinkActions:'=',
       tinkColumnReorder:'=',
-      tinkRowClick:'&'
+      tinkRowClick:'&',
+      tinkChange:'&'
     },
     link:function(scope,element){
       scope.checkB = [];
@@ -167,34 +168,37 @@
       };
         
         scope.buildTable = function(){
-          changeAction();
-          var tableEl = element.find('table');
-          //Create a new table object
-          var table = document.createElement('table');
-          $(tableEl).addClass('table-interactive');
-          //$(tableEl).attr('tink-sort-table','ngModel');
-          //$(tableEl).attr('tink-callback','sortHeader($property,$order,$type)');
-          /*if(currentSort.field){
-            $(table).attr('tink-init-sort',currentSort.field);
-            $(table).attr('tink-init-sort-order',currentSort.order);
+          if(scope.ngModel){
+            changeAction();
+            var tableEl = element.find('table');
+            //Create a new table object
+            var table = document.createElement('table');
+            $(tableEl).addClass('table-interactive');
+            //$(tableEl).attr('tink-sort-table','ngModel');
+            //$(tableEl).attr('tink-callback','sortHeader($property,$order,$type)');
+            /*if(currentSort.field){
+              $(table).attr('tink-init-sort',currentSort.field);
+              $(table).attr('tink-init-sort-order',currentSort.order);
+            }
+            if(currentSort.type){
+              $(table).attr('tink-init-sort-type',currentSort.type);
+            }*/
+            //Create the headers of the table
+            createHeaders(table,scope.tinkHeaders);
+            //create the body of the table
+            createBody(table,scope.ngModel);
+
+            //create a copy for the headers
+            //scope.tinkHeaders = scope.tinkHeaders;
+
+            scope.checkB = scope.createArray(scope.ngModel.length);          
+            fullChecked();
+
+            tableEl.children('thead').html($(table).children('thead').children());
+            tableEl.children('tbody').html($(table).children('tbody').children());
+            $compile(tableEl.children('thead'))(scope);
+            $compile(tableEl.children('tbody'))(scope);
           }
-          if(currentSort.type){
-            $(table).attr('tink-init-sort-type',currentSort.type);
-          }*/
-          //Create the headers of the table
-          createHeaders(table,scope.tinkHeaders);
-          //create the body of the table
-          createBody(table,scope.ngModel);
-
-          //create a copy for the headers
-          //scope.tinkHeaders = scope.tinkHeaders;
-          scope.checkB = scope.createArray(scope.ngModel.length);          
-          fullChecked();
-
-          tableEl.children('thead').html($(table).children('thead').children());
-          tableEl.children('tbody').html($(table).children('tbody').children());
-          $compile(tableEl.children('thead'))(scope);
-          $compile(tableEl.children('tbody'))(scope);
         };
 
         function createCheckbox(row,i,hulp){
@@ -290,12 +294,12 @@
           }
         }
 
-        scope.sortHeader = function(field,order,type){console.log(field,order,type);
+        scope.sortHeader = function(field,order,type){
           currentSort = {};
           currentSort.field = field;
           currentSort.type = type;
-          currentSort.order = order;   
-                      
+          currentSort.order = order;  
+          scope.tinkChange({field:field,order:order,type:type});                      
         };
 
         function fullChecked(){
@@ -438,7 +442,7 @@
 
 
   $templateCache.put('templates/reorder.html',
-    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReoder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  TE TABLE <table id=theInteractiveTable tink-sort-table=ngModel tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag> <thead> </thead> <tbody> </tbody> </table> "
+    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReoder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  <table id=theInteractiveTable tink-sort-table=ngModel tink-sort=false tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag> <thead> </thead> <tbody> </tbody> </table> "
   );
 
 
