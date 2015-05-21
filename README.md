@@ -6,7 +6,7 @@ v2.1.1
 
 The Tink Angular interactive table provides with a table on steroids.
 
-Tink is an in-house developed easy-to-use front end framework for quick prototyping and simple deployment of all kinds of websites and apps, keeping a uniform and consistent look and feel.
+Tink is an in-house developed easy-to-use front-end framework for quick prototyping and simple deployment of all kinds of websites and apps, keeping a uniform and consistent look and feel.
 
 ## Setup
 
@@ -18,60 +18,37 @@ Tink is an in-house developed easy-to-use front end framework for quick prototyp
 ### Install
 
 1. Go to the root of your project and type the following command in your terminal:
-   `bower install tink-interactive-table-angular --save`
 
-2. Include `dist/tink-interactive-table-angular.js` and its necessary dependencies in your project.
+  `bower install tink-interactive-table-angular --save`
+
+2. Add the following files to your project:
+
+  `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
+
+  `<script src="bower_components/tink-accordion-angular/dist/tink-interactive-table-angular.js"></script>`
 
 
 ----------
 
 
-##tink-interactive-table
+## How to use
 
-###Component
+### tink-interactive-table
+
+### Component
+
 ```html
 <tink-interactive-table></tink-interactive-table>
 ```
 
-###Atributes
+### Options
 
-<table class="table-dev">
-  <thead>
-    <tr>
-      <th>Attr</th>
-      <th>Type</th>
-      <th>Default</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>data-ng-model (required)</td>
-      <td>Array</td>
-      <td>undefined</td>
-      <td>The table info that needs to be shown.</td>
-    </tr>
-    <tr>
-      <td>data-tink-headers (required)</td>
-      <td>Array</td>
-      <td>undefined</td>
-      <td>The header information for each column.</td>
-    </tr>
-    <tr>
-      <td>data-tink-actions</td>
-      <td>Array</td>
-      <td>undefined</td>
-      <td>When present checkboxes will appear to do some predefined actions with it.</td>
-    </tr>
-    <tr>
-      <td>data-allow-column-reorder</td>
-      <td>boolean</td>
-      <td>true</td>
-      <td>If false you can't reorder the columns.</td>
-    </tr>
-  </tbody>
-</table>
-
+Attr | Type | Default | Details
+--- | --- | --- | ---
+data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
+data-tink-headers (required) | `array` | `undefined` | The header information for each column.
+data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
+data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
 
 ###Example
 ```html
@@ -103,8 +80,9 @@ Tink is an in-house developed easy-to-use front end framework for quick prototyp
       }
     ];
 ```
-> To **enable sort** give the header object a **property 'sort'** with value true,
-> If you want to **hide a column** give the header a **property 'checked'** with value false,
+> To **enable sort** give the header object a **property** `sort` with the value `true`,
+> If you want to **hide a column** give the header a **property** `checked` with the value `false`.
+
 ```javascript
 scope.headers = [
       {
@@ -126,7 +104,9 @@ scope.headers = [
       }
     ];
 ```
-> To **add action** create an array with objects with a *name* property and a *callback function*. This callback function will be called when this action is used. The function will give you an array of items that is selected. The function will also give you an function as parameter to uncheck all the checkboxes.
+
+> To **add action** create an array with objects with a `name` property and a `callback` function. This callback function will be called when this action is used. The function will give you an array of items that is selected. The function will also give you a function as a parameter to uncheck all the checkboxes.
+
 ```javascript
    scope.actions = [
       {
@@ -146,71 +126,30 @@ scope.headers = [
 ----------
 
 
-##tink-pagination
-###Component
-```html
 
+### tink-pagination
+
+### Component
+
+```html
 <tink-pagination></tink-pagination>
 ```
 
-###Atributes
+### Options
 
-<table class="table-dev">
-  <thead>
-    <tr>
-      <th>Attr</th>
-      <th>Type</th>
-      <th>Default</th>
-      <th>Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>data-tink-pagination-id (required)</td>
-      <td>String</td>
-      <td>""</td>
-      <td>An id that specifies to which table it belongs.</td>
-    </tr>
-    <tr>
-      <td>tink-current-page (required)</td>
-      <td>Number</td>
-      <td>undefined</td>
-      <td>The number of the current page.</td>
-    </tr>
-    <tr>
-      <td>tink-total-items (required)</td>
-      <td>Number</td>
-      <td>undefined</td>
-      <td>Total number of items you want to show</td>
-    </tr>
-    <tr>
-      <td>tink-items-per-page (required)</td>
-      <td>Number</td>
-      <td>undefined</td>
-      <td>How many items you want to show !</td>
-    </tr>
-    <tr>
-      <td>tink-items-per-page-values (required)</td>
-      <td>Array</td>
-      <td>undefined</td>
-      <td>Array of numbers that will be shown as per page value.</td>
-    </tr>
-    <tr>
-      <td>tink-change</td>
-      <td>Function</td>
-      <td>undefined</td>
-      <td>To receive information if the pagination or perPage value change!</td>
-    </tr>
-  </tbody>
-</table>
+Attr | Type | Default | Details
+--- | --- | --- | ---
+data-tink-pagination-id (required) | `string` | `''` | An id that specifies to which table it belongs.
+tink-current-page (required) | `number` | `undefined` | The number of the current page.
+tink-total-items (required) | `number` | `undefined` | Total number of items you want to show.
+tink-items-per-page (required) | `number` | `undefined` | How many items you want to show!
+tink-items-per-page-values (required) | `array` | `undefined` | Array of numbers that will be shown as per page value.
+tink-change | `function` | `undefined` | To receive information if the pagination or perPage value change!
 
 ###Example
-> To enable pagination on the interactive table add the **`tink-pagination-key`** attribute.
+> To enable pagination on the interactive table add the tink-pagination-key attribute.
 ```html
 <tink-interactive-table tink-pagination-key="pag1" ></tink-interactive-table>
-
-<tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue">
-</tink-pagination>
 ```
 
 ```javascript
@@ -223,8 +162,6 @@ scope.headers = [
  }
 ```
 
-
-----------
 ## Contribution guidelines
 
 * If you're not sure, drop us a note
@@ -261,4 +198,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
