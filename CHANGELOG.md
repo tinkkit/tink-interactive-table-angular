@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.1.1] - 2015-05-21
+
+### Fixed
+- Fixed problems with callback 
+
 ## [2.1.0] - 2015-05-20
 
 ### Added
