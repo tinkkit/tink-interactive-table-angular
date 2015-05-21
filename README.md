@@ -148,6 +148,7 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
 
 ###Example
 > To enable pagination on the interactive table add the tink-pagination-key attribute.
+
 ```html
 <tink-interactive-table tink-pagination-key="pag1" ></tink-interactive-table>
 ```
