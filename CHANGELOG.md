@@ -15,6 +15,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 ## [2.1.5] - 2015-05-26
 
+### Added
+- Added filtering
+
 ### Fixed
 - Fixed checkbox propagation
 
