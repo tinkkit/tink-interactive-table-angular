@@ -49,7 +49,7 @@ data-ng-model (required) | `array` | `undefined` | The table info that needs to 
 data-tink-headers (required) | `array` | `undefined` | The header information for each column.
 data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
 data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
-data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table need to be sorted!.
+data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
 
 ###Example
 ```html
@@ -156,7 +156,7 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
 
 ```javascript
  scope.changed = function(chaged,next){
-    /* chaged will give you an  object if the page or peerage is changed.
+  /* changed will give you an  object if the page or peerage is changed.
   * {type:'page',value:2}
   * {type:'perPage',value:20}
   * If you do not change the data ! use next();
