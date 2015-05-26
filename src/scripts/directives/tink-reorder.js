@@ -84,7 +84,8 @@
                   $(row).attr('ng-click','rowClick('+j+')');
                   if(scope.hasAction()){
                     var check = row.insertCell(0);
-                    check.innerHTML = createCheckbox(j,j);
+                    check.innerHTML = createCheckbox(j, j);
+                    $(check).attr('ng-click', 'preventEvent($event)');
                   }
                 }
                 var val = content[j][scope.tinkHeaders[i].field];
@@ -122,6 +123,10 @@
 
         scope.rowClick=function(i){
           scope.tinkRowClick.call(null,{$element:scope.ngModel[i]});
+        };
+
+        scope.preventEvent = function (event) {
+            event.stopPropagation();
         };
 
         function createHeaders(tableEl,headers){
