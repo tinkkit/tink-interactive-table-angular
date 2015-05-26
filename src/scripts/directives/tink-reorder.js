@@ -95,8 +95,13 @@
                 }else{
                   cell = row.insertCell(0);
                 }
-                $(cell).attr('ng-if','tinkHeaders['+i+'].checked');
-                cell.innerHTML = val;
+                $(cell).attr('ng-if', 'tinkHeaders[' + i + '].checked');
+                if (scope.tinkHeaders[i].filter) {
+                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-" | ' + scope.tinkHeaders[i].filter + '}}';
+                }
+                else {
+                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-"}}';
+                }
               }
             }
           }
