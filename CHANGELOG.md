@@ -13,7 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.1.5] - 2015-05-26
+
+### Fixed
+- Fixed checkbox propagation
+
 ## [2.1.4] - 2015-05-26
+
 ### Fixed
 - Fixed rotating arrow problem
 
