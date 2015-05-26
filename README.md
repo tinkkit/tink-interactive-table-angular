@@ -90,13 +90,13 @@ scope.headers = [
         field: 'firstname',
         alias: 'Voornaam',
         checked: true, //to show this header or not
-        sort:true // To enable sorting on this header
+        sort: true // To enable sorting on this header
       },
       {
         field: 'lastname',
         alias: 'Achternaam',
         checked: false,
-        sort:true
+        sort: true
       },
       {
         field: 'username',
