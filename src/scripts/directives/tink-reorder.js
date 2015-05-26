@@ -42,22 +42,11 @@
             //Create a new table object
             var table = document.createElement('table');
             $(tableEl).addClass('table-interactive');
-            //$(tableEl).attr('tink-sort-table','ngModel');
-            //$(tableEl).attr('tink-callback','sortHeader($property,$order,$type)');
-            /*if(currentSort.field){
-              $(table).attr('tink-init-sort',currentSort.field);
-              $(table).attr('tink-init-sort-order',currentSort.order);
-            }
-            if(currentSort.type){
-              $(table).attr('tink-init-sort-type',currentSort.type);
-            }*/
-            //Create the headers of the table
+            $(tableEl).attr('tink-callback','sortHeader($property,$order,$type)');
+
             createHeaders(table,scope.tinkHeaders);
             //create the body of the table
             createBody(table,scope.ngModel);
-
-            //create a copy for the headers
-            //scope.tinkHeaders = scope.tinkHeaders;
 
             scope.checkB = scope.createArray(scope.ngModel.length);          
             fullChecked();
@@ -167,7 +156,7 @@
           currentSort.field = field;
           currentSort.type = type;
           currentSort.order = order;  
-          scope.tinkChange({field:field,order:order,type:type});                      
+          scope.tinkChange({$property:field,$order:order,$type:type});                      
         };
 
         function fullChecked(){

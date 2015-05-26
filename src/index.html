@@ -13,24 +13,6 @@
 <body ng-controller="ctrl">
 
 <div class="container">
-  <h1>Interactive table</h1>
-  <hr>
-  <section class="panel">
-    <header class="panel-heading">
-      <i class="fa fa-th-large"></i>
-      <h1 class="panel-title">Interactive table</h1>
-    </header>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-xs-12">
-        </div>
-      </div>
-    </div>
-  </section>
-  <button ng-click="addData()">add row</button>
-  <button ng-click="changeData()">change row</button>
-</div>
-
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
@@ -46,12 +28,11 @@
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
 <script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>
 <!-- endbower -->
-<div tink-inter>test</div>
 <script src="scripts/directives/tink-pagination.js"></script>
 <script src="scripts/directives/tink-reorder.js"></script>
 
 
-<tink-interactive-table tink-row-click="clicked($element)" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="false" tink-actions="actions"></tink-interactive-table>
+<tink-interactive-table tink-row-click="clicked($element)" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="true" tink-change="chan($property,$order,$type)"></tink-interactive-table>
 
 <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 
@@ -67,35 +48,88 @@
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
      // Override default items per page
     scope.pages = '5, 10, 25';
-    scope.clicked = function(click){
-      console.log(click,'clicked');
+
+    scope.chan = function(prop,or,typ){
+      console.log('changed',prop,or,typ);
+      timeout(function(){
+      // Data model
+      scope.data = [
+        {
+          firstname: 'Jasper',
+          lastname: 'Van Proeyen',
+          username: '@trianglejuice'
+        },
+        {
+          firstname: 'Tom',
+          lastname: 'Wuyts',
+          username: '@pxlpanic'
+        },
+        {
+          firstname: 'Kevin',
+          lastname: 'De Mulder',
+          username: '@clopin'
+        },
+        {
+          firstname: 'Vincent',
+          lastname: 'Bouillart',
+          username: '@BouillartV'
+        }
+      ];
+    },300);
     }
-    scope.changed = function(chaged,next){
-      console.log(chaged);
+
+    timeout(function(){
+      // Data model
+      scope.data = [
+        {
+          firstname: 'Jasper',
+          lastname: 'Van Proeyen',
+          username: '@trianglejuice'
+        },
+        {
+          firstname: 'Tom',
+          lastname: 'Wuyts',
+          username: '@pxlpanic'
+        },
+        {
+          firstname: 'Kevin',
+          lastname: 'De Mulder',
+          username: '@clopin'
+        },
+        {
+          firstname: 'Vincent',
+          lastname: 'Bouillart',
+          username: '@BouillartV'
+        }
+      ];
+    },700);
+
+    scope.changed = function(){
+      timeout(function(){
+        scope.data = [
+          {
+            firstname: 'Jasper',
+            lastname: 'Van Proeyen',
+            username: '@trianglejuice'
+          },
+          {
+            firstname: 'Tom',
+            lastname: 'Wuyts',
+            username: '@pxlpanic'
+          },
+          {
+            firstname: 'Kevin',
+            lastname: 'De Mulder',
+            username: '@clopin'
+          },
+          {
+            firstname: 'Vincent',
+            lastname: 'Bouillart',
+            username: '@BouillartV'
+          }
+        ];
+      },200);
     }
-    // Data model
-    scope.data = [
-      {
-        firstname: 'Jasper',
-        lastname: 'Van Proeyen',
-        username: '@trianglejuice'
-      },
-      {
-        firstname: 'Tom',
-        lastname: 'Wuyts',
-        username: '@pxlpanic'
-      },
-      {
-        firstname: 'Kevin',
-        lastname: 'De Mulder',
-        username: '@clopin'
-      },
-      {
-        firstname: 'Vincent',
-        lastname: 'Bouillart',
-        username: '@BouillartV'
-      }
-    ];
 
     // The headers you want to show and whether they are already visible in the table
     scope.headers = [
