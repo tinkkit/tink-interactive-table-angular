@@ -43,6 +43,7 @@
       };
 
       ctrl.perPageChange = function(){
+        $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
           $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
         });
@@ -52,6 +53,7 @@
         $scope.tinkCurrentPage = page;
         sendMessage();
       };
+
 
       ctrl.setPrev = function(){
         if($scope.tinkCurrentPage > 1){
@@ -116,10 +118,8 @@
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
 
           if(value === 'loading'){
-            console.log($(element).find('table.table-interactive'));
             $(element).find('table.table-interactive').addClass('is-loading');
           }else if(value === 'ready'){
-            console.log($(element).find('table.table-interactive'));
             $(element).find('table.table-interactive').removeClass('is-loading'); 
           }
           
