@@ -36,8 +36,6 @@
 
 <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 
-
-<button ng-click="changenums()">klick hier</button>
 <script>
   var myApp;
     try {
@@ -48,6 +46,36 @@
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
      // Override default items per page
     scope.pages = '5, 10, 25';
+
+    scope.changed = function(data,next){
+      console.log(data);
+       timeout(function(){
+      // Data model
+      scope.data = [
+        {
+          firstname: 'Jasper',
+          lastname: 'Van Proeyen',
+          username: '@trianglejuice'
+        },
+        {
+          firstname: 'Tom',
+          lastname: 'Wuyts',
+          username: '@pxlpanic'
+        },
+        {
+          firstname: 'Kevin',
+          lastname: 'De Mulder',
+          username: '@clopin'
+        },
+        {
+          firstname: 'Vincent',
+          lastname: 'Bouillart',
+          username: '@BouillartV'
+        }
+      ];
+      next();
+    },300);
+    }
 
     scope.chan = function(prop,or,typ){
       console.log('changed',prop,or,typ);
@@ -103,33 +131,6 @@
         }
       ];
     },700);
-
-    scope.changed = function(){
-      timeout(function(){
-        scope.data = [
-          {
-            firstname: 'Jasper',
-            lastname: 'Van Proeyen',
-            username: '@trianglejuice'
-          },
-          {
-            firstname: 'Tom',
-            lastname: 'Wuyts',
-            username: '@pxlpanic'
-          },
-          {
-            firstname: 'Kevin',
-            lastname: 'De Mulder',
-            username: '@clopin'
-          },
-          {
-            firstname: 'Vincent',
-            lastname: 'Bouillart',
-            username: '@BouillartV'
-          }
-        ];
-      },200);
-    }
 
     // The headers you want to show and whether they are already visible in the table
     scope.headers = [
