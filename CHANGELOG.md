@@ -13,22 +13,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
-## [2.1.4] - 2015-05-26
+## [2.1.3] - 2015-05-26
 
 ### Changed
 - Changed documentation
 
-### Removed
-- Removed removed code in comment
-
-## [2.1.3] - 2015-05-21
-
-### Fixed
-- Fixed problem don't sort on server side
-
 ## [2.1.2] - 2015-05-21
 
 ### Fixed
+- Fixed problem don't sort on server side
 - Fixed problems with callback 
 
 ## [2.1.1] - 2015-05-21
