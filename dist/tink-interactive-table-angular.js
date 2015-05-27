@@ -145,6 +145,7 @@
       ngModel:'=',
       tinkHeaders:'=',
       tinkActions:'=',
+      tinkForceResponsive:'=',
       tinkColumnReorder:'=',
       tinkRowClick:'&',
       tinkChange:'&'
@@ -160,13 +161,20 @@
         }
           return false;
       };
-      scope.hasReoder = function(){
+      scope.hasReorder = function(){
         if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
           return false;
         }
         return true;
       };
-        
+      scope.forceResponsive = function(){
+        if(scope.tinkForceResponsive === true || scope.tinkForceResponsive === 'true'){
+          return true;
+        }
+        return false;
+      };
+      console.log(scope.hasReorder);
+
         scope.buildTable = function(){
           if(scope.ngModel){
             changeAction();
@@ -180,7 +188,7 @@
             //create the body of the table
             createBody(table,scope.ngModel);
 
-            scope.checkB = scope.createArray(scope.ngModel.length);          
+            scope.checkB = scope.createArray(scope.ngModel.length);
             fullChecked();
 
             tableEl.children('thead').html($(table).children('thead').children());
@@ -220,19 +228,32 @@
                     $(check).attr('ng-click', 'preventEvent($event)');
                   }
                 }
-                var val = content[j][scope.tinkHeaders[i].field];
+                var fieldExpression = scope.tinkHeaders[i].field;
+                var fieldNames = scope.tinkHeaders[i].field.split('+');
+                angular.forEach(fieldNames, function (fieldName) {
+                    fieldName = fieldName.trim();
+                    if (fieldName.indexOf('"') < 0) {
+                        var splittedFieldNames = fieldName.split('.');
+                        var fieldValue = content[j];
+                        angular.forEach(splittedFieldNames, function (splittedFieldName) {
+                            fieldValue = fieldValue[splittedFieldName];
+                        });
+                        fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
+                    }
+                });
+                var fieldValueComplete = eval(fieldExpression);
                 var cell;
-                if(scope.hasAction()){
-                  cell = row.insertCell(1);
-                }else{
-                  cell = row.insertCell(0);
+                if (scope.hasAction()) {
+                    cell = row.insertCell(1);
+                } else {
+                    cell = row.insertCell(0);
                 }
                 $(cell).attr('ng-if', 'tinkHeaders[' + i + '].checked');
                 if (scope.tinkHeaders[i].filter) {
-                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-" | ' + scope.tinkHeaders[i].filter + '}}';
+                    cell.innerHTML = $filter(scope.tinkHeaders[i].filter)(fieldValueComplete, scope.tinkHeaders[i].filterArg);
                 }
                 else {
-                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-"}}';
+                    cell.innerHTML = fieldValueComplete;
                 }
               }
             }
@@ -270,7 +291,7 @@
           if(scope.tinkHeaders instanceof Array && headers instanceof Array){
             var header = tableEl.createTHead();
             var row = header.insertRow(0);
-            
+
             if(scope.hasAction()){
               var thCheck = document.createElement('th');
               thCheck.setAttribute('class', 'has-checkbox');
@@ -278,7 +299,7 @@
               row.appendChild(thCheck);
             }
 
-            for(var i=0;i<headers.length;i++){            
+            for(var i=0;i<headers.length;i++){
               //take alias of field of the headers
               var val = headers[i].alias || headers[i].field;
               var th = document.createElement('th');
@@ -297,8 +318,8 @@
           currentSort = {};
           currentSort.field = field;
           currentSort.type = type;
-          currentSort.order = order;  
-          scope.tinkChange({$property:field,$order:order,$type:type});                      
+          currentSort.order = order;
+          scope.tinkChange({$property:field,$order:order,$type:type});
         };
 
         function fullChecked(){
@@ -441,7 +462,7 @@
 
 
   $templateCache.put('templates/reorder.html',
-    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReoder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  <table id=theInteractiveTable tink-sort-table=ngModel tink-sort=false tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag> <thead> </thead> <tbody> </tbody> </table> "
+    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReorder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  <table id=theInteractiveTable tink-sort-table=ngModel tink-sort=false tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag data-ng-class=\"{'table-force-responsive': forceResponsive()}\"> <thead> </thead> <tbody> </tbody> </table> "
   );
 
 

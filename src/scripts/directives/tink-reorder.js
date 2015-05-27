@@ -13,6 +13,7 @@
       ngModel:'=',
       tinkHeaders:'=',
       tinkActions:'=',
+      tinkForceResponsive:'=',
       tinkColumnReorder:'=',
       tinkRowClick:'&',
       tinkChange:'&'
@@ -28,13 +29,20 @@
         }
           return false;
       };
-      scope.hasReoder = function(){
+      scope.hasReorder = function(){
         if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
           return false;
         }
         return true;
       };
-        
+      scope.forceResponsive = function(){
+        if(scope.tinkForceResponsive === true || scope.tinkForceResponsive === 'true'){
+          return true;
+        }
+        return false;
+      };
+      console.log(scope.hasReorder);
+
         scope.buildTable = function(){
           if(scope.ngModel){
             changeAction();
@@ -48,7 +56,7 @@
             //create the body of the table
             createBody(table,scope.ngModel);
 
-            scope.checkB = scope.createArray(scope.ngModel.length);          
+            scope.checkB = scope.createArray(scope.ngModel.length);
             fullChecked();
 
             tableEl.children('thead').html($(table).children('thead').children());
@@ -151,7 +159,7 @@
           if(scope.tinkHeaders instanceof Array && headers instanceof Array){
             var header = tableEl.createTHead();
             var row = header.insertRow(0);
-            
+
             if(scope.hasAction()){
               var thCheck = document.createElement('th');
               thCheck.setAttribute('class', 'has-checkbox');
@@ -159,7 +167,7 @@
               row.appendChild(thCheck);
             }
 
-            for(var i=0;i<headers.length;i++){            
+            for(var i=0;i<headers.length;i++){
               //take alias of field of the headers
               var val = headers[i].alias || headers[i].field;
               var th = document.createElement('th');
@@ -178,8 +186,8 @@
           currentSort = {};
           currentSort.field = field;
           currentSort.type = type;
-          currentSort.order = order;  
-          scope.tinkChange({$property:field,$order:order,$type:type});                      
+          currentSort.order = order;
+          scope.tinkChange({$property:field,$order:order,$type:type});
         };
 
         function fullChecked(){

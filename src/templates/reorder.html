@@ -10,15 +10,14 @@
         <button data-ng-if="hasAction() && selectedCheck" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
       </li>
       <li>
-        <button data-ng-if="hasReoder()" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
+        <button data-ng-if="hasReorder()" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
       </li>
     </ul>
   </div>
 </div>
 
-
 <!-- placeholder for table -->
-<table id='theInteractiveTable' tink-sort-table="ngModel" tink-sort="false" tink-callback="sortHeader($property,$order,$type)" class="table-interactive" tink-pagination-key="directivePag">
+<table id="theInteractiveTable" tink-sort-table="ngModel" tink-sort="false" tink-callback="sortHeader($property,$order,$type)" class="table-interactive" tink-pagination-key="directivePag" data-ng-class="{'table-force-responsive': forceResponsive()}">
 <thead>
 </thead>
 <tbody>
