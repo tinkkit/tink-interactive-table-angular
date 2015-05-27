@@ -13,6 +13,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+
+## [2.1.6] - 2015-05-27
+
+### Added
+- Added option to force a responsive table
+
+
+
 ## [2.1.5] - 2015-05-26
 
 ### Added
@@ -21,31 +29,43 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed checkbox propagation
 
+
+
 ## [2.1.4] - 2015-05-26
 
 ### Fixed
 - Fixed rotating arrow problem
+
+
 
 ## [2.1.3] - 2015-05-26
 
 ### Changed
 - Changed documentation
 
+
+
 ## [2.1.2] - 2015-05-21
 
 ### Fixed
 - Fixed problem don't sort on server side
-- Fixed problems with callback 
+- Fixed problems with callback
+
+
 
 ## [2.1.1] - 2015-05-21
 
 ### Fixed
-- Fixed problems with callback 
+- Fixed problems with callback
+
+
 
 ## [2.1.0] - 2015-05-20
 
 ### Added
 - Row click callback
+
+
 
 ## [2.0.1] - 2015-05-11
 
@@ -54,6 +74,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - perPage callback
+
+
 
 ## [2.0.0] - 2015-05-08
 
@@ -64,6 +86,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Refactored component
 - Extracted pagination
+
+
 
 ## [1.0.2] - 2015-05-??
 
