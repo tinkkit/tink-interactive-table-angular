@@ -5,7 +5,7 @@
   } catch (e) {
     module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
-  module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope','$filter',function($compile,$rootScope,$filter){
   return{
     restrict:'EA',
     templateUrl:'templates/reorder.html',
@@ -109,6 +109,7 @@
                         fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
                     }
                 });
+                /*jshint -W061 */
                 var fieldValueComplete = eval(fieldExpression);
                 var cell;
                 if (scope.hasAction()) {
