@@ -88,19 +88,32 @@
                     $(check).attr('ng-click', 'preventEvent($event)');
                   }
                 }
-                var val = content[j][scope.tinkHeaders[i].field];
+                var fieldExpression = scope.tinkHeaders[i].field;
+                var fieldNames = scope.tinkHeaders[i].field.split('+');
+                angular.forEach(fieldNames, function (fieldName) {
+                    fieldName = fieldName.trim();
+                    if (fieldName.indexOf('"') < 0) {
+                        var splittedFieldNames = fieldName.split('.');
+                        var fieldValue = content[j];
+                        angular.forEach(splittedFieldNames, function (splittedFieldName) {
+                            fieldValue = fieldValue[splittedFieldName];
+                        });
+                        fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
+                    }
+                });
+                var fieldValueComplete = eval(fieldExpression);
                 var cell;
-                if(scope.hasAction()){
-                  cell = row.insertCell(1);
-                }else{
-                  cell = row.insertCell(0);
+                if (scope.hasAction()) {
+                    cell = row.insertCell(1);
+                } else {
+                    cell = row.insertCell(0);
                 }
                 $(cell).attr('ng-if', 'tinkHeaders[' + i + '].checked');
                 if (scope.tinkHeaders[i].filter) {
-                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-" | ' + scope.tinkHeaders[i].filter + '}}';
+                    cell.innerHTML = $filter(scope.tinkHeaders[i].filter)(fieldValueComplete, scope.tinkHeaders[i].filterArg);
                 }
                 else {
-                    cell.innerHTML = '{{ngModel[' + j + '][tinkHeaders[' + i + '].field] || "-"}}';
+                    cell.innerHTML = fieldValueComplete;
                 }
               }
             }
