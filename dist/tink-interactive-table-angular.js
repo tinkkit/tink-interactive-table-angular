@@ -18,7 +18,7 @@
       tinkPaginationId:'@'
     },
     controllerAs:'ctrl',
-    controller:['$scope','$rootScope',function($scope,$rootScope){
+    controller:['$scope','$rootScope','$timeout',function($scope,$rootScope,timeout){
       var ctrl = this;
 
       //ctrl.init = function(){
@@ -44,9 +44,11 @@
 
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
-          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        });
+        timeout(function(){
+          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+          });
+        },0);
       };
 
       ctrl.setPage = function(page){
@@ -71,9 +73,11 @@
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
-          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        });
+        timeout(function(){
+          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
+            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+          });
+        },0);
       }
 
       ctrl.calculatePages = function(){
@@ -173,7 +177,6 @@
         }
         return false;
       };
-      console.log(scope.hasReorder);
 
         scope.buildTable = function(){
           if(scope.ngModel){
