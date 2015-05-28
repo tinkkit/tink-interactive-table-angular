@@ -70,9 +70,10 @@
         if(!hulp){
           hulp ='';
         }
+        var random = Math.random().toString(36).substring(7);
         var checkbox = '<div class="checkbox">'+
-                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+row+'" name="'+row+'" value="'+row+'">'+
-                          '<label for="'+row+'"></label>'+
+                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+random+row+'" name="'+random+row+'" value="'+row+'">'+
+                          '<label for="'+random+row+'"></label>'+
                         '</div>';
         return checkbox;
       }
