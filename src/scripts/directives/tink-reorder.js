@@ -41,7 +41,6 @@
         }
         return false;
       };
-      console.log(scope.hasReorder);
 
         scope.buildTable = function(){
           if(scope.ngModel){
