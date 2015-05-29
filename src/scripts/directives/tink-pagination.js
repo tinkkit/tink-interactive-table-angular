@@ -111,6 +111,17 @@
       }
       return input;
    };
+  }])
+  .filter('tinkMin', [function() {
+   return function(input, limit) {
+    if(limit === undefined){
+      limit = 0;
+    }
+      if (input < limit) {
+          return limit;
+      }
+      return input;
+   };
   }]).directive('tinkPaginationKey',['$rootScope',function(rootScope){
     return {
       link:function($scope,element,attrs){
