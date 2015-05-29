@@ -32,7 +32,11 @@
 <script src="scripts/directives/tink-reorder.js"></script>
 
 
-<tink-interactive-table tink-row-click="clicked($element)" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-headers="headers" tink-column-reorder="true" tink-change="chan($property,$order,$type)"></tink-interactive-table>
+<tink-interactive-table tink-row-click="clicked($element)" tink-name="poke" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-actions="actions" tink-headers="headers" tink-column-reorder="true" tink-change="chan($property,$order,$type)"></tink-interactive-table>
+
+<tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
+
+<tink-interactive-table tink-row-click="clicked($element)" tink-name="oke" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-actions="actions" tink-headers="headers" tink-column-reorder="true" tink-change="chan($property,$order,$type)"></tink-interactive-table>
 
 <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 
@@ -48,7 +52,8 @@
     scope.pages = '5, 10, 25';
 
     scope.changed = function(data,next){
-      console.log(data);
+      console.log(data,scope.nums);
+
        timeout(function(){
       // Data model
       scope.data = [

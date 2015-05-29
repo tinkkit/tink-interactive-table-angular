@@ -18,7 +18,7 @@
       tinkPaginationId:'@'
     },
     controllerAs:'ctrl',
-    controller:['$scope','$rootScope',function($scope,$rootScope){
+    controller:['$scope','$rootScope','$timeout',function($scope,$rootScope,timeout){
       var ctrl = this;
 
       //ctrl.init = function(){
@@ -44,9 +44,11 @@
 
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
-          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        });
+        timeout(function(){
+          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+          });
+        },0);
       };
 
       ctrl.setPage = function(page){
@@ -71,9 +73,11 @@
 
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
-          $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-        });
+        timeout(function(){
+          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
+            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
+          });
+        },0);
       }
 
       ctrl.calculatePages = function(){
@@ -137,7 +141,7 @@
   } catch (e) {
     module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
-  module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope','$filter',function($compile,$rootScope,$filter){
   return{
     restrict:'EA',
     templateUrl:'templates/reorder.html',
@@ -173,7 +177,6 @@
         }
         return false;
       };
-      console.log(scope.hasReorder);
 
         scope.buildTable = function(){
           if(scope.ngModel){
@@ -202,9 +205,10 @@
         if(!hulp){
           hulp ='';
         }
+        var random = Math.random().toString(36).substring(7);
         var checkbox = '<div class="checkbox">'+
-                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+row+'" name="'+row+'" value="'+row+'">'+
-                          '<label for="'+row+'"></label>'+
+                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+random+row+'" name="'+random+row+'" value="'+row+'">'+
+                          '<label for="'+random+row+'"></label>'+
                         '</div>';
         return checkbox;
       }
@@ -241,6 +245,7 @@
                         fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
                     }
                 });
+                /*jshint -W061 */
                 var fieldValueComplete = eval(fieldExpression);
                 var cell;
                 if (scope.hasAction()) {

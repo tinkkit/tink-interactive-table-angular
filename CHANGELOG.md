@@ -13,12 +13,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.1.8] - 2015-05-28
+
+### Fixed
+- Fixed pagination scope delay update
+
+## [2.1.7] - 2015-05-28
+
+### Fixed
+- Fixed When multiple directives are used do not use same id for checkboxes
 
 ## [2.1.6] - 2015-05-27
 
 ### Added
 - Added option to force a responsive table
-
 
 
 ## [2.1.5] - 2015-05-26
