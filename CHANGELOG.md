@@ -13,7 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
-## [2.1.8] - 2015-05-29
+## [2.1.9] - 2015-05-29
 
 ### Fixed
 - Fixed pagination number can be negative (now can't)
