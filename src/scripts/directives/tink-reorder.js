@@ -16,7 +16,8 @@
       tinkForceResponsive:'=',
       tinkColumnReorder:'=',
       tinkRowClick:'&',
-      tinkChange:'&'
+      tinkChange:'&',
+      tinkEmptyMessage:'@'
     },
     link:function(scope,element){
       scope.checkB = [];
@@ -107,6 +108,9 @@
                             fieldValue = fieldValue[splittedFieldName];
                         });
                         fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
+                        if(fieldExpression === undefined || fieldExpression === null){
+                          fieldExpression = '-';
+                        }
                     }
                 });
                 /*jshint -W061 */

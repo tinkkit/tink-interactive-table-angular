@@ -13,6 +13,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [2.2] - 2015-06-01
+
+### Added
+- Added empty state message
+
+### Fixed
+- Fixed page number can't be under 0
+
 ## [2.1.9] - 2015-05-29
 
 ### Fixed

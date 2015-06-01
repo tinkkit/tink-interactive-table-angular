@@ -83,10 +83,17 @@
       ctrl.calculatePages = function(){
         var num = $scope.tinkCurrentPage;
         ctrl.pages = Math.ceil($scope.tinkTotalItems/$scope.tinkItemsPerPage);
+        console.log($scope.tinkTotalItems,$scope.tinkItemsPerPage)
+        if(ctrl.pages <=0 || ctrl.pages === undefined || ctrl.pages === null || isNaN(ctrl.pages)){
+          ctrl.pages = 1;
+        }
 
         if(num > ctrl.pages){
           num = $scope.tinkCurrentPage = ctrl.pages;
+        }else if(num <=0 || num === undefined || num === null){
+          $scope.tinkCurrentPage = 1;
         }
+
         var arrayNums;
         if(ctrl.pages <6){
           arrayNums = _.range(2,ctrl.pages);
