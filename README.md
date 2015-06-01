@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v2.1.9
+v2.2.0
 
 ## What is this repository for?
 

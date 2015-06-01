@@ -83,10 +83,16 @@
       ctrl.calculatePages = function(){
         var num = $scope.tinkCurrentPage;
         ctrl.pages = Math.ceil($scope.tinkTotalItems/$scope.tinkItemsPerPage);
+        if(ctrl.pages <=0 || ctrl.pages === undefined || ctrl.pages === null || isNaN(ctrl.pages)){
+          ctrl.pages = 1;
+        }
 
         if(num > ctrl.pages){
           num = $scope.tinkCurrentPage = ctrl.pages;
+        }else if(num <=0 || num === undefined || num === null){
+          $scope.tinkCurrentPage = 1;
         }
+
         var arrayNums;
         if(ctrl.pages <6){
           arrayNums = _.range(2,ctrl.pages);
@@ -163,7 +169,8 @@
       tinkForceResponsive:'=',
       tinkColumnReorder:'=',
       tinkRowClick:'&',
-      tinkChange:'&'
+      tinkChange:'&',
+      tinkEmptyMessage:'@'
     },
     link:function(scope,element){
       scope.checkB = [];
@@ -254,6 +261,9 @@
                             fieldValue = fieldValue[splittedFieldName];
                         });
                         fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
+                        if(fieldExpression === undefined || fieldExpression === null){
+                          fieldExpression = '-';
+                        }
                     }
                 });
                 /*jshint -W061 */
@@ -473,12 +483,12 @@
   'use strict';
 
   $templateCache.put('templates/pagination.html',
-    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1 | tinkMin}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:tinkItemsPerPage}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage> <option data-ng-repeat=\"items in ctrl.itemsPerPage()\">{{items}}</option> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
+    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1 | tinkMin:1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:tinkItemsPerPage}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage> <option data-ng-repeat=\"items in ctrl.itemsPerPage()\">{{items}}</option> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
   );
 
 
   $templateCache.put('templates/reorder.html',
-    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReorder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  <table id=theInteractiveTable tink-sort-table=ngModel tink-sort=false tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag data-ng-class=\"{'table-force-responsive': forceResponsive()}\"> <thead> </thead> <tbody> </tbody> </table> "
+    " <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button data-ng-if=\"hasAction() && selectedCheck\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button data-ng-if=hasReorder() tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div>  <table id=theInteractiveTable tink-sort-table=ngModel tink-sort=false tink-callback=sortHeader($property,$order,$type) class=table-interactive tink-pagination-key=directivePag data-ng-class=\"{'table-force-responsive': forceResponsive()}\"> <thead> </thead> <tbody> </tbody> </table> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> "
   );
 
 
