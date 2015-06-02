@@ -13,7 +13,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
-## [2.2] - 2015-06-01
+
+## [2.2.1] - 2015-06-02
+
+### Fixed
+- Fixed field value bug in table body
+
+
+
+## [2.2.0] - 2015-06-01
 
 ### Added
 - Added empty state message
@@ -21,25 +29,34 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed page number can't be under 0
 
+
+
 ## [2.1.9] - 2015-05-29
 
 ### Fixed
 - Fixed pagination number can be negative (now can't)
+
+
 
 ## [2.1.8] - 2015-05-28
 
 ### Fixed
 - Fixed pagination scope delay update
 
+
+
 ## [2.1.7] - 2015-05-28
 
 ### Fixed
 - Fixed When multiple directives are used do not use same id for checkboxes
 
+
+
 ## [2.1.6] - 2015-05-27
 
 ### Added
 - Added option to force a responsive table
+
 
 
 ## [2.1.5] - 2015-05-26

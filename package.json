@@ -1,7 +1,7 @@
 {
   "name": "tink-interactive-table-angular",
   "description": "Tink interactive table Angular directive",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "repository": {
     "type": "git",
     "url": "git@github.com:tinkkit/tink-interactive-table-angular.git"
