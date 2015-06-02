@@ -107,9 +107,11 @@
                         angular.forEach(splittedFieldNames, function (splittedFieldName) {
                             fieldValue = fieldValue[splittedFieldName];
                         });
-                        fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
-                        if(fieldExpression === undefined || fieldExpression === null){
-                          fieldExpression = '-';
+                        if (fieldValue === null || fieldValue === undefined) {
+                        	fieldExpression = fieldExpression.replace(fieldName, '"-"');
+                        }
+                        else {
+                        	fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
                         }
                     }
                 });
