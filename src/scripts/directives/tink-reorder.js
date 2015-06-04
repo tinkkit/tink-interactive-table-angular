@@ -5,7 +5,7 @@
   } catch (e) {
     module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
   }
-  module.directive('tinkInteractiveTable',['$compile','$rootScope','$filter',function($compile,$rootScope,$filter){
+  module.directive('tinkInteractiveTable1',['$compile','$rootScope','$filter',function($compile,$rootScope,$filter){
   return{
     restrict:'EA',
     templateUrl:'templates/reorder.html',
