@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v2.2.1
+v2.2.2
 
 ## What is this repository for?
 
@@ -26,6 +26,10 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
   `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
 
   `<script src="bower_components/tink-interactive-table-angular/dist/tink-interactive-table-angular.js"></script>`
+
+3. Add `tink.interactivetable` to your app module's dependency.
+
+  `angular.module('myApp', ['tink.interactivetable']);`
 
 
 ----------
@@ -113,7 +117,7 @@ scope.headers = [
       {
         name: 'remove',
         callback: function(items,uncheck) {
-          angular.forEach(items, function(val{ 
+          angular.forEach(items, function(val{
             scope.data.splice(scope.data.indexOf(val),1);
           });
           //this wil uncheck all the boxes !
