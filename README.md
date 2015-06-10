@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v2.2.2
+v2.2.3
 
 ## What is this repository for?
 
@@ -19,27 +19,37 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
 1. Go to the root of your project and type the following command in your terminal:
 
-  `bower install tink-interactive-table-angular --save`
+   `bower install tink-interactive-table-angular --save`
 
 2. Add the following files to your project:
 
-  `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
+   `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
 
-  `<script src="bower_components/tink-interactive-table-angular/dist/tink-interactive-table-angular.js"></script>`
+   `<script src="bower_components/tink-interactive-table-angular/dist/tink-interactive-table-angular.js"></script>`
+
+   `<script src="bower_components/ng-lodash/build/ng-lodash.js"></script>`
+
+   `<script src="bower_components/Sortable/Sortable.js"></script>`
+
+   `<script src="bower_components/tink-popover-angular/dist/tink-popover-angular.js"></script>`
+
+   `<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>`
+
+   <script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
 
 3. Add `tink.interactivetable` to your app module's dependency.
 
-  `angular.module('myApp', ['tink.interactivetable']);`
+   `angular.module('myApp', ['tink.interactivetable']);`
+
 
 
 ----------
 
 
+
 ## How to use
 
 ### tink-interactive-table
-
-### Component
 
 ```html
 <tink-interactive-table></tink-interactive-table>
@@ -55,7 +65,8 @@ data-tink-actions | `array` | `undefined` | When present checkboxes will appear 
 data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
 data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
 
-###Example
+### Script example
+
 ```html
 <tink-interactive-table ng-model="data" data-tink-headers="headers" tink-actions="actions">
 </tink-interactive-table>
@@ -85,7 +96,8 @@ data-tink-change | `function($property,$order,$type)` | `undefined` | will be ca
       }
     ];
 ```
-> To **enable sort** give the header object a **property** `sort` with the value `true`,
+
+> To **enable sorting** give the header object a **property** `sort` with the value `true`,
 > If you want to **hide a column** give the header a **property** `checked` with the value `false`.
 
 ```javascript
@@ -128,13 +140,12 @@ scope.headers = [
 ```
 
 
+
 ----------
 
 
 
 ### tink-pagination
-
-### Component
 
 ```html
 <tink-pagination></tink-pagination>
@@ -151,7 +162,6 @@ tink-items-per-page (required) | `number` | `undefined` | How many items you wan
 tink-items-per-page-values (required) | `array` | `undefined` | Array of numbers that will be shown as per page value.
 tink-change | `function` | `undefined` | To receive information if the pagination or perPage value change!
 
-###Example
 > To enable pagination on the interactive table add the tink-pagination-key attribute.
 
 ```html
@@ -167,6 +177,10 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
   */
  }
 ```
+
+###Example
+
+A working example can be found in [the Tink documentation](http://tink.digipolis.be/#/docs/directives/interactive-table#example).
 
 ## Contribution guidelines
 

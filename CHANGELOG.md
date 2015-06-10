@@ -16,6 +16,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## [2.2.3] - 2015-06-10
+
+### Changed
+- Updated documentation
+- Separated code license
+
+
+
 ## [2.2.2] - 2015-06-08
 
 ### Changed
