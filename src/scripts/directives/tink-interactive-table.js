@@ -15,7 +15,8 @@
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]);
         return {
-          post:function postLink(scope){
+          post:function postLink(scope,elm,attr){
+            scope._tr = attr._tr;
             scope.prevent = function($event){
               $event.stopPropagation();
             }
@@ -24,6 +25,34 @@
       }
     };
   }]);
+    module.controller('interactiveCtrl', ['$scope','$attrs','$element','$compile', function($scope,$attrs,$element,$compile) {
+        var ctrl = this;
+        var tr = null;
+        console.log($scope,$attrs)
+        ctrl.replaceBody = function(tr){
+          var tbody = $element.find('tbody');
+          tbody.html('');
+          tbody.append($attrs._tr);
+          $compile(tbody)($scope.$parent);
+        }
+
+        ctrl.changeColumn = function(a,b){
+          a+=1;
+          b+=1;
+          ctrl.swapTds(a,b);
+          ctrl.replaceBody($attrs._tr);
+        } 
+
+        ctrl.swapTds = function(a,b){
+          var td1 = $attrs._tr.find('td:eq('+a+')'); // indices are zero-based here
+          var td2 = $attrs._tr.find('td:eq('+b+')');
+          if(a < b){
+            td1.detach().insertAfter(td2);
+          }else if(a > b){
+            td1.detach().insertBefore(td2);
+          }
+        }
+      }])
   module.directive('tinkInteractiveTable',['$compile',function($compile){
     return{
       restrict:'EA',
@@ -35,11 +64,8 @@
         tinkHeaders:'=',
         initAllChecked:'='
       },
+      controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
-      controller:function($scope){
-
-
-      },
       compile: function compile(tElement, tAttrs) {
 
         return {
@@ -56,34 +82,22 @@
               scope.selected = index;
             };
 
-            function replaceBody(tr){
-              var tbody = iElement.find('tbody');
-              tbody.html('');
-              tbody.append(tr);
-              $compile(tbody)(scope.$parent);
-            }
+            scope.switchPosition = function(a,b){
+              scope.tinkHeaders.swap(a,b);
+              controller.changeColumn(a,b);
+            }            
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
               if(scope.selected > 0){
-                scope.tinkHeaders.swap(scope.selected,scope.selected-1);
-
-                var hulSwap = scope.selected +1;
-                swapTds(hulSwap,hulSwap-1);
-                replaceBody(iAttrs._tr);
-
+                scope.switchPosition(scope.selected,scope.selected-1);
                 scope.selected-=1;
               }
             };
             //function will be called when pressing arrow for order change
             scope.arrowDown = function(){
               if(scope.selected < scope.tinkHeaders.length-1){
-                scope.tinkHeaders.swap(scope.selected,scope.selected+1);
-
-                var hulSwap = scope.selected +1;
-                swapTds(hulSwap,hulSwap+1);
-                replaceBody(iAttrs._tr);
-
+                scope.switchPosition(scope.selected,scope.selected+1);
                 scope.selected+=1;
               }
             };
@@ -95,19 +109,36 @@
               this[b] = temp;
             };
 
-            function swapTds (a,b){
-              var td1 = iAttrs._tr.find('td:eq('+a+')'); // indices are zero-based here
-              var td2 = iAttrs._tr.find('td:eq('+b+')');
-              if(a < b){
-                td1.detach().insertAfter(td2);
-              }else if(a > b){
-                td1.detach().insertBefore(td2);
-              }
-            }
-
           }
         }
       }
     };
   }])
+.directive('tinkShiftSort',['$timeout',function(timeout){
+  return {
+    restirct:'A',
+    controller:'interactiveCtrl',
+    link:function(scope,elem,attr,ctrl){
+      timeout(function(){
+        Sortable.create(elem.find('ul').get(0),{
+          ghostClass: 'draggable-placeholder',
+          animation: 200,
+          handle:'.draggable-elem',
+          onStart: function (evt) {
+             scope.$apply(function(){
+              scope.selected = evt.oldIndex;
+            });
+          },
+          onUpdate: function (evt) {
+            scope.$apply(function(){
+              var oldIndex = evt.oldIndex;
+              var newIndex = evt.newIndex;
+              scope.switchPosition(oldIndex,newIndex);
+            });
+          },
+        });
+      },200);
+    }
+  };
+}]);
 })();
