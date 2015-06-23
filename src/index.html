@@ -32,7 +32,7 @@
 <script src="scripts/directives/tink-interactive-table.js"></script>
 
 
-<tink-interactive-table tink-headers="headers" tink-data="data.content">
+<tink-interactive-table tink-headers="headers" tink-data="data.content" tink-actions="actions">
   <table tink-sort-table="data.content" >
     <thead>
        <tr>
@@ -82,6 +82,16 @@
           firstname: 'Vincent',
           lastname: 'Bouillart',
           username: '@BouillartV'
+        }
+      ];
+      scope.actions = [
+        {
+          name: 'remove',
+          callback: function(items) {
+            angular.forEach(items, function(val) {console.log('ohoho',scope.data.indexOf(val))
+              scope.data.splice(scope.data.indexOf(val),1);
+            });
+          }
         }
       ];
       scope.headers = [{

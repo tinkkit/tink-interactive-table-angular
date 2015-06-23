@@ -10,8 +10,8 @@
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th on-click="return false;"><input type="checkbox" id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></th>'));
-        var td = $('<td ng-click="prevent($event)">{{$parent.$parent.tinkData[$index]}}<input type="checkbox" ng-model="$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()" on-click="return false;"><input type="checkbox" id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></th>'));
+        var td = $('<td ng-if="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-model="$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]);
         return {
@@ -92,7 +92,7 @@
               controller.changeColumn(a,b);
             }
 
-            scope.hasActions = function(){
+            scope.hasActions = function(){console.log(scope.tinkActions)
               if(scope.tinkActions !== undefined || scope.tinkActions !== null){
                 if(typeof scope.tinkActions === Array && scope.tinkActions.length > 0){
                   return true;
