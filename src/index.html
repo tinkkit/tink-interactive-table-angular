@@ -32,16 +32,22 @@
 <script src="scripts/directives/tink-interactive-table.js"></script>
 
 
-<tink-interactive-table tink-headers="headers">
-  <table>
-       <tbody>
-           <tr ng-repeat='view in data.content'>
-               <td>{{ view.firstname | date:'dd/MM/yyyy'}}</td>
-               <td>{{ view.lastname }}</td>
-               <td>{{ view.username }}</td>
-           </tr>
-       </tbody>
+<tink-interactive-table tink-headers="headers" tink-data="data.content">
+  <table tink-sort-table="data.content" >
+    <thead>
+       <tr>
+          <th tink-sort-header="{{view.name}}" ng-repeat='view in headers'>{{ view.alias }}</th>
+       </tr>
+    </thead>
+     <tbody>
+         <tr ng-click="$parent.load()" ng-repeat='view in data.content'>
+             <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
+             <td>{{ view.lastname }}</td>
+             <td>{{ view.username }}</td>
+         </tr>
+     </tbody>
    </table>
+   <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="totalitems" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 </tink-interactive-table>
 
 <script>
@@ -52,7 +58,9 @@
       myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
     }
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
-      
+      scope.load=function(){
+        console.log('do this');
+      }
       scope.data = {};
       scope.data.content = [
         {
@@ -77,11 +85,14 @@
         }
       ];
       scope.headers = [{
-        name:'voornaam'
+        name:'firstname',
+        alias:'voornaam'
       },{
-        name:'lastname'
+        name:'lastname',
+        alias:'lastname'
       },{
-        name:'username'
+        name:'username',
+        alias:'username'
       }];
 
      // Override default items per page
