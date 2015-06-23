@@ -10,15 +10,19 @@
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th on-click="return false;"><input type="checkbox" id="{{$id}}-all" name="{{$id}}}-all" value=""><label for="{{$id}}-all"></label></th>'));
-        var td = $('<td ng-click="prevent($event)"><input type="checkbox" id="{{$id}}}-{{$index}}" name="{{$id}}}-{{$index}}" value=""><label for="{{$id}}}-{{$index}}"></label></td>');
+        $(tElement.find('thead tr')[0]).prepend($('<th on-click="return false;"><input type="checkbox" id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></th>'));
+        var td = $('<td ng-click="prevent($event)">{{$parent.$parent.tinkData[$index]}}<input type="checkbox" ng-model="$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]);
         return {
+          pre:function preLing(scope,elm,attr){
+            console.log(elm)
+            $(tElement.find('tbody tr')[0]).prepend($('<td>o</td>'));
+          },
           post:function postLink(scope,elm,attr){
             scope._tr = attr._tr;
             scope.prevent = function($event){
-              $event.stopPropagation();
+             // $event.stopPropagation();
             }
           }
         }
@@ -62,7 +66,8 @@
       scope:{
         tinkData:'=',
         tinkHeaders:'=',
-        initAllChecked:'='
+        initAllChecked:'=',
+        tinkActions:'='
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -85,7 +90,16 @@
             scope.switchPosition = function(a,b){
               scope.tinkHeaders.swap(a,b);
               controller.changeColumn(a,b);
-            }            
+            }
+
+            scope.hasActions = function(){
+              if(scope.tinkActions !== undefined || scope.tinkActions !== null){
+                if(typeof scope.tinkActions === Array && scope.tinkActions.length > 0){
+                  return true;
+                }
+              }
+              return false;
+            }     
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
