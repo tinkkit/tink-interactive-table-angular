@@ -9,6 +9,16 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />
   <!-- endbower -->
+  <style>
+.indeterminate{
+  content: '\f068';
+  line-height: 1.4;
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+</style>
 </head>
 <body ng-controller="ctrl">
 
@@ -50,6 +60,7 @@
    <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="totalitems" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 </tink-interactive-table>
 
+
 <script>
   var myApp;
     try {
@@ -88,8 +99,8 @@
         {
           name: 'remove',
           callback: function(items) {
-            angular.forEach(items, function(val) {console.log('ohoho',scope.data.indexOf(val))
-              scope.data.splice(scope.data.indexOf(val),1);
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
             });
           }
         }
