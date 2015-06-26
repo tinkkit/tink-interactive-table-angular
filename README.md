@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v2.2.3
+v2.2.4
 
 ## What is this repository for?
 
@@ -35,7 +35,7 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
    `<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>`
 
-   <script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
+   `<script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
 
 3. Add `tink.interactivetable` to your app module's dependency.
 

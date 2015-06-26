@@ -16,6 +16,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## [2.2.4] - 2015-06-26
+
+### Fixed
+- Fixed borked README that caused trouble in documentation repo
+
+
+
 ## [2.2.3] - 2015-06-10
 
 ### Changed
