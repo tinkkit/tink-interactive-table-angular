@@ -10,7 +10,7 @@
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()" ng-click="$parent.$parent.checkAll($event)"><div class="checkbox"><input type="checkbox" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all">o</label></div></th>'));
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-if="$parent.$parent.hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="$parent.$parent.$parent.checkChange()" ng-model="$parent.$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]);
@@ -77,6 +77,11 @@
 
           },
           post: function postLink(scope, iElement, iAttrs, controller) {
+            /*stuff actions*/
+            scope.desktop = true;
+
+
+            /*end actions*/
             scope.selected = -1;
             //If you select an other kolom name in de kolumn popup this function will be fired.
             scope.select = function(e,index){
@@ -98,7 +103,7 @@
             }
 
             scope.close = function(){
-              $rootScope.$broadcast('popover-open', { group: 'option-table-1',el:$('<div><div>') });
+              $rootScope.$broadcast('popover-open', { group: 'option-table',el:$('<div><div>') });
             }
 
             scope.checkAll = function($event){
@@ -116,8 +121,7 @@
                 }
                 scope.allChecked = true;
               }
-              $event.stopPropagation();
-              $event.preventDefault();
+
             }
 
             scope.checkChange = function(){
@@ -174,6 +178,39 @@
       }
     };
   }])
+.filter('tinkActionFilter',['$filter',function($filter) {
+
+  // In the return function, we must pass in a single parameter which will be the data we will work on.
+  // We have the ability to support multiple other parameters that can be passed into the filter optionally
+  return function(input, optional1, optional2) {
+    var output;
+
+    var master = $filter('filter')(optional1, {master: true});
+    var sub = $filter('filter')(optional1, {master: false});
+
+    if(optional2 === 'master'){
+      if(master.length < 5){
+        return input;
+      }else{
+        return input.slice(0,5);
+      }
+    }else{
+      if(master.length >=5){
+        return [];
+      }else{
+        return input.slice(0,5-master.length);
+      }
+    }
+    return output;
+
+  }
+
+}])
+.filter('tinkSlice', function() {
+  return function(arr, start) {
+    return (arr || []).slice(start);
+  };
+})
 .directive('tinkShiftSort',['$timeout',function(timeout){
   return {
     restirct:'A',

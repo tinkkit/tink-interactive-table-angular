@@ -126,6 +126,40 @@
           order:0,
           master:false,
           icon:'fa-search'
+        },
+        {
+          name: 'do someting',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-arrows-h'
+        },
+        {
+          name: 'open',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-bell-o'
+        }
+        ,
+        {
+          name: 'open all',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-calculator'
         }
       ];
       scope.headers = [{
