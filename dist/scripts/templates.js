@@ -7,8 +7,8 @@ angular.module('tink.interactivetable').run(['$templateCache', function($templat
 
 
   $templateCache.put('templates/reorder.html',
-    "<div> <div class=bar> <div class=bar-section> <div class=\"masterActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span ng-if=desktop>{{action.name}}</span> </li> </div> <div class=\"subActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<div> <div class=bar> <div class=bar-section> <div class=\"masterActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'\" ng-disabled=\"checked.length === 0\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span ng-if=desktop data-ng-click=actionCallBack(action)>{{action.name}}</span> </li> </div> <div class=\"subActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span ng-if=desktop>{{action.name}}</span> </li> <li ng-if=\"tinkActions.length > 5\"> <span tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
     "<span ng-if=desktop>meer acties</span> </span> </li> </div> <ul class=bar-section-right> <li> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
   );

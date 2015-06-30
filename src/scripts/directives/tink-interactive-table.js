@@ -11,7 +11,7 @@
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
         $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
-        var td = $('<td ng-if="$parent.$parent.hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="$parent.$parent.$parent.checkChange()" ng-model="$parent.$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
+        var td = $('<td ng-if="$parent.$parent.hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="$parent.$parent.$parent.checkChange($parent.$parent.$parent.tinkData[$index])" ng-model="$parent.$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]);
         return {
@@ -115,16 +115,18 @@
                   scope.tinkData[i].checked = false;
                 }
                 scope.allChecked = false;
+                scope.checked = []; 
               }else{
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = true;
                 }
                 scope.allChecked = true;
+                scope.checked = scope.tinkData;
               }
 
             }
-
-            scope.checkChange = function(){
+            scope.checked = [];
+            scope.checkChange = function(check){
               var array = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
@@ -134,6 +136,11 @@
                 scope.allChecked = false;
               }else{
                 scope.allChecked = false;
+              }
+              if(check.checked){
+                scope.checked.push(check);
+              }else{
+                scope.checked.splice(scope.checked.indexOf(check),1);
               }
             }
 

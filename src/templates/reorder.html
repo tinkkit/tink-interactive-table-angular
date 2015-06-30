@@ -2,9 +2,9 @@
 <div class="bar">
   <div class="bar-section">
     <div class="masterActions bar-section-left">
-      <li ng-repeat="action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'">
+      <li ng-repeat="action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'" ng-disabled='checked.length === 0'>
       <i class="fa {{action.icon}} fa-fw"></i>
-        <span ng-if="desktop">{{action.name}}</span>  
+        <span ng-if="desktop"  data-ng-click="actionCallBack(action)" >{{action.name}}</span>  
       </li>
     </div> 
     <div class="subActions bar-section-left">
