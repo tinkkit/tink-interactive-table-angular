@@ -1,13 +1,19 @@
 <div>
 <div class="bar">
   <div class="bar-section">
-    <!-- <div class="bar-section-left">
-      <strong>{{numFirst}} - {{numLast}}</strong> van {{itemLength}}
-    </div> -->
-    <ul class="bar-section-right">
-      <li>
-        <button ng-show="hasActions()" tink-popover tink-popover-group="option-table-1" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
+    <div class="masterActions bar-section-left">
+      <li ng-repeat="action in tinkActions | orderBy:order | filter: { master: true }">
+      <i class="fa {{action.icon}} fa-fw"></i>
+        {{action.name}}       
       </li>
+    </div> 
+    <div class="subActions bar-section-left">
+      <li ng-repeat="action in tinkActions | orderBy:order | filter: { master: false }">
+      <i class="fa {{action.icon}} fa-fw"></i>
+        {{action.name}}       
+      </li>
+    </div> 
+    <ul class="bar-section-right">
       <li>
         <button tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
       </li>

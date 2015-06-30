@@ -102,7 +102,30 @@
             angular.forEach(items, function(val) {
               scope.data.content.splice(scope.data.content.indexOf(val),1);
             });
-          }
+          },
+          order:0,
+          master:true,
+          icon:'fa-close'
+        },{
+          name: 'add',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:true,
+          icon:'fa-edit'
+        },{
+          name: 'search',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-search'
         }
       ];
       scope.headers = [{

@@ -7,7 +7,9 @@ angular.module('tink.interactivetable').run(['$templateCache', function($templat
 
 
   $templateCache.put('templates/reorder.html',
-    "<div> <div class=bar> <div class=bar-section>  <ul class=bar-section-right> <li> <button ng-show=hasActions() tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> <li> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
+    "<div> <div class=bar> <div class=bar-section> <div class=\"masterActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: true }\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "{{action.name}} </li> </div> <div class=\"subActions bar-section-left\"> <li ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: false }\"> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "{{action.name}} </li> </div> <ul class=bar-section-right> <li> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
   );
 
 
