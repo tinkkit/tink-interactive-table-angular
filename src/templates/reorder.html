@@ -2,13 +2,13 @@
 <div class="bar">
   <div class="bar-section">
 
-    <ul ng-show="!actionConf.menu" class="mainActions bar-section-left">
+    <ul ng-show="!actionConf.menu" class="main-actions bar-section-left">
       <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'" ng-disabled='checked.length === 0'>
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-show="actionConf.tekst"  data-ng-click="actionCallBack(action)" >{{action.name}}</span>
       </li>
     </ul>
-    <ul ng-show="!actionConf.menu" class="subActions bar-section-left">
+    <ul ng-show="!actionConf.menu" class="sub-actions bar-section-left">
       <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions">
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-show="actionConf.tekst">{{action.name}}</span>
