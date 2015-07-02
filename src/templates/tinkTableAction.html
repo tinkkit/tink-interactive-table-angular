@@ -1,6 +1,13 @@
-<ul class="popover-list-buttons ng-scope">
+<ul ng-if="!action.menu" class="popover-list-buttons ng-scope">
   <li data-ng-repeat="action in tinkActions | tinkSlice:5">
    <i class="fa {{action.icon}} fa-fw"></i>
-      <span data-ng-click="actionCallBack(action)" ng-if="desktop">{{action.name}}</span>
+      <span data-ng-click="actionCallBack(action)">{{action.name}}</span>
+  </li>
+</ul>
+
+<ul ng-if="action.menu" class="popover-list-buttons ng-scope">
+  <li data-ng-repeat="action in tinkActions">
+   <i class="fa {{action.icon}} fa-fw"></i>
+      <span data-ng-click="actionCallBack(action)">{{action.name}}</span>
   </li>
 </ul>

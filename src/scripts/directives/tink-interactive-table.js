@@ -78,7 +78,23 @@
           },
           post: function postLink(scope, iElement, iAttrs, controller) {
             /*stuff actions*/
-            scope.desktop = true;
+            scope.action = {};
+
+            var breakpoint = {};
+            breakpoint.refreshValue = function () {
+              var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
+              if(screenSize !== 'wide-xl-view'){
+                scope.action.tekst = false;
+              }
+              if(screenSize === 'smartphone-view'){
+                scope.action.menu = true;
+              }else{
+                scope.action.menu = false;
+              }
+            };
+            $(window).resize(function () {
+              breakpoint.refreshValue();
+            }).resize();
 
 
             /*end actions*/
