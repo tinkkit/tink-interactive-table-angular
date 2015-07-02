@@ -73,27 +73,31 @@
       compile: function compile(tElement, tAttrs) {
 
         return {
-          pre: function preLink(scope, iElement, iAttrs, controller,transclude) { 
+          pre: function preLink(scope, iElement, iAttrs, controller,transclude) {
 
           },
           post: function postLink(scope, iElement, iAttrs, controller) {
             /*stuff actions*/
-            scope.action = {};
+            scope.actionConf = {};
 
             var breakpoint = {};
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
               if(screenSize !== 'wide-xl-view'){
-                scope.action.tekst = false;
+                scope.actionConf.tekst = false;
+              }else{
+                scope.actionConf.tekst = true;
               }
               if(screenSize === 'smartphone-view'){
-                scope.action.menu = true;
+                scope.actionConf.menu = true;
               }else{
-                scope.action.menu = false;
+                scope.actionConf.menu = false;
               }
             };
             $(window).resize(function () {
-              breakpoint.refreshValue();
+              scope.$apply(function(){
+                breakpoint.refreshValue();
+              })
             }).resize();
 
 
@@ -131,7 +135,7 @@
                   scope.tinkData[i].checked = false;
                 }
                 scope.allChecked = false;
-                scope.checked = []; 
+                scope.checked = [];
               }else{
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = true;
@@ -172,7 +176,7 @@
                 }
               }
               return false;
-            }     
+            }
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
