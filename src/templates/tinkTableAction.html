@@ -1,13 +1,14 @@
-<ul ng-if="!actionConf.menu" class="popover-list-buttons ng-scope">
-  <li data-ng-repeat="action in tinkActions | tinkSlice:5">
+<ul ng-if="!actionConf.menu" >
+  {{checked().length}}
+  <li  data-ng-repeat="action in tinkActions | tinkSlice:5"  ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
    <i class="fa {{action.icon}} fa-fw"></i>
-      <span data-ng-click="actionCallBack(action)">{{action.name}}</span>
+      <span >{{action.name}}</span>
   </li>
 </ul>
 
-<ul ng-if="actionConf.menu" class="popover-list-buttons ng-scope">
-  <li data-ng-repeat="action in tinkActions">
+<ul ng-if="actionConf.menu">
+  <li data-ng-repeat="action in tinkActions" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
    <i class="fa {{action.icon}} fa-fw"></i>
-      <span data-ng-click="actionCallBack(action)">{{action.name}}</span>
+      <span>{{action.name}}</span>
   </li>
 </ul>

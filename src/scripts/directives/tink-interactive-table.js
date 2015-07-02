@@ -3,17 +3,17 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
   }
   module.directive('tinkInteractiveTable',['$compile',function($compile){
     return{
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
-        var td = $('<td ng-if="$parent.$parent.hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="$parent.$parent.$parent.checkChange($parent.$parent.$parent.tinkData[$index])" ng-model="$parent.$parent.$parent.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
+        var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
-        tAttrs._tr = $(tElement.find('tbody tr')[0]);
+        tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
         return {
           pre:function preLing(scope,elm,attr){
             $(tElement.find('tbody tr')[0]).prepend($('<td>o</td>'));
@@ -34,9 +34,17 @@
 
         ctrl.replaceBody = function(tr){
           var tbody = $element.find('tbody');
-          tbody.html('');
-          tbody.append($attrs._tr);
-          $compile(tbody)($scope.$parent);
+          tbody.html('')
+          //var td = $('<div>{{this.$parent}}1</div><td ng-if="$scope.child.hasActions()" ng-click="$scope.child.prevent($event)"><input type="checkbox" ng-change="$scope.child.checkChange($scope.child.tinkData[$index])" ng-model="$scope.child.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
+          tbody.append($attrs._tr.clone());
+          //$(tbody.find('tr:first td:first')).replaceWith(td);
+          
+        ///  //$compile(td)($scope);
+         // tbody.find('tr').append($('<td>{{tinkData}}</td>'))
+          //console.log(tbody.find('td:not(:last)'))
+          
+        //  $compile(tbody.find('td:last'))($scope);
+          $compile(tbody.find('tr'))($scope);
         };
 
         ctrl.changeColumn = function(a,b){
@@ -56,7 +64,7 @@
           }
         };
       }])
-  module.directive('tinkInteractiveTable',['$compile','$rootScope',function($compile,$rootScope){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply',function($compile,$rootScope,safeApply){
     return{
       restrict:'EA',
       transclude:true,
@@ -79,7 +87,7 @@
           post: function postLink(scope, iElement, iAttrs, controller) {
             /*stuff actions*/
             scope.actionConf = {};
-
+            $compile(iElement.find('tbody tr'))(scope);
             var breakpoint = {};
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
@@ -95,7 +103,7 @@
               }
             };
             $(window).resize(function () {
-              scope.$apply(function(){
+              safeApply(scope,function(){
                 breakpoint.refreshValue();
               })
             }).resize();
@@ -119,6 +127,7 @@
               if(c.callback instanceof Function){
                 c.callback(array);
               }
+
               scope.close();
             }
 
@@ -135,17 +144,19 @@
                   scope.tinkData[i].checked = false;
                 }
                 scope.allChecked = false;
-                scope.checked = [];
               }else{
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = true;
                 }
                 scope.allChecked = true;
-                scope.checked = scope.tinkData;
               }
 
             }
-            scope.checked = [];
+            scope.checked = function(){
+              return $.grep(scope.tinkData, function( a ) {
+                return a.checked;
+              });
+            }
             scope.checkChange = function(check){
               var array = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
@@ -156,11 +167,6 @@
                 scope.allChecked = false;
               }else{
                 scope.allChecked = false;
-              }
-              if(check.checked){
-                scope.checked.push(check);
-              }else{
-                scope.checked.splice(scope.checked.indexOf(check),1);
               }
             }
 

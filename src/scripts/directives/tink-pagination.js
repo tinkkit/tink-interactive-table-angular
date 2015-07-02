@@ -3,7 +3,7 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
   }
   module.directive('tinkPagination',['lodash',function(_){
   return{
