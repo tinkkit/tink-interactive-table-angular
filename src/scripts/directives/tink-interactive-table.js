@@ -10,7 +10,7 @@
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-model="$parent.$parent.allChecked" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
@@ -44,7 +44,7 @@
           //console.log(tbody.find('td:not(:last)'))
           
         //  $compile(tbody.find('td:last'))($scope);
-          $compile(tbody.find('tr'))($scope);
+          $compile(tbody)($scope);
         };
 
         ctrl.changeColumn = function(a,b){
@@ -87,7 +87,8 @@
           post: function postLink(scope, iElement, iAttrs, controller) {
             /*stuff actions*/
             scope.actionConf = {};
-            $compile(iElement.find('tbody tr'))(scope);
+           // $compile(iElement.find('tbody tr'))(scope);
+            controller.replaceBody(iAttrs._tr);
             var breakpoint = {};
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
