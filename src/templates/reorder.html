@@ -13,7 +13,7 @@
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
       </li>
-      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-if="tinkActions.length > 5" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html" tink-tooltip="meer acties" tink-tooltip-align="top">
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-disabled='checked().length === 0' ng-if="tinkActions.length > 5" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html" tink-tooltip="meer acties" tink-tooltip-align="top">
         <span >
           <i class="fa fa-ellipsis-h fa-fw"></i>
           <span ng-if="actionConf.tekst">meer acties</span>
