@@ -135,13 +135,14 @@
             scope.allChecked = false;
 
             scope.actionCallBack = function(c){
-              var array = $.grep(scope.tinkData, function( a ) {
-                return a.checked;
-              });
-              if(c.callback instanceof Function){
-                c.callback(array);
+              if(scope.checked().length !== 0){
+                var array = $.grep(scope.tinkData, function( a ) {
+                  return a.checked;
+                });
+                if(c.callback instanceof Function){
+                  c.callback(array);
+                } 
               }
-
               scope.close();
             }
 
