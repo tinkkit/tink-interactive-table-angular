@@ -44,10 +44,10 @@
 
 <br/><br/><br/>
 <tink-interactive-table tink-headers="headers" tink-data="data.content" tink-actions="actions">
-  <table tink-sort-table="data.content" >
+  <table tink-sort-table="tinkData" >
     <thead>
        <tr>
-          <th tink-sort-header="{{view.name}}" ng-repeat='view in headers'>{{ view.alias }}</th>
+          <th tink-sort-header="{{view.name}}" ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
        </tr>
     </thead>
      <tbody>

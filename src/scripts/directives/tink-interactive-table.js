@@ -10,15 +10,16 @@
       restrict:'EA',
       priority: 1500.1,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="$parent.hasActions()"><div class="checkbox"><input type="checkbox" ng-click="$parent.$parent.checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="$parent.$parent.checked().length === $parent.$parent.tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
-              $(this).attr('ng-if','$parent.$parent.tinkHeaders[$index].checked');
+              $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
           })
         tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
+        tAttrs._th = $(tElement.find('thead tr')[0]).clone();
         return {
           pre:function preLing(scope,elm,attr){
           },
@@ -36,11 +37,14 @@
         var ctrl = this;
         var tr = null;
 
-        ctrl.replaceBody = function(tr){
+        ctrl.replaceBody = function(){
           var tbody = $element.find('tbody');
           tbody.html('')
+          var thead = $element.find('thead');
+          thead.html('');
           //var td = $('<div>{{this.$parent}}1</div><td ng-if="$scope.child.hasActions()" ng-click="$scope.child.prevent($event)"><input type="checkbox" ng-change="$scope.child.checkChange($scope.child.tinkData[$index])" ng-model="$scope.child.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
           tbody.append($attrs._tr.clone());
+          thead.append($attrs._th.clone());
           //$(tbody.find('tr:first td:first')).replaceWith(td);
           tbody.find('td').each(function(index){
             if(index>0){
@@ -53,7 +57,7 @@
           //console.log(tbody.find('td:not(:last)'))
           
         //  $compile(tbody.find('td:last'))($scope);
-          $compile(tbody)($scope);
+          $compile($element.find('table'))($scope);
         };
 
         ctrl.changeColumn = function(a,b){
@@ -97,7 +101,7 @@
             /*stuff actions*/
             scope.actionConf = {};
            // $compile(iElement.find('tbody tr'))(scope);
-            controller.replaceBody(iAttrs._tr);
+            controller.replaceBody();
             var breakpoint = {};
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
