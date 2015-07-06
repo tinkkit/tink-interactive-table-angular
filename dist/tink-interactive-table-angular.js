@@ -5,29 +5,25 @@
   } catch (e) {
     module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
   }
-  module.directive('tinkInteractiveTable',['$compile',function($compile){
+  module.directive('tinkInteractiveTable',[function(){
     return{
       restrict:'EA',
       priority: 1500.1,
+      replace:true,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
               $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
-          })
+          });
         tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
         tAttrs._th = $(tElement.find('thead tr')[0]).clone();
         return {
-          pre:function preLing(scope,elm,attr){
-          },
-          post:function postLink(scope,elm,attr){
+          post:function postLink(scope,attr){
             scope._tr = attr._tr;
-            scope.prevent = function($event){
-              $event.stopPropagation();
-            };
           }
         };
       }
@@ -35,11 +31,10 @@
   }]);
     module.controller('interactiveCtrl', ['$scope','$attrs','$element','$compile', function($scope,$attrs,$element,$compile) {
         var ctrl = this;
-        var tr = null;
 
         ctrl.replaceBody = function(){
           var tbody = $element.find('tbody');
-          tbody.html('')
+          tbody.html('');
           var thead = $element.find('thead');
           thead.html('');
           //var td = $('<div>{{this.$parent}}1</div><td ng-if="$scope.child.hasActions()" ng-click="$scope.child.prevent($event)"><input type="checkbox" ng-change="$scope.child.checkChange($scope.child.tinkData[$index])" ng-model="$scope.child.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
@@ -50,7 +45,7 @@
             if(index>0){
               $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
             }
-          })
+          });
           //.attr('ng-if','tinkHeaders[$index].visible');
         ///  //$compile(td)($scope);
          // tbody.find('tr').append($('<td>{{tinkData}}</td>'))
@@ -58,6 +53,10 @@
           
         //  $compile(tbody.find('td:last'))($scope);
           $compile($element.find('table'))($scope);
+        };
+
+        $scope.prevent = function($event){
+          $event.stopPropagation();
         };
 
         ctrl.changeColumn = function(a,b){
@@ -76,7 +75,7 @@
             td1.detach().insertBefore(td2);
           }
         };
-      }])
+      }]);
   module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply',function($compile,$rootScope,safeApply){
     return{
       restrict:'EA',
@@ -91,12 +90,9 @@
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
-      compile: function compile(tElement, tAttrs) {
+      compile: function compile() {
 
         return {
-          pre: function preLink(scope, iElement, iAttrs, controller,transclude) {
-
-          },
           post: function postLink(scope, iElement, iAttrs, controller) {
             /*stuff actions*/
             scope.actionConf = {};
@@ -105,7 +101,6 @@
             var breakpoint = {};
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '').replace(/\"/g, '');
-              console.log(screenSize)
               if(screenSize !== 'wide-xl-view'){
                 scope.actionConf.tekst = false;
               }else{
@@ -120,7 +115,7 @@
             $(window).resize(function () {
               safeApply(scope,function(){
                 breakpoint.refreshValue();
-              })
+              });
             }).resize();
 
 
@@ -145,13 +140,13 @@
                 } 
               }
               scope.close();
-            }
+            };
 
             scope.close = function(){
               $rootScope.$broadcast('popover-open', { group: 'option-table-2',el:$('<div><div>') });
-            }
+            };
 
-            scope.checkAll = function($event){
+            scope.checkAll = function(){
               var array = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
@@ -161,19 +156,19 @@
                 }
                 scope.allChecked = false;
               }else{
-                for (var i = 0, len = scope.tinkData.length; i < len; i++) {
-                  scope.tinkData[i].checked = true;
+                for (var j = 0, len1 = scope.tinkData.length; j < len1; j++) {
+                  scope.tinkData[j].checked = true;
                 }
                 scope.allChecked = true;
               }
 
-            }
+            };
             scope.checked = function(){
               return $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
-            }
-            scope.checkChange = function(check){
+            };
+            scope.checkChange = function(){
               var array = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
@@ -184,12 +179,12 @@
               }else{
                 scope.allChecked = false;
               }
-            }
+            };
 
             scope.switchPosition = function(a,b){
               scope.tinkHeaders.swap(a,b);
               controller.changeColumn(a,b);
-            }
+            };
 
             scope.hasActions = function(){
               if(scope.tinkActions !== undefined || scope.tinkActions !== null){
@@ -198,7 +193,7 @@
                 }
               }
               return false;
-            }
+            };
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
@@ -223,7 +218,7 @@
             };
 
           }
-        }
+        };
       }
     };
   }])
@@ -235,7 +230,6 @@
     var output;
 
     var master = $filter('filter')(optional1, {master: true});
-    var sub = $filter('filter')(optional1, {master: false});
 
     if(optional2 === 'master'){
       if(master.length < 5){
@@ -252,7 +246,7 @@
     }
     return output;
 
-  }
+  };
 
 }])
 .filter('tinkSlice', function() {
@@ -264,7 +258,7 @@
   return {
     restirct:'A',
     controller:'interactiveCtrl',
-    link:function(scope,elem,attr,ctrl){
+    link:function(scope,elem){
       timeout(function(){
         Sortable.create(elem.find('ul').get(0),{
           ghostClass: 'draggable-placeholder',
