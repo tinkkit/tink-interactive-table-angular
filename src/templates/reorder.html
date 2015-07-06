@@ -9,6 +9,7 @@
       </li>
     </ul>
     <ul ng-if="!actionConf.menu" class="sub-actions bar-section-left">
+      <hr/>
       <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions" tink-tooltip="{{action.name}}" tink-tooltip-align="top" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
