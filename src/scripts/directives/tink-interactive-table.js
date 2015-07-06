@@ -86,7 +86,8 @@
         tinkData:'=',
         tinkHeaders:'=',
         initAllChecked:'=',
-        tinkActions:'='
+        tinkActions:'=',
+        tinkAllowColumnReorder:'='
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',

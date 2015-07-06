@@ -3,14 +3,14 @@
   <div class="bar-section">
 
     <ul ng-if="!actionConf.menu" class="main-actions bar-section-left">
-      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'" ng-disabled='checked().length === 0' tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" data-ng-click="actionCallBack(action)"> 
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'" ng-disabled='checked().length === 0' tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" data-ng-click="actionCallBack(action)"> 
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
       </li>
     </ul>
     <ul ng-if="!actionConf.menu" class="sub-actions bar-section-left">
       <hr/>
-      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions" tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'" tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
       </li>
@@ -29,7 +29,7 @@
     </ul>
 
     <ul class="bar-section-right">
-      <li>
+      <li ng-if="scope.tinkAllowColumnReorder !== false">
         <button tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
       </li>
     </ul>
