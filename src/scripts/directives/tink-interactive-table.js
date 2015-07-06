@@ -104,7 +104,8 @@
             controller.replaceBody();
             var breakpoint = {};
             breakpoint.refreshValue = function () {
-              var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '')
+              var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '').replace(/\"/g, '');
+              console.log(screenSize)
               if(screenSize !== 'wide-xl-view'){
                 scope.actionConf.tekst = false;
               }else{
