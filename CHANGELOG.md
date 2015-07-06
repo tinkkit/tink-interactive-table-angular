@@ -14,6 +14,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.0.0] - 2015-07-06
+
+### Added
+- New interactive table
+
+### Fixed
+- Fixed field value bug in table body
+
 ## [2.2.1] - 2015-06-02
 
 ### Fixed
