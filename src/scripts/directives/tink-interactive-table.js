@@ -148,7 +148,7 @@
             }
 
             scope.close = function(){
-              $rootScope.$broadcast('popover-open', { group: 'option-table-1',el:$('<div><div>') });
+              $rootScope.$broadcast('popover-open', { group: 'option-table-2',el:$('<div><div>') });
             }
 
             scope.checkAll = function($event){
