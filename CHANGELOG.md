@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.0.1] - 2015-07-06
+
+### Added
+- better styling for checkboxes
+
 ## [3.0.0] - 2015-07-06
 
 ### Added
