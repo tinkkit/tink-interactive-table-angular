@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 <tink-interactive-table tink-headers="headers" tink-data="data.content" tink-actions="actions">
-  <table tink-sort-table="tinkData">
+  <table tink-pagination-key="pag1" tink-sort-table="tinkData" >
     <thead>
        <tr>
           <th tink-sort-header="{{view.name}}" ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
@@ -58,7 +58,7 @@
          </tr>
      </tbody>
    </table>
-   <tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="totalitems" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
+   <tink-pagination tink-pagination-id="pag1" tink-current-page="$parent.nums" tink-change="$parent.changed" tink-total-items="$parent.totalitems" tink-items-per-page="10" tink-items-per-page-values="$parent.perpageValue"></tink-pagination>
 </tink-interactive-table>
 
 
@@ -73,7 +73,12 @@
       scope.load=function(){
         console.log('do this');
       }
+      scope.nums = 2;
+      scope.totalitems = 100;
       scope.data = {};
+      scope.load=function(){
+        console.log('clicked')
+      }
       scope.data.content = [
         {
           firstname: 'Jasper',
@@ -104,7 +109,7 @@
               scope.data.content.splice(scope.data.content.indexOf(val),1);
             });
           },
-          order:1,
+          order:0,
           master:true,
           icon:'fa-close'
         },{
@@ -124,7 +129,7 @@
               scope.data.content.splice(scope.data.content.indexOf(val),1);
             });
           },
-          order:3,
+          order:0,
           master:false,
           icon:'fa-search'
         },
@@ -135,7 +140,7 @@
               scope.data.content.splice(scope.data.content.indexOf(val),1);
             });
           },
-          order:2,
+          order:0,
           master:false,
           icon:'fa-arrows-h'
         },

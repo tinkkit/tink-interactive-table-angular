@@ -95,9 +95,10 @@
 
         return {
           post: function postLink(scope, iElement, iAttrs, controller) {
+            $compile($(iElement.children()[1]).children())(scope);
             /*stuff actions*/
             scope.actionConf = {};
-           // $compile(iElement.find('tbody tr'))(scope);
+        
             controller.replaceBody();
             var breakpoint = {};
             breakpoint.refreshValue = function () {
@@ -121,13 +122,14 @@
 
 
             /*end actions*/
-            scope.selected = -1;
+            scope.selected = {value :-1};
             //If you select an other kolom name in de kolumn popup this function will be fired.
             scope.select = function(e,index){
               //Prevent the default to disable checkbox behaviour.
               e.preventDefault();
               //Changed the selected index.
-              scope.selected = index;
+              scope.selected.value = index;
+              console.log(e,index)
             };
             scope.allChecked = false;
 
@@ -198,16 +200,16 @@
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
-              if(scope.selected > 0){
-                scope.switchPosition(scope.selected,scope.selected-1);
-                scope.selected-=1;
+              if(scope.selected.value > 0){
+                scope.switchPosition(scope.selected.value,scope.selected.value-1);
+                scope.selected.value-=1;
               }
             };
             //function will be called when pressing arrow for order change
             scope.arrowDown = function(){
-              if(scope.selected < scope.tinkHeaders.length-1){
-                scope.switchPosition(scope.selected,scope.selected+1);
-                scope.selected+=1;
+              if(scope.selected.value < scope.tinkHeaders.length-1){
+                scope.switchPosition(scope.selected.value,scope.selected.value+1);
+                scope.selected.value+=1;
               }
             };
 
@@ -267,14 +269,16 @@
           handle:'.draggable-elem',
           onStart: function (evt) {
              scope.$apply(function(){
-              scope.selected = evt.oldIndex;
+             // scope.selected.value = evt.oldIndex;
             });
           },
           onUpdate: function (evt) {
             scope.$apply(function(){
               var oldIndex = evt.oldIndex;
               var newIndex = evt.newIndex;
+              scope.selected.value = evt.newIndex;
               scope.switchPosition(oldIndex,newIndex);
+
             });
           },
         });
