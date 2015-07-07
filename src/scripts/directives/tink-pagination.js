@@ -14,7 +14,7 @@
       tinkItemsPerPage:'=',
       tinkItemsPerPageValues:'=',
       tinkCurrentPage:'=',
-      tinkChange:'=',
+      tinkChange:'&',
       tinkPaginationId:'@'
     },
     controllerAs:'ctrl',
@@ -45,9 +45,9 @@
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          });
+          }});
         },0);
       };
 
@@ -74,9 +74,9 @@
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
+          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          });
+          }});
         },0);
       }
 
@@ -138,10 +138,16 @@
         
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
 
+          var table;
+          if(element[0].tagName === 'TABLE'){
+            table = $(element[0]);
+          }else {
+            table = $(element).find('table');
+          }
           if(value === 'loading'){
-            $(element).find('table.table-interactive').addClass('is-loading');
+            table.addClass('is-loading');
           }else if(value === 'ready'){
-            $(element).find('table.table-interactive').removeClass('is-loading'); 
+            table.removeClass('is-loading'); 
           }
           
         });

@@ -58,7 +58,7 @@
          </tr>
      </tbody>
    </table>
-   <tink-pagination tink-pagination-id="pag1" tink-current-page="$parent.nums" tink-change="$parent.changed" tink-total-items="$parent.totalitems" tink-items-per-page="10" tink-items-per-page-values="$parent.perpageValue"></tink-pagination>
+   <tink-pagination tink-pagination-id="pag1" tink-current-page="$parent.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.totalitems" tink-items-per-page="10" tink-items-per-page-values="$parent.perpageValue"></tink-pagination>
 </tink-interactive-table>
 
 
@@ -78,6 +78,9 @@
       scope.data = {};
       scope.load=function(){
         console.log('clicked')
+      }
+      scope.changed = function(type,value,fn){
+        fn();
       }
       scope.data.content = [
         {
