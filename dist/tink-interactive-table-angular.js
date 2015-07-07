@@ -86,7 +86,8 @@
         tinkData:'=',
         tinkHeaders:'=',
         initAllChecked:'=',
-        tinkActions:'='
+        tinkActions:'=',
+        tinkAllowColumnReorder:'='
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -94,9 +95,10 @@
 
         return {
           post: function postLink(scope, iElement, iAttrs, controller) {
+            $compile($(iElement.children()[1]).children())(scope);
             /*stuff actions*/
             scope.actionConf = {};
-           // $compile(iElement.find('tbody tr'))(scope);
+        
             controller.replaceBody();
             var breakpoint = {};
             breakpoint.refreshValue = function () {
@@ -120,13 +122,14 @@
 
 
             /*end actions*/
-            scope.selected = -1;
+            scope.selected = {value :-1};
             //If you select an other kolom name in de kolumn popup this function will be fired.
             scope.select = function(e,index){
               //Prevent the default to disable checkbox behaviour.
               e.preventDefault();
               //Changed the selected index.
-              scope.selected = index;
+              scope.selected.value = index;
+              console.log(e,index)
             };
             scope.allChecked = false;
 
@@ -197,16 +200,16 @@
 
             //function will be called when pressing arrow for order change
             scope.arrowUp = function(){
-              if(scope.selected > 0){
-                scope.switchPosition(scope.selected,scope.selected-1);
-                scope.selected-=1;
+              if(scope.selected.value > 0){
+                scope.switchPosition(scope.selected.value,scope.selected.value-1);
+                scope.selected.value-=1;
               }
             };
             //function will be called when pressing arrow for order change
             scope.arrowDown = function(){
-              if(scope.selected < scope.tinkHeaders.length-1){
-                scope.switchPosition(scope.selected,scope.selected+1);
-                scope.selected+=1;
+              if(scope.selected.value < scope.tinkHeaders.length-1){
+                scope.switchPosition(scope.selected.value,scope.selected.value+1);
+                scope.selected.value+=1;
               }
             };
 
@@ -266,14 +269,16 @@
           handle:'.draggable-elem',
           onStart: function (evt) {
              scope.$apply(function(){
-              scope.selected = evt.oldIndex;
+             // scope.selected.value = evt.oldIndex;
             });
           },
           onUpdate: function (evt) {
             scope.$apply(function(){
               var oldIndex = evt.oldIndex;
               var newIndex = evt.newIndex;
+              scope.selected.value = evt.newIndex;
               scope.switchPosition(oldIndex,newIndex);
+
             });
           },
         });
@@ -298,7 +303,7 @@
       tinkItemsPerPage:'=',
       tinkItemsPerPageValues:'=',
       tinkCurrentPage:'=',
-      tinkChange:'=',
+      tinkChange:'&',
       tinkPaginationId:'@'
     },
     controllerAs:'ctrl',
@@ -329,9 +334,9 @@
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage},function(){
+          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          });
+          }});
         },0);
       };
 
@@ -358,9 +363,9 @@
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage},function(){
+          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          });
+          }});
         },0);
       }
 
@@ -422,10 +427,16 @@
         
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
 
+          var table;
+          if(element[0].tagName === 'TABLE'){
+            table = $(element[0]);
+          }else {
+            table = $(element).find('table');
+          }
           if(value === 'loading'){
-            $(element).find('table.table-interactive').addClass('is-loading');
+            table.addClass('is-loading');
           }else if(value === 'ready'){
-            $(element).find('table.table-interactive').removeClass('is-loading'); 
+            table.removeClass('is-loading'); 
           }
           
         });
@@ -774,24 +785,24 @@
 
 
   $templateCache.put('templates/reorder.html',
-    "<div> <div class=bar> <div class=bar-section> <ul ng-if=!actionConf.menu class=\"main-actions bar-section-left\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: true }| tinkActionFilter: tinkActions : 'master'\" ng-disabled=\"checked().length === 0\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> </ul> <ul ng-if=!actionConf.menu class=\"sub-actions bar-section-left\"> <hr> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: false } | tinkActionFilter: tinkActions\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<div> <div class=bar> <div class=bar-section> <ul ng-if=!actionConf.menu class=\"main-actions bar-section-left\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'\" ng-disabled=\"checked().length === 0\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> </ul> <ul ng-if=!actionConf.menu class=\"sub-actions bar-section-left\"> <hr> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-disabled=\"checked().length === 0\" ng-if=\"tinkActions.length > 5\" tink-popover tink-popover-group=option-table tink-tooltip-disabled=actionConf.tekst tink-popover-template=templates/tinkTableAction.html tink-tooltip=\"meer acties\" tink-tooltip-align=top> <span> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>meer acties</span> </span> </li> </ul> <ul ng-if=actionConf.menu class=bar-section-left> <li> <button tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-section-right> <li> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
+    "<span ng-if=actionConf.tekst>meer acties</span> </span> </li> </ul> <ul ng-if=actionConf.menu class=bar-section-left> <li> <button tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-section-right> <li ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
   );
 
 
   $templateCache.put('templates/tinkTableAction.html',
-    "<ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> </ul> <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: true }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> <hr> <li data-ng-repeat=\"action in tinkActions | orderBy:order | filter: { master: false }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> </ul> <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> <hr> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </li> </ul>"
   );
 
 
   $templateCache.put('templates/tinkTableShift.html',
-    "<div class=table-interactive-options tink-shift-sort>  <div class=table-interactive-sort> <button class=btn-borderless ng-disabled=\"selected<1\" ng-click=arrowUp()><i class=\"fa fa-arrow-up\"> </i></button>\n" +
-    "<button class=btn-borderless ng-disabled=\"selected<0 || selected === headers.length-1\" ng-click=arrowDown()><i class=\"fa fa-arrow-down\"></i></button> </div>  <ul ng-model=tinkHeaders class=table-interactive-cols> <li ng-repeat=\"header in tinkHeaders\"> <div class=\"checkbox is-selectable is-draggable\" ng-class=\"{selected:selected===$index}\"> <input type=checkbox ng-model=header.checked id={{header.alias}} name={{header.alias}} value={{header.alias}} checked> <label for={{header.alias}}><span class=draggable-elem ng-class=\"{selected:selected===$index}\" ng-click=select($event,$index)>{{header.alias}}</span></label> </div> </li> </ul> <div class=table-interactive-sort>  <button class=btn-xs ng-click=close()>Sluiten</button> </div> </div>"
+    "<div class=table-interactive-options tink-shift-sort>  <div class=table-interactive-sort> <button class=btn-borderless ng-disabled=\"selected.value<1\" ng-click=arrowUp()><i class=\"fa fa-arrow-up\"> </i></button>\n" +
+    "<button class=btn-borderless ng-disabled=\"selected.value<0 || selected.value === tinkHeaders.length-1\" ng-click=arrowDown()><i class=\"fa fa-arrow-down\"></i></button> </div>  <ul ng-model=tinkHeaders class=table-interactive-cols> <li ng-repeat=\"header in tinkHeaders\"> <div class=\"checkbox is-selectable is-draggable\" ng-class=\"{selected:selected.value===$index}\"> <input type=checkbox ng-model=header.checked id={{header.alias}} name={{header.alias}} value={{header.alias}} checked> <label for={{header.alias}}><span class=draggable-elem ng-class=\"{selected:selected.value===$index}\" ng-click=select($event,$index)>{{header.alias}}</span></label> </div> </li> </ul> <div class=table-interactive-sort>  <button class=btn-xs ng-click=close()>Sluiten</button> </div> </div>"
   );
 
 }]);

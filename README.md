@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.0.1
+v3.0.2
 
 ## What is this repository for?
 
@@ -45,11 +45,9 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
 Attr | Type | Default | Details
 --- | --- | --- | ---
-data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
+data-tink-data (required) | `array` | `undefined` | The table info that needs to be shown.
 data-tink-headers (required) | `array` | `undefined` | The header information for each column.
 data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
-data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
-data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
 
 ###Example
 ```html
@@ -90,13 +88,11 @@ scope.headers = [
         field: 'firstname',
         alias: 'Voornaam',
         checked: true, //to show this header or not
-        sort: true // To enable sorting on this header
       },
       {
         field: 'lastname',
         alias: 'Achternaam',
-        checked: false,
-        sort: true
+        checked: false
       },
       {
         field: 'username',
@@ -110,17 +106,17 @@ scope.headers = [
 
 ```javascript
    scope.actions = [
-      {
-        name: 'remove',
-        callback: function(items,uncheck) {
-          angular.forEach(items, function(val{ 
-            scope.data.splice(scope.data.indexOf(val),1);
-          });
-          //this wil uncheck all the boxes !
-          uncheck()
-        }
-      }
-    ];
+    {
+      name: 'remove', // the name of the actions
+      callback: function(items) {
+        // here you are going to write what happen when they clicked on the button.
+        // The items variable contains the items that are checked.
+      },
+      order:0, // The order the button is viewed in the bar
+      master:false, // If the button is a master button or not ! this value is required.
+      icon:'fa-bell-o' // The icon ('font-awesome') thats going to be showed. this is required !
+    }
+  ]
 ```
 
 
