@@ -15,11 +15,13 @@
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td>{{tinkEmptyMessage}}</td></tr>`');
+        tElement.find('table').wrap('<div class="table-force-responsive"></div>');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
-              $(this).attr('ng-if','tinkHeaders[$index].checked');
+             $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
           });
+
         tAttrs._tr = $(tElement.find('tbody tr')).clone();
         tAttrs._th = $(tElement.find('thead tr')).clone();
         return {
@@ -41,12 +43,14 @@
           $element.find('table').addClass('table-interactive');
           var newt = $attrs._tr.clone();
           tbody.append(newt);
-          var newth = $attrs._th.clone()
+          var newth = $attrs._th.clone();
            thead.append(newth);
 
           tbody.find('tr:first td').each(function(index){
             if(index>0){
-              $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
+              if($scope.tinkHeaders[(index-1)]){
+                $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
+              }
             }
           });
           
@@ -69,7 +73,6 @@
         ctrl.swapTds = function(a,b){
           var td1 = $attrs._tr.find('td:eq('+a+')'); // indices are zero-based here
           var td2 = $attrs._tr.find('td:eq('+b+')');
-          console.log($attrs._tr)
           if(a < b){
             td1.detach().insertAfter(td2);
           }else if(a > b){
@@ -122,15 +125,15 @@
               safeApply(scope,function(){
                 breakpoint.refreshValue();
               });
-            }).resize();
-
+            });
+            breakpoint.refreshValue();
             scope.$watch('tinkLoading',function(newV){
               if(newV){
                 iElement.find('table').addClass('is-loading');
                }else{
                 iElement.find('table').removeClass('is-loading');
                }
-            })
+            });
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -140,7 +143,6 @@
               e.preventDefault();
               //Changed the selected index.
               scope.selected.value = index;
-              console.log(e,index)
             };
             scope.allChecked = false;
 
@@ -149,14 +151,14 @@
                 return $filter('filter')(scope.tinkActions, {master: true}).length;
               }
               return 0;              
-            }
+            };
 
             scope.subObject = function(){
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: false}).length;
               }
               return 0;              
-            }
+            };
 
             scope.actionCallBack = function(c){
               if(scope.checked().length !== 0){
@@ -294,7 +296,7 @@
           ghostClass: 'draggable-placeholder',
           animation: 200,
           handle:'.draggable-elem',
-          onStart: function (evt) {
+          onStart: function () {
              scope.$apply(function(){
              // scope.selected.value = evt.oldIndex;
             });
@@ -821,10 +823,10 @@
 
 
   $templateCache.put('templates/tinkTableAction.html',
-    "<ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<div class=popover-menu-list> <ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </li> </ul> <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </li> <hr> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> </ul>"
+    "<span>{{action.name}}</span> </li> </ul> </div>"
   );
 
 
