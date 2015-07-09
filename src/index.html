@@ -9,8 +9,18 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />
   <!-- endbower -->
+  <style>
+.indeterminate{
+  content: '\f068';
+  line-height: 1.4;
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+</style>
 </head>
-<body ng-controller="ctrl">
+<body ng-controller="ctrl as ct">
 
 <div class="container">
 <!-- bower:js -->
@@ -27,26 +37,163 @@
 <script src="bower_components/tink-popover-angular/dist/tink-popover-angular.js"></script>
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
 <script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>
+<script src="bower_components/tink-tooltip-angular/dist/tink-tooltip-angular.js"></script>
 <!-- endbower -->
 <script src="scripts/directives/tink-pagination.js"></script>
-<script src="scripts/directives/tink-reorder.js"></script>
+<script src="scripts/directives/tink-interactive-table.js"></script>
+
+<br/><br/><br/>
+
+<tink-interactive-table class="table-interactive" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
+  <table tink-pagination-key="pag1">
+    <thead>
+      <tr>
+        <th ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
+        <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
+        <td>{{ view.lastname }}</td>
+        <td>{{ view.username }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <tink-pagination tink-pagination-id="pag1" tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
+
+</tink-interactive-table>
 
 
-
-<tink-interactive-table tink-row-click="clicked($element)" tink-empty-message="no records are found o o " tink-name="oke" tink-pagination-key="pag1" ng-model="data" data-allow-column-reorder="true" tink-actions="actions" tink-headers="headers" tink-column-reorder="true" tink-change="chan($property,$order,$type)"></tink-interactive-table>
-
-<tink-pagination tink-pagination-id="pag1" tink-current-page="nums" tink-change="changed" tink-total-items="totalitems" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>
 
 <script>
   var myApp;
     try {
       myApp = angular.module('tink.interactivetable');
     } catch (e) {
-      myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','ngLodash']);
+      myApp = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
     }
   myApp.controller('ctrl', ['$scope','$timeout', function(scope,timeout) {
+    var ctrl = this;
+      scope.load=function(){
+        console.log('do this');
+      }
+      ctrl.nums = 2;
+      ctrl.totalitems = 100;
+      ctrl.numpp = 10;
+      scope.data = {};
+      scope.load=function(){
+        console.log('clicked')
+      }
+      scope.changed = function(type,value,fn){
+        fn();
+      }
+      ctrl.loading = true;
+      scope.data.content = [
+        {
+          firstname: 'Jasper',
+          lastname: 'Van Proeyen',
+          username: '@trianglejuice'
+        },
+        {
+          firstname: 'Tom',
+          lastname: 'Wuyts',
+          username: '@pxlpanic'
+        },
+        {
+          firstname: 'Kevin',
+          lastname: 'De Mulder',
+          username: '@clopin'
+        },
+        {
+          firstname: 'Vincent',
+          lastname: 'Bouillart',
+          username: '@BouillartV'
+        }
+      ];
+      scope.actions = [
+        {
+          name: 'remove',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:true,
+          icon:'fa-close'
+        },{
+          name: 'add',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:true,
+          icon:'fa-edit'
+        },{
+          name: 'search',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-search'
+        },
+        {
+          name: 'do someting',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-arrows-h'
+        },
+        {
+          name: 'open',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-bell-o'
+        }
+        ,
+        {
+          name: 'open all',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0,
+          master:false,
+          icon:'fa-calculator'
+        }
+      ];
+      scope.headers = [{
+        name:'firstname',
+        alias:'voornaam',
+        checked:true
+      },{
+        name:'lastname',
+        alias:'lastname',
+        checked:true
+      },{
+        name:'username',
+        alias:'username',
+        checked:true
+      }];
+
      // Override default items per page
-    scope.pages = '5, 10, 25';
+    /*scope.pages = '5, 10, 25';
 
     scope.changed = function(data,next){
       console.log(data,scope.nums);
@@ -64,8 +211,9 @@ scope.totalitems = 200;
     scope.chan = function(prop,or,typ){
       console.log('changed',prop,or,typ);
       timeout(function(){
+        scope.data= {};
       // Data model
-      scope.data = [
+      scope.data.content = [
         {
           firstname: 'Jasper',
           lastname: 'Van Proeyen',
@@ -152,7 +300,7 @@ scope.totalitems = 200;
           });
         }
       }
-    ];
+    ];*/
 
   }]);
 </script>

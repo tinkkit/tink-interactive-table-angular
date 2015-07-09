@@ -13,6 +13,33 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.4] - 2015-07-09
+
+### Added
+- Added styling class to the dropdown
+
+## [3.0.3] - 2015-07-09
+
+### Added
+- Added loading bind attribute
+
+## [3.0.2] - 2015-07-07
+
+### Changed
+- Updated the readme
+
+## [3.0.1] - 2015-07-06
+
+### Added
+- better styling for checkboxes
+
+## [3.0.0] - 2015-07-06
+
+### Added
+- New interactive table
+
+### Fixed
+- Fixed field value bug in table body
 
 
 

@@ -1,29 +1,43 @@
-<!-- Top information bar for table -->
-
+<div>
 <div class="bar">
   <div class="bar-section">
-    <!-- <div class="bar-section-left">
-      <strong>{{numFirst}} - {{numLast}}</strong> van {{itemLength}}
-    </div> -->
-    <ul class="bar-section-right">
-      <li>
-        <button data-ng-if="hasAction() && selectedCheck" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
-      </li>
-      <li>
-        <button data-ng-if="hasReorder()" tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
+
+    <ul ng-if="!actionConf.menu" class="main-actions bar-section-left">
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'" ng-disabled='checked().length === 0' tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" data-ng-click="actionCallBack(action)"> 
+      <i class="fa {{action.icon}} fa-fw"></i>
+        <span ng-if="actionConf.tekst">{{action.name}}</span>
       </li>
     </ul>
+    <ul ng-if="!actionConf.menu" class="sub-actions bar-section-left">
+      <hr ng-if="masterObject() > 0 && subObject() > 0">
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'" tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
+      <i class="fa {{action.icon}} fa-fw"></i>
+        <span ng-if="actionConf.tekst">{{action.name}}</span>
+      </li>
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-disabled='checked().length === 0' ng-if="tinkActions.length > 5" tink-popover tink-popover-group="option-table" tink-tooltip-disabled="actionConf.tekst" tink-popover-template="templates/tinkTableAction.html" tink-tooltip="meer acties" tink-tooltip-align="top">
+        <span >
+          <i class="fa fa-ellipsis-h fa-fw"></i>
+          <span ng-if="actionConf.tekst">meer acties</span>
+        </span>
+      </li>
+    </ul>
+
+    <ul ng-if="actionConf.menu" class="bar-section-left">
+      <li>
+        <button tink-popover tink-popover-group="option-table-1" tink-popover-template="templates/tinkTableAction.html">Acties <i class="fa fa-caret-down"></i></button>
+      </li>
+    </ul>
+
+    <ul class="bar-section-right">
+      <li ng-if="scope.tinkAllowColumnReorder !== false">
+        <button tink-popover tink-popover-group="option-table" tink-popover-template="templates/tinkTableShift.html">Kolommen <i class="fa fa-caret-down"></i></button>
+      </li>
+    </ul>
+
   </div>
 </div>
 
-<!-- placeholder for table -->
-<table id="theInteractiveTable" tink-sort-table="ngModel" tink-sort="false" tink-callback="sortHeader($property,$order,$type)" class="table-interactive" tink-pagination-key="directivePag" data-ng-class="{'table-force-responsive': forceResponsive()}">
-<thead>
-</thead>
-<tbody>
-</tbody>
-</table>
+<div ng-transclude></div>
 
-<div data-ng-if="ngModel.length === 0" class="table-message">{{tinkEmptyMessage}}</div>
+</div>
 
-<!--<tink-pagination tink-pagination-id="directivePag" tink-current-page="nums" tink-total-items="200" tink-items-per-page="10" tink-items-per-page-values="perpageValue"></tink-pagination>-->

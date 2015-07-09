@@ -1,3 +1,25 @@
-<ul class="popover-list-buttons ng-scope">
-  <li data-ng-repeat="action in viewActions"><a href="" data-ng-click="action.callback()">{{action.name}}</a></li>
+<div class="popover-menu-list">
+  <ul ng-if="!actionConf.menu" >
+  <li  data-ng-repeat="action in tinkActions | tinkSlice:5 | orderBy:'+order'"  ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
+   <i class="fa {{action.icon}} fa-fw"></i>
+      <span >{{action.name}}</span>
+  </li>
 </ul>
+
+<ul ng-if="actionConf.menu">
+  <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: true }" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
+   <i class="fa {{action.icon}} fa-fw"></i>
+      <span>{{action.name}}</span>
+  </li>
+  <hr/>
+  <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: false }" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
+   <i class="fa {{action.icon}} fa-fw"></i>
+      <span>{{action.name}}</span>
+  </li>
+</ul>
+</div>
+
+
+
+
+
