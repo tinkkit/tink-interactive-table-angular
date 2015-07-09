@@ -14,13 +14,14 @@
         $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
+        $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td>{{tinkEmptyMessage}}</td></tr>`');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
               $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
           });
-        tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
-        tAttrs._th = $(tElement.find('thead tr')[0]).clone();
+        tAttrs._tr = $(tElement.find('tbody tr')).clone();
+        tAttrs._th = $(tElement.find('thead tr')).clone();
         return {
           post:function postLink(scope,attr){
             scope._tr = attr._tr;
@@ -33,26 +34,25 @@
         var ctrl = this;
 
         ctrl.replaceBody = function(){
-          var tbody = $element.find('tbody');
+         var tbody = $element.find('tbody');
           tbody.html('');
           var thead = $element.find('thead');
           thead.html('');
-          //var td = $('<div>{{this.$parent}}1</div><td ng-if="$scope.child.hasActions()" ng-click="$scope.child.prevent($event)"><input type="checkbox" ng-change="$scope.child.checkChange($scope.child.tinkData[$index])" ng-model="$scope.child.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
-          tbody.append($attrs._tr.clone());
-          thead.append($attrs._th.clone());
-          //$(tbody.find('tr:first td:first')).replaceWith(td);
-          tbody.find('td').each(function(index){
+          $element.find('table').addClass('table-interactive');
+          var newt = $attrs._tr.clone();
+          tbody.append(newt);
+          var newth = $attrs._th.clone()
+           thead.append(newth);
+
+          tbody.find('tr:first td').each(function(index){
             if(index>0){
               $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
             }
           });
-          //.attr('ng-if','tinkHeaders[$index].visible');
-        ///  //$compile(td)($scope);
-         // tbody.find('tr').append($('<td>{{tinkData}}</td>'))
-          //console.log(tbody.find('td:not(:last)'))
           
-        //  $compile(tbody.find('td:last'))($scope);
-          $compile($element.find('table'))($scope);
+        //$compile(tbody.find('td:last'))($scope);
+          $compile(newt)($scope);
+          $compile(newth)($scope);
         };
 
         $scope.prevent = function($event){
@@ -69,6 +69,7 @@
         ctrl.swapTds = function(a,b){
           var td1 = $attrs._tr.find('td:eq('+a+')'); // indices are zero-based here
           var td2 = $attrs._tr.find('td:eq('+b+')');
+          console.log($attrs._tr)
           if(a < b){
             td1.detach().insertAfter(td2);
           }else if(a > b){
@@ -76,7 +77,7 @@
           }
         };
       }]);
-  module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply',function($compile,$rootScope,safeApply){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply','$filter',function($compile,$rootScope,safeApply,$filter){
     return{
       restrict:'EA',
       transclude:true,
@@ -87,7 +88,9 @@
         tinkHeaders:'=',
         initAllChecked:'=',
         tinkActions:'=',
-        tinkAllowColumnReorder:'='
+        tinkAllowColumnReorder:'=',
+        tinkLoading:'=',
+        tinkEmptyMessage:'@'
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -98,6 +101,7 @@
             $compile($(iElement.children()[1]).children())(scope);
             /*stuff actions*/
             scope.actionConf = {};
+
         
             controller.replaceBody();
             var breakpoint = {};
@@ -120,6 +124,13 @@
               });
             }).resize();
 
+            scope.$watch('tinkLoading',function(newV){
+              if(newV){
+                iElement.find('table').addClass('is-loading');
+               }else{
+                iElement.find('table').removeClass('is-loading');
+               }
+            })
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -132,6 +143,20 @@
               console.log(e,index)
             };
             scope.allChecked = false;
+
+            scope.masterObject = function(){
+              if(scope.tinkActions){
+                return $filter('filter')(scope.tinkActions, {master: true}).length;
+              }
+              return 0;              
+            }
+
+            scope.subObject = function(){
+              if(scope.tinkActions){
+                return $filter('filter')(scope.tinkActions, {master: false}).length;
+              }
+              return 0;              
+            }
 
             scope.actionCallBack = function(c){
               if(scope.checked().length !== 0){
@@ -167,9 +192,11 @@
 
             };
             scope.checked = function(){
-              return $.grep(scope.tinkData, function( a ) {
-                return a.checked;
-              });
+              if(scope.tinkData && scope.tinkData.length > 0) {
+                return $.grep(scope.tinkData, function( a ) {
+                  return a.checked;
+                });
+              }
             };
             scope.checkChange = function(){
               var array = $.grep(scope.tinkData, function( a ) {
@@ -331,10 +358,11 @@
         }
       };
 
+
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage,next:function(){
+          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
           }});
         },0);
@@ -363,7 +391,7 @@
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage,next:function(){
+          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
           }});
         },0);
@@ -780,15 +808,15 @@
   'use strict';
 
   $templateCache.put('templates/pagination.html',
-    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1 | tinkMin:1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:tinkItemsPerPage}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage> <option data-ng-repeat=\"items in ctrl.itemsPerPage()\">{{items}}</option> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
+    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1 | tinkMin:1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:tinkItemsPerPage}}</strong> van {{tinkTotalItems}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage ng-options=\"o as o for o in ctrl.itemsPerPage()\">> </select> items per pagina </div> </div> <div class=table-sort-pagination> <ul class=pagination> <li class=prev data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><a href=\"\"><span>Vorige</span></a></li> <li data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><a href=\"\">1</a></li> <li data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><a href=\"\" data-ng-if=\"pag !== -1\">{{pag}}</a> <span data-ng-show=\"pag === -1\">...<span></span></span></li> <li class=next data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><a href=\"\"><span>Volgende</span></a></li> </ul> </div> </div>"
   );
 
 
   $templateCache.put('templates/reorder.html',
     "<div> <div class=bar> <div class=bar-section> <ul ng-if=!actionConf.menu class=\"main-actions bar-section-left\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'\" ng-disabled=\"checked().length === 0\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> </ul> <ul ng-if=!actionConf.menu class=\"sub-actions bar-section-left\"> <hr> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> </ul> <ul ng-if=!actionConf.menu class=\"sub-actions bar-section-left\"> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst ng-disabled=\"checked().length === 0\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-disabled=\"checked().length === 0\" ng-if=\"tinkActions.length > 5\" tink-popover tink-popover-group=option-table tink-tooltip-disabled=actionConf.tekst tink-popover-template=templates/tinkTableAction.html tink-tooltip=\"meer acties\" tink-tooltip-align=top> <span> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>meer acties</span> </span> </li> </ul> <ul ng-if=actionConf.menu class=bar-section-left> <li> <button tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-section-right> <li ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> <div data-ng-if=\"ngModel.length === 0\" class=table-message>{{tinkEmptyMessage}}</div> </div>"
+    "<span ng-if=actionConf.tekst>meer acties</span> </span> </li> </ul> <ul ng-if=actionConf.menu class=bar-section-left> <li> <button tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-section-right> <li ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> </div>"
   );
 
 
