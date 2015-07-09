@@ -9,7 +9,7 @@
       </li>
     </ul>
     <ul ng-if="!actionConf.menu" class="sub-actions bar-section-left">
-      <hr/>
+      <hr ng-if="masterObject() > 0 && subObject() > 0">
       <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'" tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
@@ -39,6 +39,5 @@
 
 <div ng-transclude></div>
 
-<div data-ng-if="ngModel.length === 0" class="table-message">{{tinkEmptyMessage}}</div>
 </div>
 

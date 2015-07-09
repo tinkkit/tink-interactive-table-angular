@@ -14,13 +14,14 @@
         $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions()" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
+        $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td>{{tinkEmptyMessage}}</td></tr>`');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
               $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
           });
-        tAttrs._tr = $(tElement.find('tbody tr')[0]).clone();
-        tAttrs._th = $(tElement.find('thead tr')[0]).clone();
+        tAttrs._tr = $(tElement.find('tbody tr')).clone();
+        tAttrs._th = $(tElement.find('thead tr')).clone();
         return {
           post:function postLink(scope,attr){
             scope._tr = attr._tr;
@@ -33,26 +34,25 @@
         var ctrl = this;
 
         ctrl.replaceBody = function(){
-          var tbody = $element.find('tbody');
+         var tbody = $element.find('tbody');
           tbody.html('');
           var thead = $element.find('thead');
           thead.html('');
-          //var td = $('<div>{{this.$parent}}1</div><td ng-if="$scope.child.hasActions()" ng-click="$scope.child.prevent($event)"><input type="checkbox" ng-change="$scope.child.checkChange($scope.child.tinkData[$index])" ng-model="$scope.child.tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
-          tbody.append($attrs._tr.clone());
-          thead.append($attrs._th.clone());
-          //$(tbody.find('tr:first td:first')).replaceWith(td);
-          tbody.find('td').each(function(index){
+          $element.find('table').addClass('table-interactive');
+          var newt = $attrs._tr.clone();
+          tbody.append(newt);
+          var newth = $attrs._th.clone()
+           thead.append(newth);
+
+          tbody.find('tr:first td').each(function(index){
             if(index>0){
               $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
             }
           });
-          //.attr('ng-if','tinkHeaders[$index].visible');
-        ///  //$compile(td)($scope);
-         // tbody.find('tr').append($('<td>{{tinkData}}</td>'))
-          //console.log(tbody.find('td:not(:last)'))
           
-        //  $compile(tbody.find('td:last'))($scope);
-          $compile($element.find('table'))($scope);
+        //$compile(tbody.find('td:last'))($scope);
+          $compile(newt)($scope);
+          $compile(newth)($scope);
         };
 
         $scope.prevent = function($event){
@@ -69,6 +69,7 @@
         ctrl.swapTds = function(a,b){
           var td1 = $attrs._tr.find('td:eq('+a+')'); // indices are zero-based here
           var td2 = $attrs._tr.find('td:eq('+b+')');
+          console.log($attrs._tr)
           if(a < b){
             td1.detach().insertAfter(td2);
           }else if(a > b){
@@ -76,7 +77,7 @@
           }
         };
       }]);
-  module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply',function($compile,$rootScope,safeApply){
+  module.directive('tinkInteractiveTable',['$compile','$rootScope','safeApply','$filter',function($compile,$rootScope,safeApply,$filter){
     return{
       restrict:'EA',
       transclude:true,
@@ -87,7 +88,9 @@
         tinkHeaders:'=',
         initAllChecked:'=',
         tinkActions:'=',
-        tinkAllowColumnReorder:'='
+        tinkAllowColumnReorder:'=',
+        tinkLoading:'=',
+        tinkEmptyMessage:'@'
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -98,6 +101,7 @@
             $compile($(iElement.children()[1]).children())(scope);
             /*stuff actions*/
             scope.actionConf = {};
+
         
             controller.replaceBody();
             var breakpoint = {};
@@ -120,6 +124,13 @@
               });
             }).resize();
 
+            scope.$watch('tinkLoading',function(newV){
+              if(newV){
+                iElement.find('table').addClass('is-loading');
+               }else{
+                iElement.find('table').removeClass('is-loading');
+               }
+            })
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -132,6 +143,20 @@
               console.log(e,index)
             };
             scope.allChecked = false;
+
+            scope.masterObject = function(){
+              if(scope.tinkActions){
+                return $filter('filter')(scope.tinkActions, {master: true}).length;
+              }
+              return 0;              
+            }
+
+            scope.subObject = function(){
+              if(scope.tinkActions){
+                return $filter('filter')(scope.tinkActions, {master: false}).length;
+              }
+              return 0;              
+            }
 
             scope.actionCallBack = function(c){
               if(scope.checked().length !== 0){
@@ -167,9 +192,11 @@
 
             };
             scope.checked = function(){
-              return $.grep(scope.tinkData, function( a ) {
-                return a.checked;
-              });
+              if(scope.tinkData && scope.tinkData.length > 0) {
+                return $.grep(scope.tinkData, function( a ) {
+                  return a.checked;
+                });
+              }
             };
             scope.checkChange = function(){
               var array = $.grep(scope.tinkData, function( a ) {

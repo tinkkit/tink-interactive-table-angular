@@ -1,12 +1,14 @@
 <div class="table-sort-options" >
   <div class="table-sort-info">
     <strong>{{tinkItemsPerPage*(tinkCurrentPage-1)+1 | tinkMin:1}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:tinkItemsPerPage}}</strong> van {{tinkTotalItems}}
+
     <div class="select">
-      <select data-ng-change="ctrl.perPageChange()" data-ng-model="tinkItemsPerPage">
-        <option data-ng-repeat="items in ctrl.itemsPerPage()">{{items}}</option>
+      <select data-ng-change="ctrl.perPageChange()" data-ng-model="tinkItemsPerPage" ng-options="o as o for o in ctrl.itemsPerPage()">>
+  
       </select> items per pagina
     </div>
   </div>
+
   <div class="table-sort-pagination">
     <ul class="pagination">
       <li class="prev" data-ng-class="{disabled:tinkCurrentPage===1}"  data-ng-click="tinkCurrentPage===1 || ctrl.setPrev()" ng-disabled="tinkCurrentPage===1"><a href="" title=""><span>Vorige</span></a></li>

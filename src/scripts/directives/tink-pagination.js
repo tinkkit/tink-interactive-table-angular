@@ -42,10 +42,11 @@
         }
       };
 
+
       ctrl.perPageChange = function(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'perPage',value:$scope.tinkItemsPerPage,next:function(){
+          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
           }});
         },0);
@@ -74,7 +75,7 @@
       function sendMessage(){
         $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
         timeout(function(){
-          $scope.tinkChange({type:'page',value:$scope.tinkCurrentPage,next:function(){
+          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
             $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
           }});
         },0);
