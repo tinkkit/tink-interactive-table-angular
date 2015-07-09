@@ -1,4 +1,5 @@
-<ul ng-if="!actionConf.menu" >
+<div class="popover-menu-list">
+  <ul ng-if="!actionConf.menu" >
   <li  data-ng-repeat="action in tinkActions | tinkSlice:5 | orderBy:'+order'"  ng-disabled='checked().length === 0' data-ng-click="actionCallBack(action)">
    <i class="fa {{action.icon}} fa-fw"></i>
       <span >{{action.name}}</span>
@@ -16,6 +17,7 @@
       <span>{{action.name}}</span>
   </li>
 </ul>
+</div>
 
 
 

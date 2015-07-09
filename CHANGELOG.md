@@ -13,6 +13,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.4] - 2015-07-09
+
+### Added
+- Added styling class to the dropdown
 
 ## [3.0.3] - 2015-07-09
 

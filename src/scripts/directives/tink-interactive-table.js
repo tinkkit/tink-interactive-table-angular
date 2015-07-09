@@ -15,11 +15,13 @@
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td>{{tinkEmptyMessage}}</td></tr>`');
+        tElement.find('table').wrap('<div class="table-force-responsive"></div>');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
-              $(this).attr('ng-if','tinkHeaders[$index].checked');
+             $(this).attr('ng-if','tinkHeaders[$index].checked');
             }
           });
+
         tAttrs._tr = $(tElement.find('tbody tr')).clone();
         tAttrs._th = $(tElement.find('thead tr')).clone();
         return {
@@ -46,7 +48,9 @@
 
           tbody.find('tr:first td').each(function(index){
             if(index>0){
-              $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
+              if($scope.tinkHeaders[(index-1)]){
+                $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
+              }
             }
           });
           
@@ -122,8 +126,8 @@
               safeApply(scope,function(){
                 breakpoint.refreshValue();
               });
-            }).resize();
-
+            })
+            breakpoint.refreshValue();
             scope.$watch('tinkLoading',function(newV){
               if(newV){
                 iElement.find('table').addClass('is-loading');
