@@ -43,7 +43,7 @@
           $element.find('table').addClass('table-interactive');
           var newt = $attrs._tr.clone();
           tbody.append(newt);
-          var newth = $attrs._th.clone()
+          var newth = $attrs._th.clone();
            thead.append(newth);
 
           tbody.find('tr:first td').each(function(index){
@@ -73,7 +73,6 @@
         ctrl.swapTds = function(a,b){
           var td1 = $attrs._tr.find('td:eq('+a+')'); // indices are zero-based here
           var td2 = $attrs._tr.find('td:eq('+b+')');
-          console.log($attrs._tr)
           if(a < b){
             td1.detach().insertAfter(td2);
           }else if(a > b){
@@ -126,7 +125,7 @@
               safeApply(scope,function(){
                 breakpoint.refreshValue();
               });
-            })
+            });
             breakpoint.refreshValue();
             scope.$watch('tinkLoading',function(newV){
               if(newV){
@@ -134,7 +133,7 @@
                }else{
                 iElement.find('table').removeClass('is-loading');
                }
-            })
+            });
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -144,7 +143,6 @@
               e.preventDefault();
               //Changed the selected index.
               scope.selected.value = index;
-              console.log(e,index)
             };
             scope.allChecked = false;
 
@@ -153,14 +151,14 @@
                 return $filter('filter')(scope.tinkActions, {master: true}).length;
               }
               return 0;              
-            }
+            };
 
             scope.subObject = function(){
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: false}).length;
               }
               return 0;              
-            }
+            };
 
             scope.actionCallBack = function(c){
               if(scope.checked().length !== 0){
@@ -298,7 +296,7 @@
           ghostClass: 'draggable-placeholder',
           animation: 200,
           handle:'.draggable-elem',
-          onStart: function (evt) {
+          onStart: function () {
              scope.$apply(function(){
              // scope.selected.value = evt.oldIndex;
             });
