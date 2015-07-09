@@ -151,7 +151,7 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
 ```
 
 ```javascript
- scope.changed = function(chaged,next){
+ scope.changed = function(page,perpage,next){
   /* changed will give you an  object if the page or peerage is changed.
   * {type:'page',value:2}
   * {type:'perPage',value:20}

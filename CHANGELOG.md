@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.0.3] - 2015-07-09
+
+### Added
+- Added loading bind attribute
+
 ## [3.0.2] - 2015-07-07
 
 ### Changed
