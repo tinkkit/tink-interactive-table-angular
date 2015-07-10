@@ -64,6 +64,7 @@ data-tink-headers (required) | `array` | `undefined` | The header information fo
 data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
 data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
 data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
+data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 
 ### Script example
 
