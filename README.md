@@ -65,6 +65,7 @@ data-tink-actions | `array` | `undefined` | When present checkboxes will appear 
 data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
 data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
+data-tink-empty-message | `string` | `` | This will the message that will be shown when there is no data.
 
 ### Script example
 
@@ -98,7 +99,6 @@ data-tink-loading | `Boolean` | `false` | If true the table will have a loading 
     ];
 ```
 
-> To **enable sorting** give the header object a **property** `sort` with the value `true`,
 > If you want to **hide a column** give the header a **property** `checked` with the value `false`.
 
 ```javascript
@@ -107,7 +107,6 @@ scope.headers = [
         field: 'firstname',
         alias: 'Voornaam',
         checked: true, //to show this header or not
-        sort: true // To enable sorting on this header
       },
       {
         field: 'lastname',
