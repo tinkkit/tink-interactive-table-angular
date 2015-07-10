@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.0.6
+v3.0.7
 
 ## What is this repository for?
 
@@ -62,7 +62,6 @@ Attr | Type | Default | Details
 data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
 data-tink-headers (required) | `array` | `undefined` | The header information for each column.
 data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
-data-allow-column-reorder | `boolean` | `true` | If false you can't reorder the columns.
 data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 data-tink-empty-message | `string` | `` | This will the message that will be shown when there is no data.
@@ -111,8 +110,7 @@ scope.headers = [
       {
         field: 'lastname',
         alias: 'Achternaam',
-        checked: false,
-        sort: true
+        checked: false
       },
       {
         field: 'username',
@@ -127,15 +125,17 @@ scope.headers = [
 ```javascript
    scope.actions = [
       {
-        name: 'remove',
-        callback: function(items,uncheck) {
-          angular.forEach(items, function(val{
-            scope.data.splice(scope.data.indexOf(val),1);
-          });
-          //this wil uncheck all the boxes !
-          uncheck()
+          name: 'remove',
+          callback: function(items) {
+            angular.forEach(items, function(val) {
+              scope.data.content.splice(scope.data.content.indexOf(val),1);
+            });
+          },
+          order:0, //orde of the button
+          master:true, //required ! 
+          icon:'fa-close', //the icon required.
+          single:true // only when one checkbox is selected
         }
-      }
     ];
 ```
 

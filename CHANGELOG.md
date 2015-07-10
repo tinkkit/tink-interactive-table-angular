@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.7] - 2015-07-10
+
+### Added
+- Added single action button
+
 ## [3.0.6] - 2015-07-10
 
 ### Fixed
