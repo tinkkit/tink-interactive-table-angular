@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.5] - 2015-07-10
+
+### Fixed
+- Fixed empty data string over multiple columns.
+
 ## [3.0.4] - 2015-07-09
 
 ### Added

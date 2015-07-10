@@ -45,7 +45,7 @@
 <br/><br/><br/>
 
 <tink-interactive-table class="table-interactive" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
-  <table tink-pagination-key="pag1">
+  <table>
     <thead>
       <tr>
         <th ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
@@ -60,7 +60,7 @@
     </tbody>
   </table>
   
-  <tink-pagination tink-pagination-id="pag1" tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
+  <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
 
 </tink-interactive-table>
 
@@ -88,7 +88,7 @@
       scope.changed = function(type,value,fn){
         fn();
       }
-      ctrl.loading = true;
+      ctrl.loading = false;
       scope.data.content = [
         {
           firstname: 'Jasper',
