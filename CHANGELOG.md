@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.8] - 2015-07-14
+
+### Added
+- Added option to disable view or not view column
+
 ## [3.0.7] - 2015-07-10
 
 ### Added

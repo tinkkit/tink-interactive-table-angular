@@ -8,7 +8,7 @@
   <ul ng-model="tinkHeaders" class="table-interactive-cols">
     <li ng-repeat="header in tinkHeaders">
       <div class="checkbox is-selectable is-draggable" ng-class="{selected:selected.value===$index}">
-        <input type="checkbox" ng-model="header.checked" id="{{header.alias}}" name="{{header.alias}}" value="{{header.alias}}" checked="">
+        <input ng-disabled="header.disabled === true" type="checkbox" ng-model="header.checked" id="{{header.alias}}" name="{{header.alias}}" value="{{header.alias}}" checked="">
         <label for="{{header.alias}}"><span class="draggable-elem" ng-class="{selected:selected.value===$index}" ng-click="select($event,$index)" >{{header.alias}}</span></label>
       </div>
     </li>
