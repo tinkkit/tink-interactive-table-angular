@@ -35,7 +35,9 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
    `<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>`
 
-   <script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
+   `<script src="bower_components/tink-tooltip-angular/dist/tink-tooltip-angular.js"></script>`
+
+   `<script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
 
 3. Add `tink.interactivetable` to your app module's dependency.
 
@@ -105,7 +107,8 @@ scope.headers = [
       {
         field: 'firstname',
         alias: 'Voornaam',
-        checked: true, //to show this header or not
+        checked: true, //to show this header or not required
+        disabled:true, // can't change the checked value
       },
       {
         field: 'lastname',
