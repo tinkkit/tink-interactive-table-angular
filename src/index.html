@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
+<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
   <table>
     <thead>
       <tr>
@@ -87,6 +87,9 @@
       }
       scope.changed = function(type,value,fn){
         fn();
+      }
+      scope.boxChecked = function($data,c){
+        console.log($data,c)
       }
       ctrl.loading = false;
       scope.data.content = [

@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.10] - 2015-07-22
+
+### Added
+- Added tinkChecked callback to know when a checkbox is checked.
+
 ## [3.0.9] - 2015-07-22
 
 ### Fixed

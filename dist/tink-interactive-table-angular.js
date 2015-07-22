@@ -100,7 +100,8 @@
         tinkActions:'=',
         tinkAllowColumnReorder:'=',
         tinkLoading:'=',
-        tinkEmptyMessage:'@'
+        tinkEmptyMessage:'@',
+        tinkChecked:'&'
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -220,10 +221,13 @@
               }
               return []
             };
-            scope.checkChange = function(){
+            scope.checkChange = function(data){
               var array = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
+              if(scope.tinkChecked){
+                scope.tinkChecked({$data:data,$checked:data.checked});
+              }
               if(array.length === scope.tinkData.length){
                 scope.allChecked = true;
               }else if(array.length === 0 ){
