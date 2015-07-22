@@ -13,6 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.0.9] - 2015-07-22
+
+### Fixed
+- Fixed bug for not master and single selection 
+
 ## [3.0.8] - 2015-07-14
 
 ### Added
