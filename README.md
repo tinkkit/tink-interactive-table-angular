@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.0.10
+v3.0.11
 
 ## What is this repository for?
 
@@ -64,14 +64,30 @@ Attr | Type | Default | Details
 data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
 data-tink-headers (required) | `array` | `undefined` | The header information for each column.
 data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
-data-tink-change | `function($property,$order,$type)` | `undefined` | will be called when the interactive table needs to be sorted!.
+data-tink-checked | `function($data,$checked)` | `undefined` | will be called when you check a checkbox.
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 data-tink-empty-message | `string` | `` | This will the message that will be shown when there is no data.
 
 ### Script example
 
 ```html
-<tink-interactive-table ng-model="data" data-tink-headers="headers" tink-actions="actions">
+<tink-interactive-table tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
+ <table>
+    <thead>
+      <tr>
+        <th ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
+        <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
+        <td>{{ view.lastname }}</td>
+        <td>{{ view.username }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
 </tink-interactive-table>
 ```
 
@@ -165,11 +181,6 @@ tink-items-per-page (required) | `number` | `undefined` | How many items you wan
 tink-items-per-page-values (required) | `array` | `undefined` | Array of numbers that will be shown as per page value.
 tink-change | `function` | `undefined` | To receive information if the pagination or perPage value change!
 
-> To enable pagination on the interactive table add the tink-pagination-key attribute.
-
-```html
-<tink-interactive-table tink-pagination-key="pag1" ></tink-interactive-table>
-```
 
 ```javascript
  scope.changed = function(chaged,next){
