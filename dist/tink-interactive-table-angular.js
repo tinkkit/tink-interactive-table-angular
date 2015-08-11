@@ -15,7 +15,6 @@
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td colspan="{{tinkHeaders.length+1}}">{{tinkEmptyMessage}}</td></tr>`');
-        tElement.find('table').wrap('<div class="table-force-responsive"></div>');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
              $(this).attr('ng-if','tinkHeaders[$index].checked');
@@ -37,19 +36,19 @@
 
         ctrl.replaceBody = function(){
           //find the tbody and thead
-         var tbody = $element.find('tbody');
-         var thead = $element.find('thead');
-         //clean the content
-         tbody.html('');
-         thead.html('');
-         
-         //add the needed class to the table
-         $element.find('table').addClass('table-interactive');
-         
-         //clone the tr and th's we retrieved at the beginning (so the original wont be compiled)         
+          var tbody = $element.find('tbody');
+          var thead = $element.find('thead');
+          //clean the content
+          tbody.html('');
+          thead.html('');
+
+          //add the needed class to the table
+          $element.find('table').addClass('table-interactive');
+
+         //clone the tr and th's we retrieved at the beginning (so the original wont be compiled)
          var trClone = $attrs._tr.clone();
          var thClone = $attrs._th.clone();
-         
+
          //add the clones
          tbody.append(trClone);
          thead.append(thClone);
@@ -61,7 +60,7 @@
               }
             }
           });
-          
+
         //compile the tbody and thead
           $compile(trClone)($scope);
           $compile(thClone)($scope);
@@ -101,7 +100,9 @@
         tinkAllowColumnReorder:'=',
         tinkLoading:'=',
         tinkEmptyMessage:'@',
+        tinkForceResponsive:'=',
         tinkChecked:'&'
+
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -109,14 +110,26 @@
 
         return {
           post: function postLink(scope, iElement, iAttrs, controller) {
+
+            scope.forceResponsive = function(){
+              if(scope.tinkForceResponsive === true || scope.tinkForceResponsive === 'true'){
+                return true;
+              }
+              return false;
+            };
+
+            if(scope.forceResponsive()) {
+              iElement.find('table').wrap('<div class="table-force-responsive"></div>');
+            }
+
             //compile all the stuff to get scope of interactive table
             $compile($(iElement.children()[1]).children())(scope);
             //change the content
             controller.replaceBody();
-            
+
             /*stuff actions*/
             scope.actionConf = {};
-                    
+
             var breakpoint = {};
             //this function will see wich type of view we are
             breakpoint.refreshValue = function () {
@@ -132,7 +145,7 @@
                 scope.actionConf.menu = false;
               }
             };
-            
+
             //on resize check wich view we are
             $(window).resize(function () {
               safeApply(scope,function(){
@@ -141,7 +154,7 @@
             });
             //when the directive start check for new view
             breakpoint.refreshValue();
-            
+
             //watch on the tinkLoading
             scope.$watch('tinkLoading',function(newV){
               if(newV){
@@ -150,6 +163,7 @@
                 iElement.find('table').removeClass('is-loading');
                }
             });
+
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -166,14 +180,14 @@
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: true}).length;
               }
-              return 0;              
+              return 0;
             };
 
             scope.subObject = function(){
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: false}).length;
               }
-              return 0;              
+              return 0;
             };
 
             scope.actionCallBack = function(c){
@@ -183,7 +197,7 @@
                 });
                 if(c.callback instanceof Function){
                   c.callback(array);
-                } 
+                }
               }
               scope.close();
             };
@@ -199,7 +213,7 @@
                   return a.checked;
                 });
               }
-              
+
               if(array.length === scope.tinkData.length){
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = false;
@@ -219,7 +233,7 @@
                   return a.checked;
                 });
               }
-              return []
+              return [];
             };
             scope.checkChange = function(data){
               var array = $.grep(scope.tinkData, function( a ) {
@@ -500,336 +514,6 @@
 
   }]);
 })();
-;'use strict';
-(function(module) {
-  try {
-    module = angular.module('tink.interactivetable');
-  } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
-  }
-  module.directive('tinkInteractiveTable1',['$compile','$rootScope','$filter',function($compile,$rootScope,$filter){
-  return{
-    restrict:'EA',
-    templateUrl:'templates/reorder.html',
-    scope:{
-      ngModel:'=',
-      tinkHeaders:'=',
-      tinkActions:'=',
-      tinkForceResponsive:'=',
-      tinkColumnReorder:'=',
-      tinkRowClick:'&',
-      tinkChange:'&',
-      tinkEmptyMessage:'@'
-    },
-    link:function(scope,element){
-      scope.checkB = [];
-
-      var currentSort = {field:null,order:null};
-
-      scope.hasAction = function(){
-        if(scope.viewActions && scope.viewActions instanceof Array && scope.viewActions.length > 0){
-          return true;
-        }
-          return false;
-      };
-      scope.hasReorder = function(){
-        if(scope.tinkColumnReorder === false || scope.tinkColumnReorder === 'false'){
-          return false;
-        }
-        return true;
-      };
-      scope.forceResponsive = function(){
-        if(scope.tinkForceResponsive === true || scope.tinkForceResponsive === 'true'){
-          return true;
-        }
-        return false;
-      };
-
-        scope.buildTable = function(){
-          if(scope.ngModel){
-            changeAction();
-            var tableEl = element.find('table');
-            //Create a new table object
-            var table = document.createElement('table');
-            $(tableEl).addClass('table-interactive');
-            $(tableEl).attr('tink-callback','sortHeader($property,$order,$type)');
-
-            createHeaders(table,scope.tinkHeaders);
-            //create the body of the table
-            createBody(table,scope.ngModel);
-
-            scope.checkB = scope.createArray(scope.ngModel.length);
-            fullChecked();
-
-            tableEl.children('thead').html($(table).children('thead').children());
-            tableEl.children('tbody').html($(table).children('tbody').children());
-            $compile(tableEl.children('thead'))(scope);
-            $compile(tableEl.children('tbody'))(scope);
-          }
-        };
-
-        function createCheckbox(row,i,hulp){
-        if(!hulp){
-          hulp ='';
-        }
-        var random = Math.random().toString(36).substring(7);
-        var checkbox = '<div class="checkbox">'+
-                          '<input type="checkbox" ng-change="checkChange('+row+')" ng-model="checkB['+row+']._checked" id="'+random+row+'" name="'+random+row+'" value="'+row+'">'+
-                          '<label for="'+random+row+'"></label>'+
-                        '</div>';
-        return checkbox;
-      }
-
-        function createBody(table,content){
-          if(scope.tinkHeaders instanceof Array && content instanceof Array){
-            var body = table.createTBody();
-            for(var i=scope.tinkHeaders.length-1;i>=0;i--){
-              for(var j=0;j<content.length;j++){
-                var row;
-                if(body.rows[j]){
-                  row = body.rows[j];
-                  //row
-                }else{
-                  row = body.insertRow(j);
-                  //If we have action add a checkbox.
-                  $(row).attr('ng-click','rowClick('+j+')');
-                  if(scope.hasAction()){
-                    var check = row.insertCell(0);
-                    check.innerHTML = createCheckbox(j, j);
-                    $(check).attr('ng-click', 'preventEvent($event)');
-                  }
-                }
-                var fieldExpression = scope.tinkHeaders[i].field;
-                var fieldNames = scope.tinkHeaders[i].field.split('+');
-                angular.forEach(fieldNames, function (fieldName) {
-                    fieldName = fieldName.trim();
-                    if (fieldName.indexOf('"') < 0) {
-                        var splittedFieldNames = fieldName.split('.');
-                        var fieldValue = content[j];
-                        angular.forEach(splittedFieldNames, function (splittedFieldName) {
-                            fieldValue = fieldValue[splittedFieldName];
-                        });
-                        if (fieldValue === null || fieldValue === undefined) {
-                        	fieldExpression = fieldExpression.replace(fieldName, '"-"');
-                        }
-                        else {
-                        	fieldExpression = fieldExpression.replace(fieldName, '"' + fieldValue + '"');
-                        }
-                    }
-                });
-                /*jshint -W061 */
-                var fieldValueComplete = eval(fieldExpression);
-                var cell;
-                if (scope.hasAction()) {
-                    cell = row.insertCell(1);
-                } else {
-                    cell = row.insertCell(0);
-                }
-                $(cell).attr('ng-if', 'tinkHeaders[' + i + '].checked');
-                if (scope.tinkHeaders[i].filter) {
-                    cell.innerHTML = $filter(scope.tinkHeaders[i].filter)(fieldValueComplete, scope.tinkHeaders[i].filterArg);
-                }
-                else {
-                    cell.innerHTML = fieldValueComplete;
-                }
-              }
-            }
-          }
-        }
-
-        function changeAction(){
-          if(scope.tinkActions instanceof Array){
-            scope.viewActions = [];
-            for(var i=0;i<scope.tinkActions.length;i++){
-              var action = scope.tinkActions[i];
-              scope.viewActions.push({name:action.name,callback:function(){
-                var checked = [];
-                for(var i=0;i<scope.ngModel.length;i++){
-                  if(scope.checkB[i] && scope.checkB[i]._checked===true){
-                    checked.push(scope.ngModel[i]);
-                  }
-                }
-                scope.close();
-                action.callback(checked,uncheckAll);
-              }});
-            }
-          }
-        }
-
-        scope.rowClick=function(i){
-          scope.tinkRowClick.call(null,{$element:scope.ngModel[i]});
-        };
-
-        scope.preventEvent = function (event) {
-            event.stopPropagation();
-        };
-
-        function createHeaders(tableEl,headers){
-          if(scope.tinkHeaders instanceof Array && headers instanceof Array){
-            var header = tableEl.createTHead();
-            var row = header.insertRow(0);
-
-            if(scope.hasAction()){
-              var thCheck = document.createElement('th');
-              thCheck.setAttribute('class', 'has-checkbox');
-              thCheck.innerHTML = createCheckbox(-1,-1,'hulp');
-              row.appendChild(thCheck);
-            }
-
-            for(var i=0;i<headers.length;i++){
-              //take alias of field of the headers
-              var val = headers[i].alias || headers[i].field;
-              var th = document.createElement('th');
-              th.innerHTML = val;
-              $(th).attr('ng-if','tinkHeaders['+i+'].checked');
-              if(headers[i].sort){
-                $(th).attr('tink-sort-header',headers[i].field);
-              }
-
-              row.appendChild(th);
-            }
-          }
-        }
-
-        scope.sortHeader = function(field,order,type){
-          currentSort = {};
-          currentSort.field = field;
-          currentSort.type = type;
-          currentSort.order = order;
-          scope.tinkChange({$property:field,$order:order,$type:type});
-        };
-
-        function fullChecked(){
-          var length = 0;
-          for(var i=0;i<scope.ngModel.length;i++){
-            if(scope.checkB[i] && scope.checkB[i]._checked){
-                length+=1;
-              }
-            }
-            if(!scope.checkB[-1]){
-              scope.checkB[-1] = {};
-            }
-            if(length !== 0){
-              scope.selectedCheck = true;
-            }else{
-              scope.selectedCheck = false;
-            }
-            if(length === scope.ngModel.length){
-              scope.checkB[-1]._checked = true;
-            }else{
-              scope.checkB[-1]._checked = false;
-            }
-        }
-
-        function uncheckAll(){
-          for(var i=0;i<scope.ngModel.length;i++){
-            if(scope.checkB[i] && scope.checkB[i]._checked===true){
-              scope.checkB[i]._checked = false;
-            }
-          }
-          if(scope.checkB[-1]){
-              scope.checkB[-1]._checked = false;
-            }
-        }
-
-        scope.createArray = function(num){
-          var array = [];
-          for(var i=0;i<num;i++){
-            array[i] = {};
-          }
-          return array;
-        };
-
-        scope.checkChange = function(i){
-          if(i === -1){
-            var check = scope.checkB[-1]._checked;
-            angular.forEach(scope.checkB,function(val){
-              val._checked = check;
-              scope.selectedCheck = check;
-            });
-          }else{
-            if(scope.checkB[-1]){
-              scope.checkB[-1]._checked = false;
-            }
-            fullChecked();
-          }
-        };
-
-        //function will be called when pressing arrow for order change
-        scope.arrowUp = function(){
-          if(scope.selected > 0){
-            scope.tinkHeaders.swap(scope.selected,scope.selected-1);
-            scope.selected-=1;
-            scope.buildTable();
-          }
-        };
-        //function will be called when pressing arrow for order change
-        scope.arrowDown = function(){
-          if(scope.selected < scope.tinkHeaders.length-1){
-            scope.tinkHeaders.swap(scope.selected,scope.selected+1);
-            scope.selected+=1;
-            scope.buildTable();
-          }
-        };
-
-        scope.close = function(){
-          $rootScope.$broadcast('popover-open', { group: 'option-table',el:$('<div><div>') });
-        };
-
-        //If you check/uncheck a checbox in de kolom popup this function will be fired.
-        scope.headerChange = function(){
-          scope.buildTable();
-        };
-        //If you select an other kolom name in de kolumn popup this function will be fired.
-        scope.select = function(e,index){
-          //Prevent the default to disable checkbox behaviour.
-          e.preventDefault();
-          //Changed the selected index.
-          scope.selected = index;
-        };
-
-        scope.$watch('ngModel',function(){
-          scope.buildTable();
-        },true);
-
-        //added this to swap elements easly
-        Array.prototype.swap = function(a, b) {
-          var temp = this[a];
-          this[a] = this[b];
-          this[b] = temp;
-        };
-    }
-  };
-  }]).directive('tinkShiftSort',['$timeout',function(timeout){
-  return {
-    restirct:'A',
-    link:function(scope,elem){
-      timeout(function(){
-        Sortable.create(elem.find('ul').get(0),{
-          ghostClass: 'draggable-placeholder',
-          animation: 200,
-          handle:'.draggable-elem',
-          onStart: function (evt) {
-             scope.$apply(function(){
-              scope.selected = evt.oldIndex;
-            });
-          },
-          onUpdate: function (evt) {
-            scope.$apply(function(){
-              var old = scope.tinkHeaders[evt.oldIndex];
-              scope.tinkHeaders.splice(evt.oldIndex, 1);
-              scope.tinkHeaders.splice(evt.newIndex, 0,old);
-              scope.selected = evt.newIndex;
-              scope.buildTable();
-            });
-          },
-        });
-      },200);
-    }
-  };
-}]);
-})();
-
 ;angular.module('tink.interactivetable').run(['$templateCache', function($templateCache) {
   'use strict';
 

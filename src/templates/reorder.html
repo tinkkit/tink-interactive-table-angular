@@ -3,7 +3,7 @@
   <div class="bar-section">
 
     <ul ng-if="!actionConf.menu" class="main-actions bar-section-left">
-      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'" ng-disabled='checked().length === 0 || (action.single && checked().length > 1)' tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" data-ng-click="actionCallBack(action)"> 
+      <li ng-class="{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}" ng-repeat="action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'" ng-disabled='checked().length === 0 || (action.single && checked().length > 1)' tink-tooltip="{{action.name}}" tink-tooltip-align="top" tink-tooltip-disabled="actionConf.tekst" data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
         <span ng-if="actionConf.tekst">{{action.name}}</span>
       </li>

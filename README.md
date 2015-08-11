@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.0.11
+v3.0.12
 
 ## What is this repository for?
 
@@ -67,6 +67,7 @@ data-tink-actions | `array` | `undefined` | When present checkboxes will appear 
 data-tink-checked | `function($data,$checked)` | `undefined` | will be called when you check a checkbox.
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 data-tink-empty-message | `string` | `` | This will the message that will be shown when there is no data.
+data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
 
 ### Script example
 
@@ -86,7 +87,7 @@ data-tink-empty-message | `string` | `` | This will the message that will be sho
       </tr>
     </tbody>
   </table>
-  
+
   <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
 </tink-interactive-table>
 ```
@@ -151,7 +152,7 @@ scope.headers = [
             });
           },
           order:0, //orde of the button
-          master:true, //required ! 
+          master:true, //required !
           icon:'fa-close', //the icon required.
           single:true // only when one checkbox is selected
         }

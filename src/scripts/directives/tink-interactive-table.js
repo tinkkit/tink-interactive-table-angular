@@ -15,7 +15,6 @@
         var td = $('<td ng-show="hasActions()" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td colspan="{{tinkHeaders.length+1}}">{{tinkEmptyMessage}}</td></tr>`');
-        tElement.find('table').wrap('<div class="table-force-responsive"></div>');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
              $(this).attr('ng-if','tinkHeaders[$index].checked');
@@ -37,19 +36,19 @@
 
         ctrl.replaceBody = function(){
           //find the tbody and thead
-         var tbody = $element.find('tbody');
-         var thead = $element.find('thead');
-         //clean the content
-         tbody.html('');
-         thead.html('');
-         
-         //add the needed class to the table
-         $element.find('table').addClass('table-interactive');
-         
-         //clone the tr and th's we retrieved at the beginning (so the original wont be compiled)         
+          var tbody = $element.find('tbody');
+          var thead = $element.find('thead');
+          //clean the content
+          tbody.html('');
+          thead.html('');
+
+          //add the needed class to the table
+          $element.find('table').addClass('table-interactive');
+
+         //clone the tr and th's we retrieved at the beginning (so the original wont be compiled)
          var trClone = $attrs._tr.clone();
          var thClone = $attrs._th.clone();
-         
+
          //add the clones
          tbody.append(trClone);
          thead.append(thClone);
@@ -61,7 +60,7 @@
               }
             }
           });
-          
+
         //compile the tbody and thead
           $compile(trClone)($scope);
           $compile(thClone)($scope);
@@ -101,7 +100,9 @@
         tinkAllowColumnReorder:'=',
         tinkLoading:'=',
         tinkEmptyMessage:'@',
+        tinkForceResponsive:'=',
         tinkChecked:'&'
+
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/reorder.html',
@@ -109,14 +110,26 @@
 
         return {
           post: function postLink(scope, iElement, iAttrs, controller) {
+
+            scope.forceResponsive = function(){
+              if(scope.tinkForceResponsive === true || scope.tinkForceResponsive === 'true'){
+                return true;
+              }
+              return false;
+            };
+
+            if(scope.forceResponsive()) {
+              iElement.find('table').wrap('<div class="table-force-responsive"></div>');
+            }
+
             //compile all the stuff to get scope of interactive table
             $compile($(iElement.children()[1]).children())(scope);
             //change the content
             controller.replaceBody();
-            
+
             /*stuff actions*/
             scope.actionConf = {};
-                    
+
             var breakpoint = {};
             //this function will see wich type of view we are
             breakpoint.refreshValue = function () {
@@ -132,7 +145,7 @@
                 scope.actionConf.menu = false;
               }
             };
-            
+
             //on resize check wich view we are
             $(window).resize(function () {
               safeApply(scope,function(){
@@ -141,7 +154,7 @@
             });
             //when the directive start check for new view
             breakpoint.refreshValue();
-            
+
             //watch on the tinkLoading
             scope.$watch('tinkLoading',function(newV){
               if(newV){
@@ -150,6 +163,7 @@
                 iElement.find('table').removeClass('is-loading');
                }
             });
+
 
             /*end actions*/
             scope.selected = {value :-1};
@@ -166,14 +180,14 @@
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: true}).length;
               }
-              return 0;              
+              return 0;
             };
 
             scope.subObject = function(){
               if(scope.tinkActions){
                 return $filter('filter')(scope.tinkActions, {master: false}).length;
               }
-              return 0;              
+              return 0;
             };
 
             scope.actionCallBack = function(c){
@@ -183,7 +197,7 @@
                 });
                 if(c.callback instanceof Function){
                   c.callback(array);
-                } 
+                }
               }
               scope.close();
             };
@@ -199,7 +213,7 @@
                   return a.checked;
                 });
               }
-              
+
               if(array.length === scope.tinkData.length){
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = false;
@@ -219,7 +233,7 @@
                   return a.checked;
                 });
               }
-              return []
+              return [];
             };
             scope.checkChange = function(data){
               var array = $.grep(scope.tinkData, function( a ) {
