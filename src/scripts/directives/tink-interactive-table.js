@@ -105,7 +105,7 @@
 
       },
       controller:'interactiveCtrl',
-      templateUrl:'templates/reorder.html',
+      templateUrl:'templates/actions.html',
       compile: function compile() {
 
         return {

@@ -19,60 +19,84 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Changed the responsive behaviour.
 
+
+
 ## [3.0.11] - 2015-07-29
 
 ### Added
 - Added documentation.
+
+
 
 ## [3.0.10] - 2015-07-22
 
 ### Added
 - Added tinkChecked callback to know when a checkbox is checked.
 
+
+
 ## [3.0.9] - 2015-07-22
 
 ### Fixed
 - Fixed bug for not master and single selection
+
+
 
 ## [3.0.8] - 2015-07-14
 
 ### Added
 - Added option to disable view or not view column
 
+
+
 ## [3.0.7] - 2015-07-10
 
 ### Added
 - Added single action button
+
+
 
 ## [3.0.6] - 2015-07-10
 
 ### Fixed
 - Fixed pagination 0-10
 
+
+
 ## [3.0.5] - 2015-07-10
 
 ### Fixed
 - Fixed empty data string over multiple columns.
+
+
 
 ## [3.0.4] - 2015-07-09
 
 ### Added
 - Added styling class to the dropdown
 
+
+
 ## [3.0.3] - 2015-07-09
 
 ### Added
 - Added loading bind attribute
+
+
 
 ## [3.0.2] - 2015-07-07
 
 ### Changed
 - Updated the readme
 
+
+
 ## [3.0.1] - 2015-07-06
 
 ### Added
 - better styling for checkboxes
+
+
 
 ## [3.0.0] - 2015-07-06
 
