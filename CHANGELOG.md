@@ -14,6 +14,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.0.13] - 2015-08-24
+
+### Changed
+- Added a number filter to the pagination.
+
+
+
 ## [3.0.12] - 2015-07-29
 
 ### Changed

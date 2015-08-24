@@ -62,14 +62,14 @@
         if($scope.tinkCurrentPage > 1){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage -1;
         }
-        sendMessage(); 
+        sendMessage();
       };
 
       ctrl.setNext = function(){
         if($scope.tinkCurrentPage < ctrl.pages){
           $scope.tinkCurrentPage = $scope.tinkCurrentPage +1;
         }
-        sendMessage(); 
+        sendMessage();
       };
 
       function sendMessage(){
@@ -133,10 +133,21 @@
       }
       return input;
    };
+  }])
+  .filter('tinkNumber', [function() {
+   return function(input, limit) {
+    if(limit === undefined){
+      limit = 0;
+    }
+      if (input < limit) {
+          return limit;
+      }
+      return input;
+   };
   }]).directive('tinkPaginationKey',['$rootScope',function(rootScope){
     return {
       link:function($scope,element,attrs){
-        
+
         rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
 
           var table;
@@ -148,9 +159,9 @@
           if(value === 'loading'){
             table.addClass('is-loading');
           }else if(value === 'ready'){
-            table.removeClass('is-loading'); 
+            table.removeClass('is-loading');
           }
-          
+
         });
 
       }
