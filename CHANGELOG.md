@@ -14,6 +14,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.0.14] - 2015-09-18
+
+### Changed
+- Added more specific version of Tink core to bower.json since Tink 1.6.0 and higher will break the interactive table.
+
+
+
 ## [3.0.13] - 2015-08-24
 
 ### Changed
