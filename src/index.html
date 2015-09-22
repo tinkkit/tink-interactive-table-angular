@@ -10,14 +10,14 @@
   <link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />
   <!-- endbower -->
   <style>
-.indeterminate{
+/*.indeterminate{
   content: '\f068';
   line-height: 1.4;
   opacity: 1;
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   transform: scale(1);
-}
+}*/
 </style>
 </head>
 <body ng-controller="ctrl as ct">
@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
+<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
   <table>
     <thead>
       <tr>

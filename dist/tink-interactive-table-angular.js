@@ -134,11 +134,11 @@
             //this function will see wich type of view we are
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '').replace(/\"/g, '');
-              if(screenSize !== 'wide-xl-view'){
-                scope.actionConf.tekst = false;
-              }else{
-                scope.actionConf.tekst = true;
-              }
+              // if(screenSize !== 'wide-xl-view'){
+              //   scope.actionConf.tekst = false;
+              // }else{
+              //   scope.actionConf.tekst = true;
+              // }
               if(screenSize === 'smartphone-view'){
                 scope.actionConf.menu = true;
               }else{
@@ -529,10 +529,10 @@
   'use strict';
 
   $templateCache.put('templates/actions.html',
-    "<div> <div class=bar> <div class=bar-section> <ul ng-if=!actionConf.menu class=\"main-actions bar-section-left\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'\" ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> </ul> <ul ng-if=!actionConf.menu class=\"sub-actions bar-section-left\"> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\" tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>{{action.name}}</span> </li> <li ng-class=\"{'bar-item-sm':!actionConf.tekst,'bar-item-md':actionConf.tekst}\" ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" ng-if=\"tinkActions.length > 5\" tink-popover tink-popover-group=option-table tink-tooltip-disabled=actionConf.tekst tink-popover-template=templates/tinkTableAction.html tink-tooltip=\"meer acties\" tink-tooltip-align=top> <span> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
-    "<span ng-if=actionConf.tekst>meer acties</span> </span> </li> </ul> <ul ng-if=actionConf.menu class=bar-section-left> <li> <button tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-section-right> <li ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> </div> <div ng-transclude></div> </div>"
+    "<div> <div class=\"bar table-interactive-bar\"> <ul data-ng-if=!actionConf.menu class=\"bar-left table-interactive-actions\"> <li data-ng-repeat=\"action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'\"> <button class=btn-sm data-ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"masterObject() > 0 && subObject() > 0\"></li> <li data-ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\"> <button class=btn-sm data-ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"tinkActions.length > 5\" tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableAction.html> <span> <button class=btn-sm data-ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" tink-tooltip-disabled=actionConf.tekst tink-tooltip=\"meer acties\" tink-tooltip-align=top> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
+    "<span>Meer acties</span> </button> </span> </li> </ul> <ul data-ng-if=actionConf.menu class=\"bar-left table-interactive-popover-actions\"> <li> <button class=btn-sm tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/tinkTableAction.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-right> <li data-ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button class=btn-sm tink-popover tink-popover-group=option-table tink-popover-template=templates/tinkTableShift.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> <div data-ng-transclude></div> </div>"
   );
 
 

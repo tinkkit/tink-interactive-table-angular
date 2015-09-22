@@ -72,7 +72,7 @@ data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wr
 ### Script example
 
 ```html
-<tink-interactive-table tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="het is leeg">
+<tink-interactive-table tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
  <table>
     <thead>
       <tr>

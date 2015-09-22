@@ -14,6 +14,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.1.0] - 2015-09-22
+
+### Changed
+- Adjusted code, docs and unit tests to work with the new flex version of the bar
+
+
+
 ## [3.0.14] - 2015-09-18
 
 ### Changed

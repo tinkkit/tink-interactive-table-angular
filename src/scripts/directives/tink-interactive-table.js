@@ -134,11 +134,11 @@
             //this function will see wich type of view we are
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '').replace(/\"/g, '');
-              if(screenSize !== 'wide-xl-view'){
-                scope.actionConf.tekst = false;
-              }else{
-                scope.actionConf.tekst = true;
-              }
+              // if(screenSize !== 'wide-xl-view'){
+              //   scope.actionConf.tekst = false;
+              // }else{
+              //   scope.actionConf.tekst = true;
+              // }
               if(screenSize === 'smartphone-view'){
                 scope.actionConf.menu = true;
               }else{
