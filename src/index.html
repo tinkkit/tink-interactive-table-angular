@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="tink.interactivetable">
+<html data-ng-app="tink.interactivetable">
 <head>
   <meta charset="utf-8">
   <title>Tink module</title>
@@ -20,7 +20,7 @@
 }*/
 </style>
 </head>
-<body ng-controller="ctrl as ct">
+<body data-ng-controller="ctrl as ct">
 
 <div class="container">
 <!-- bower:js -->
@@ -44,15 +44,15 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
-  <table>
+<tink-interactive-table class="table-interactive" data-tink-checked="boxChecked($data,$checked)" data-tink-loading="ct.loading" data-tink-headers="headers" data-tink-data="data.content" data-tink-actions="actions" data-tink-empty-message="Geen resultaten">
+  <table data-tink-sort-table="data.content" data-tink-callback="sorted($property,$order,$type)" data-tink-asc="ctrl.asc" data-tink-sort-field="whatever">
     <thead>
       <tr>
-        <th ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
+        <th data-ng-repeat='view in tinkHeaders' data-tink-sort-header="view.name">{{ view.alias }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
+      <tr data-ng-click="$parent.$parent.load()" data-ng-repeat='view in tinkData'>
         <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
         <td>{{ view.lastname }}</td>
         <td>{{ view.username }}</td>
@@ -60,7 +60,7 @@
     </tbody>
   </table>
 
-  <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
+  <tink-pagination  data-tink-current-page="$parent.ct.nums" data-tink-change="$parent.changed(type,value,next)" data-tink-total-items="$parent.ct.totalitems" data-tink-items-per-page="$parent.ct.numpp"></tink-pagination>
 
 </tink-interactive-table>
 
@@ -79,6 +79,7 @@
       ctrl.nums = 2;
       ctrl.totalitems = 1345430;
       ctrl.numpp = 5;
+      ctrl.asc = true;
       scope.data = {};
 
       scope.load=function(){
@@ -86,6 +87,9 @@
       }
       scope.changed = function(type,value,fn){
         fn();
+      }
+      scope.sorted = function(property,order,type){
+        console.log('sorted',property,order,type);
       }
       scope.boxChecked = function($data,c){
         console.log($data,c)
@@ -197,116 +201,6 @@
         alias:'username',
         checked:true
       }];
-
-     // Override default items per page
-    /*scope.pages = '5, 10, 25';
-
-    scope.changed = function(data,next){
-      console.log(data,scope.nums);
-
-       timeout(function(){
-      // Data model
-      scope.data = [
-
-      ];
-      scope.totalitems = 200;
-      next();
-    },300);
-    }
-scope.totalitems = 200;
-    scope.chan = function(prop,or,typ){
-      console.log('changed',prop,or,typ);
-      timeout(function(){
-        scope.data= {};
-      // Data model
-      scope.data.content = [
-        {
-          firstname: 'Jasper',
-          lastname: 'Van Proeyen',
-          username: '@trianglejuice'
-        },
-        {
-          firstname: 'Tom',
-          lastname: 'Wuyts',
-          username: '@pxlpanic'
-        },
-        {
-          firstname: 'Kevin',
-          lastname: 'De Mulder',
-          username: '@clopin'
-        },
-        {
-          firstname: 'Vincent',
-          lastname: 'Bouillart',
-          username: '@BouillartV'
-        }
-      ];
-    },300);
-    }
-
-    timeout(function(){
-      // Data model
-      scope.data = [
-        {
-          firstname: 'Jasper',
-          lastname: 'Van Proeyen',
-          username: '@trianglejuice'
-        },
-        {
-          firstname: 'Tom',
-          lastname: 'Wuyts',
-          username: '@pxlpanic'
-        },
-        {
-          firstname: 'Kevin',
-          lastname: 'De Mulder',
-          username: '@clopin'
-        },
-        {
-          firstname: 'Vincent',
-          lastname: 'Bouillart',
-          username: '@BouillartV'
-        }
-      ];
-    },700);
-
-    // The headers you want to show and whether they are already visible in the table
-    scope.headers = [
-      {
-        field: 'firstname',
-        alias: 'Voornaam',
-        checked: true,
-        sort:true
-      },
-      {
-        field: 'lastname',
-        alias: 'Achternaam',
-        checked: false,
-        sort:true
-      },
-      {
-        field: 'username',
-        alias: 'Gebruikersnaam',
-        checked: true
-      }
-    ];
-    scope.nums=0;
-    scope.changenums = function(){
-      scope.nums = scope.nums+1;
-    }
-    scope.perpageValue=[10,20,25,30,45]
-
-    // Some actions that become available when you check one or multiple rows
-   scope.actions = [
-      {
-        name: 'remove',
-        callback: function(items) {
-          angular.forEach(items, function(val) {console.log('ohoho',scope.data.indexOf(val))
-            scope.data.splice(scope.data.indexOf(val),1);
-          });
-        }
-      }
-    ];*/
 
   }]);
 </script>
