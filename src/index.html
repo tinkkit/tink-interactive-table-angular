@@ -45,7 +45,7 @@
 <br/><br/><br/>
 
 <tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
-  <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="whatever">
+  <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
         <th ng-repeat='view in tinkHeaders' tink-sort-header="{{view.alias}}">{{ view.alias }}</th>
@@ -77,7 +77,7 @@
     var ctrl = this;
 
       ctrl.nums = 2;
-      ctrl.totalitems = 1345430;
+      ctrl.totalitems = 1024;
       ctrl.numpp = 5;
       ctrl.asc = true;
       scope.data = {};
@@ -98,15 +98,16 @@
       ctrl.loading = false;
 
       scope.data.content = [
-        {
-          firstname: 'Jasper',
-          lastname: 'Van Proeyen',
-          username: '@trianglejuice'
-        },
+
         {
           firstname: 'Tom',
           lastname: 'Wuyts',
           username: '@pxlpanic'
+        },
+        {
+          firstname: 'Jasper',
+          lastname: 'Van Proeyen',
+          username: '@trianglejuice'
         }
       ];
       scope.actions = [
@@ -194,11 +195,11 @@
       },{
         name:'lastname',
         disabled:true,
-        alias:'lastname',
+        alias:'achternaam',
         checked:true
       },{
         name:'username',
-        alias:'username',
+        alias:'gebruikersnaam',
         checked:true
       }];
 
