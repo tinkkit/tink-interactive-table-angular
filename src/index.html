@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-ng-app="tink.interactivetable">
+<html ng-app="tink.interactivetable">
 <head>
   <meta charset="utf-8">
   <title>Tink module</title>
@@ -20,7 +20,7 @@
 }*/
 </style>
 </head>
-<body data-ng-controller="ctrl as ct">
+<body ng-controller="ctrl as ct">
 
 <div class="container">
 <!-- bower:js -->
@@ -44,15 +44,15 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" data-tink-checked="boxChecked($data,$checked)" data-tink-loading="ct.loading" data-tink-headers="headers" data-tink-data="data.content" data-tink-actions="actions" data-tink-empty-message="Geen resultaten">
-  <table data-tink-sort-table="data.content" data-tink-callback="sorted($property,$order,$type)" data-tink-asc="ctrl.asc" data-tink-sort-field="whatever">
+<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
+  <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="whatever">
     <thead>
       <tr>
-        <th data-ng-repeat='view in tinkHeaders' data-tink-sort-header="view.name">{{ view.alias }}</th>
+        <th ng-repeat='view in tinkHeaders' tink-sort-header="{{view.alias}}">{{ view.alias }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr data-ng-click="$parent.$parent.load()" data-ng-repeat='view in tinkData'>
+      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
         <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
         <td>{{ view.lastname }}</td>
         <td>{{ view.username }}</td>
@@ -60,7 +60,7 @@
     </tbody>
   </table>
 
-  <tink-pagination  data-tink-current-page="$parent.ct.nums" data-tink-change="$parent.changed(type,value,next)" data-tink-total-items="$parent.ct.totalitems" data-tink-items-per-page="$parent.ct.numpp"></tink-pagination>
+  <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
 
 </tink-interactive-table>
 
