@@ -105,7 +105,7 @@
 
       },
       controller:'interactiveCtrl',
-      templateUrl:'templates/actions.html',
+      templateUrl:'templates/interactive-table.html',
       compile: function compile() {
 
         return {
@@ -134,12 +134,12 @@
             //this function will see wich type of view we are
             breakpoint.refreshValue = function () {
               var screenSize = window.getComputedStyle(document.querySelector('body'), ':before').getPropertyValue('content').replace(/\'/g, '').replace(/\"/g, '');
-              // if(screenSize !== 'wide-xl-view'){
+              // if(screenSize !== 'widescreen-view'){
               //   scope.actionConf.tekst = false;
               // }else{
               //   scope.actionConf.tekst = true;
               // }
-              if(screenSize === 'smartphone-view'){
+              if(screenSize === 'phone-view' || screenSize === 'tablet-view'){
                 scope.actionConf.menu = true;
               }else{
                 scope.actionConf.menu = false;

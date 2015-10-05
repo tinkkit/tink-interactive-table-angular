@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.1.1
+v3.1.2
 
 ## What is this repository for?
 
@@ -51,36 +51,18 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
 ## How to use
 
-### tink-interactive-table
-
-```html
-<tink-interactive-table></tink-interactive-table>
-```
-
-### Options
-
-Attr | Type | Default | Details
---- | --- | --- | ---
-data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
-data-tink-headers (required) | `array` | `undefined` | The header information for each column.
-data-tink-actions | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
-data-tink-checked | `function($data,$checked)` | `undefined` | will be called when you check a checkbox.
-data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
-data-tink-empty-message | `string` | `` | This will the message that will be shown when there is no data.
-data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
-
-### Script example
+### HTML
 
 ```html
 <tink-interactive-table tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
  <table>
     <thead>
       <tr>
-        <th ng-repeat='view in tinkHeaders'>{{ view.alias }}</th>
+        <th ng-repeat="view in tinkHeaders" tink-sort-header="{{ view.sort }}">{{ view.alias }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
+      <tr ng-click="$parent.$parent.load()" ng-repeat="view in tinkData">
         <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
         <td>{{ view.lastname }}</td>
         <td>{{ view.username }}</td>
@@ -92,71 +74,88 @@ data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wr
 </tink-interactive-table>
 ```
 
+### Options
+
+Attr | Type | Default | Details
+--- | --- | --- | ---
+data-ng-model (required) | `array` | `undefined` | The table info that needs to be shown.
+data-tink-headers (required) | `array` | `undefined` | The header information for each column.
+data-tink-actions (required) | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
+data-tink-checked | `function($data,$checked)` | `undefined` | will be called when you check a checkbox.
+data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
+data-tink-empty-message | `string` | `''` | This will the message that will be shown when there is no data.
+data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
+
+### Script example
+
 ```javascript
-    scope.data = [
-      {
-        firstname: 'Jasper',
-        lastname: 'Van Proeyen',
-        username: '@trianglejuice'
-      },
-      {
-        firstname: 'Tom',
-        lastname: 'Wuyts',
-        username: '@pxlpanic'
-      },
-      {
-        firstname: 'Kevin',
-        lastname: 'De Mulder',
-        username: '@clopin'
-      },
-      {
-        firstname: 'Vincent',
-        lastname: 'Bouillart',
-        username: '@BouillartV'
-      }
-    ];
+scope.data = [
+  {
+    firstname: 'Jasper',
+    lastname: 'Van Proeyen',
+    username: '@trianglejuice'
+  },
+  {
+    firstname: 'Tom',
+    lastname: 'Wuyts',
+    username: '@pxlpanic'
+  },
+  {
+    firstname: 'Kevin',
+    lastname: 'De Mulder',
+    username: '@clopin'
+  },
+  {
+    firstname: 'Vincent',
+    lastname: 'Bouillart',
+    username: '@BouillartV'
+  }
+];
 ```
 
 > If you want to **hide a column** give the header a **property** `checked` with the value `false`.
 
 ```javascript
 scope.headers = [
-      {
-        field: 'firstname',
-        alias: 'Voornaam',
-        checked: true, //to show this header or not required
-        disabled:true, // can't change the checked value
-      },
-      {
-        field: 'lastname',
-        alias: 'Achternaam',
-        checked: false
-      },
-      {
-        field: 'username',
-        alias: 'Gebruikersnaam',
-        checked: true
-      }
-    ];
+  {
+    field: 'firstname',
+    alias: 'Voornaam',
+    sort: 'firstname',
+    checked: true, //to show this header or not required
+    disabled:true, // can't change the checked value
+  },
+  {
+    field: 'lastname',
+    alias: 'Achternaam',
+    sort: 'lastname',
+    checked: false
+  },
+  {
+    field: 'username',
+    alias: 'Gebruikersnaam',
+    sort: '',
+    checked: true
+  }
+];
 ```
 
-> To **add action** create an array with objects with a `name` property and a `callback` function. This callback function will be called when this action is used. The function will give you an array of items that is selected. The function will also give you a function as a parameter to uncheck all the checkboxes.
+> To **add an action** create an array with objects with a `name` property and a `callback` function. This callback function will be called when this action is used. The function will give you an array of items that is selected. The function will also give you a function as a parameter to uncheck all the checkboxes.
 
 ```javascript
-   scope.actions = [
-      {
-          name: 'remove',
-          callback: function(items) {
-            angular.forEach(items, function(val) {
-              scope.data.content.splice(scope.data.content.indexOf(val),1);
-            });
-          },
-          order:0, //orde of the button
-          master:true, //required !
-          icon:'fa-close', //the icon required.
-          single:true // only when one checkbox is selected
-        }
-    ];
+scope.actions = [
+  {
+    name: 'remove',
+    callback: function(items) {
+      angular.forEach(items, function(val) {
+        scope.data.content.splice(scope.data.content.indexOf(val),1);
+      });
+    },
+    order:0, //orde of the button
+    master:true, //required !
+    icon:'fa-close', //the icon required.
+    single:true // only when one checkbox is selected
+  }
+];
 ```
 
 
@@ -165,7 +164,7 @@ scope.headers = [
 
 
 
-### tink-pagination
+## Tink pagination
 
 ```html
 <tink-pagination></tink-pagination>
@@ -193,7 +192,13 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
  }
 ```
 
-###Example
+
+
+----------
+
+
+
+### Example
 
 A working example can be found in [the Tink documentation](http://tink.digipolis.be/#/docs/directives/interactive-table#example).
 

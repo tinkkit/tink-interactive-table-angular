@@ -48,7 +48,7 @@
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
-        <th ng-repeat='view in tinkHeaders' tink-sort-header="{{view.alias}}">{{ view.alias }}</th>
+        <th ng-repeat="view in tinkHeaders" tink-sort-header="{{view.sort}}">{{ view.alias }}</th>
       </tr>
     </thead>
     <tbody>
@@ -191,15 +191,18 @@
       scope.headers = [{
         name:'firstname',
         alias:'voornaam',
+        sort:'firstname',
         checked:true
       },{
         name:'lastname',
         disabled:true,
         alias:'achternaam',
+        sort:'lastname',
         checked:true
       },{
         name:'username',
         alias:'gebruikersnaam',
+        sort:'',
         checked:true
       }];
 
