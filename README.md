@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.1.2
+v3.1.3
 
 ## What is this repository for?
 
@@ -51,7 +51,7 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
 ## How to use
 
-### HTML
+### Example
 
 ```html
 <tink-interactive-table tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
@@ -113,7 +113,8 @@ scope.data = [
 ];
 ```
 
-> If you want to **hide a column** give the header a **property** `checked` with the value `false`.
+> If you want to **hide a column** (initially) give its header a property `checked` with the value `false`.
+> If you want to **sort a column** refer to the [Tink sort table documentation](https://github.com/tinkkit/tink-sort-table-angular).
 
 ```javascript
 scope.headers = [
@@ -166,9 +167,7 @@ scope.actions = [
 
 ## Tink pagination
 
-```html
-<tink-pagination></tink-pagination>
-```
+See the top-most example for how to implement pagination.
 
 ### Options
 
@@ -183,24 +182,14 @@ tink-change | `function` | `undefined` | To receive information if the paginatio
 
 
 ```javascript
- scope.changed = function(chaged,next){
-  /* changed will give you an  object if the page or peerage is changed.
+scope.changed = function(change,next){
+  /* change will give you an  object if the page or peerage is changed.
   * {type:'page',value:2}
   * {type:'perPage',value:20}
   * If you do not change the data ! use next();
   */
- }
+}
 ```
-
-
-
-----------
-
-
-
-### Example
-
-A working example can be found in [the Tink documentation](http://tink.digipolis.be/#/docs/directives/interactive-table#example).
 
 ## Contribution guidelines
 
