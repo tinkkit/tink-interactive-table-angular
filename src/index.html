@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" tink-show-checkboxes="false" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
+<tink-interactive-table class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-show-checkboxes="true" tink-empty-message="Geen resultaten">
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
@@ -110,7 +110,7 @@
           username: '@trianglejuice'
         }
       ];
-     /* scope.actions = [
+      scope.actions = [
         {
           name: 'remove',
           callback: function(items) {
@@ -188,7 +188,7 @@
           master:false,
           icon:'fa-calculator'
         }
-      ];*/
+      ];
       scope.headers = [{
         name:'firstname',
         alias:'voornaam',

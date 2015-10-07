@@ -16,7 +16,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.1.4] - 2015-10-07
 
-### Changed
+### Added
+- Added an option that can add a column with checkboxes to the table, even if there are no actions defined
+
+### Fixed
 - Fixed an issue in the documentation
 
 

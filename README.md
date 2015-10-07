@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.1.3
+v3.1.4
 
 ## What is this repository for?
 
@@ -82,6 +82,7 @@ data-ng-model (required) | `array` | `undefined` | The table info that needs to 
 data-tink-headers (required) | `array` | `undefined` | The header information for each column.
 data-tink-actions (required) | `array` | `undefined` | When present checkboxes will appear to do some predefined actions with it.
 data-tink-checked | `function($data,$checked)` | `undefined` | will be called when you check a checkbox.
+data-tink-show-checkboxes | `Boolean` | `true` | If true the table will add a column with checkboxes, even if there are no actions defined.
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 data-tink-empty-message | `string` | `''` | This will the message that will be shown when there is no data.
 data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
