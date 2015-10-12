@@ -191,7 +191,7 @@
             };
 
             scope.actionCallBack = function(c){
-              if(scope.checked().length !== 0){
+              if(scope.checked().length !== 0 || c.alwaysVisible == true){
                 var array = $.grep(scope.tinkData, function( a ) {
                   return a.checked;
                 });

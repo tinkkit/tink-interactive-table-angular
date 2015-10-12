@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table class="table-interactive" tink-show-checkboxes="false" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-actions="actions" tink-empty-message="Geen resultaten">
+<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-show-checkboxes="true" tink-empty-message="Geen resultaten">
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
@@ -110,7 +110,7 @@
           username: '@trianglejuice'
         }
       ];
-     /* scope.actions = [
+      scope.actions = [
         {
           name: 'remove',
           callback: function(items) {
@@ -152,7 +152,7 @@
         },
         {
           name: 'do something',
-          callback: function(items) {
+          callback: function(items) {console.log('callback go');
             angular.forEach(items, function(val) {
               // scope.data.content.splice(scope.data.content.indexOf(val),1);
               console.log('Did something with ' + val.firstname);
@@ -188,7 +188,7 @@
           master:false,
           icon:'fa-calculator'
         }
-      ];*/
+      ];
       scope.headers = [{
         name:'firstname',
         alias:'voornaam',

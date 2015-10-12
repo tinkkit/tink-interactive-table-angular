@@ -14,6 +14,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.1.4] - 2015-10-07
+
+### Added
+- Added an option that can add a column with checkboxes to the table, even if there are no actions defined
+
+### Fixed
+- Fixed an issue in the documentation
+
+
+
 ## [3.1.3] - 2015-10-06
 
 ### Changed
@@ -32,7 +42,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.1.1] - 2015-09-25
 
 ### Fixed
-- Fixed a <select> issue in the pagination that was only occurring in Firefox
+- Fixed a select issue in the pagination that was only occurring in Firefox
 
 
 
