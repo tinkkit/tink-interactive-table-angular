@@ -155,7 +155,8 @@ scope.actions = [
     order:0, //orde of the button
     master:true, //required !
     icon:'fa-close', //the icon required.
-    single:true // only when one checkbox is selected
+    single:true, // only when one checkbox is selected
+    alwaysVisible:true // only when one checkbox is selected
   }
 ];
 ```
