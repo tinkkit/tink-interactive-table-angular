@@ -191,7 +191,7 @@
             };
 
             scope.actionCallBack = function(c){
-              if(scope.checked().length !== 0){
+              if(scope.checked().length !== 0 || c.alwaysVisible == true){
                 var array = $.grep(scope.tinkData, function( a ) {
                   return a.checked;
                 });
@@ -534,9 +534,9 @@
   'use strict';
 
   $templateCache.put('templates/actions.html',
-    "<div class=popover-menu-list>  <ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> </ul>  <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" ng-disabled=\"checked().length === 0 || (action.single && checked().length > 1)\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<div class=popover-menu-list>  <ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> </ul>  <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </li> </ul> </div>"
   );
 
@@ -551,7 +551,7 @@
     "<div> <div class=\"bar table-interactive-bar\"> <ul data-ng-if=!actionConf.menu class=\"bar-left table-interactive-actions\"> <li data-ng-if=hasActions() data-ng-repeat=\"action in tinkActions | filter: { master: true }| tinkActionFilter: tinkActions : 'master' | orderBy:'+order'\"> <button class=btn-sm data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"hasActions() && masterObject() > 0 && subObject() > 0\"></li> <li data-ng-repeat=\"action in tinkActions | filter: { master: false } | tinkActionFilter: tinkActions | orderBy:'+order'\"> <button class=btn-sm data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top tink-tooltip-disabled=actionConf.tekst> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"tinkActions.length > 5\" tink-popover tink-popover-group=option-table tink-popover-template=templates/actions.html> <span> <button class=btn-sm data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" tink-tooltip-disabled=actionConf.tekst tink-tooltip=\"meer acties\" tink-tooltip-align=top> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
-    "<span>Meer acties</span> </button> </span> </li> </ul> <ul data-ng-if=actionConf.menu class=\"bar-left table-interactive-popover-actions\"> <li ng-if=hasActions()> <button class=btn-sm tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/actions.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-right> <li data-ng-if=\"scope.tinkAllowColumnReorder !== false\"> <button class=btn-sm tink-popover tink-popover-group=option-table tink-popover-template=templates/columns.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> <div data-ng-transclude></div> </div>"
+    "<span>Meer acties</span> </button> </span> </li> </ul> <ul data-ng-if=actionConf.menu class=\"bar-left table-interactive-popover-actions\"> <li ng-if=hasActions()> <button class=btn-sm tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/actions.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-right> <li data-ng-if=\"tinkAllowColumnReorder !== false\"> <button class=btn-sm tink-popover tink-popover-group=option-table tink-popover-template=templates/columns.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> <div data-ng-transclude></div> </div>"
   );
 
 
