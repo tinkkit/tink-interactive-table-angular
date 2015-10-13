@@ -14,6 +14,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.1.5] - 2015-10-13
+
+- Fixed issue with column reordering
+
 ## [3.1.4] - 2015-10-07
 
 ### Added
