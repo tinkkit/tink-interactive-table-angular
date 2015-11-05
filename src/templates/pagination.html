@@ -18,3 +18,9 @@
     </ul>
   </div>
 </div>
+
+<div class="btn-group btn-group-sm table-sort-paginatie">
+    <button type="button" class="btn vorige" data-ng-class="{disabled:tinkCurrentPage===1}"  data-ng-click="tinkCurrentPage===1 || ctrl.setPrev()" ng-disabled="tinkCurrentPage===1"> Vorige</button>
+    <button type="button" class="btn" data-ng-repeat="pag in ctrl.calculatePages() track by $index" data-ng-class="{active:pag===tinkCurrentPage}" data-ng-click="pag === -1 || ctrl.setPage(pag)"><span data-ng-if="pag !== -1">{{pag}}</span> <span data-ng-show="pag === -1">...<span></button>
+    <button type="button" class="btn volgende" data-ng-click="tinkCurrentPage===ctrl.pages || ctrl.setNext()" data-ng-class="{disabled:tinkCurrentPage===ctrl.pages}" ng-disabled="tinkCurrentPage===ctrl.pages">Volgende</button>
+</div>
