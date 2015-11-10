@@ -44,6 +44,7 @@
 
 <br/><br/><br/>
 
+<!-- <tink-interactive-table tink-actions="actions" class="table-interactive" tink-headers="headers" tink-data="data.content"> -->
 <tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-show-checkboxes="true" tink-empty-message="Geen resultaten">
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
@@ -190,20 +191,16 @@
         }
       ];
       scope.headers = [{
-        name:'firstname',
         alias:'voornaam',
         sort:'firstname',
         checked:true
       },{
-        name:'lastname',
         disabled:true,
         alias:'achternaam',
         sort:'lastname',
         checked:true
       },{
-        name:'username',
         alias:'gebruikersnaam',
-        sort:'',
         checked:true
       }];
 

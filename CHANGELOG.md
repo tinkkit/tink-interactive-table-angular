@@ -18,6 +18,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fixed issue with column reordering
 
+
+
 ## [3.1.4] - 2015-10-07
 
 ### Added
