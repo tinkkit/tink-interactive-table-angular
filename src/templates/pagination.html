@@ -12,7 +12,7 @@
     <div class="btn-group btn-group-sm">
       <a href="" title="" class="btn prev" data-ng-class="{disabled:tinkCurrentPage===1}"  data-ng-click="tinkCurrentPage===1 || ctrl.setPrev()" ng-disabled="tinkCurrentPage===1"><span>Vorige</span></a>
       <a href="" title="" class="btn" data-ng-class="{active:tinkCurrentPage===1}" data-ng-click="ctrl.setPage(1)"><span>1</span></a>
-      <a href="" title="" class="btn" data-ng-repeat="pag in ctrl.calculatePages() track by $index" data-ng-class="{active:pag===tinkCurrentPage}" data-ng-click="pag === -1 || ctrl.setPage(pag)"><span data-ng-if="pag !== -1">{{pag}}</span> <span data-ng-show="pag === -1">...<span></a>
+      <a href="" title="" class="btn" data-ng-repeat="pag in ctrl.calculatePages() track by $index" data-ng-class="{active:pag===tinkCurrentPage}" data-ng-click="pag === -1 || ctrl.setPage(pag)"><span data-ng-if="pag !== -1">{{pag | number:0}}</span> <span data-ng-show="pag === -1">…<span></a>
       <a href="" title="" class="btn next" data-ng-click="tinkCurrentPage===ctrl.pages || ctrl.setNext()" data-ng-class="{disabled:tinkCurrentPage===ctrl.pages}" ng-disabled="tinkCurrentPage===ctrl.pages"><span>Volgende</span></a>
     </div>
   </div>

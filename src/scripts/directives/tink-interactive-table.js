@@ -331,7 +331,7 @@
 })
 .directive('tinkShiftSort',['$timeout',function(timeout){
   return {
-    restirct:'A',
+    restrict:'A',
     controller:'interactiveCtrl',
     link:function(scope,elem){
       timeout(function(){
