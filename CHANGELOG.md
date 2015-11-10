@@ -14,8 +14,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [3.1.6] - 2015-11-10
+
+### Added
+- Added separators to pagination
+
+### Changed
+- Refactored the pagination to use button groups
+
+
+
 ## [3.1.5] - 2015-10-13
 
+### Fixed
 - Fixed issue with column reordering
 
 
