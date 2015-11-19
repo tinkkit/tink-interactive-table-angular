@@ -17,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.1.6] - 2015-11-10
 
 ### Added
-- Added separators to pagination
+- Added thousand separators to pagination
 
 ### Changed
 - Refactored the pagination to use button groups
