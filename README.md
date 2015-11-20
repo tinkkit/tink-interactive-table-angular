@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.1.6
+v3.2.0
 
 ## What is this repository for?
 
@@ -115,6 +115,7 @@ scope.data = [
 ```
 
 > If you want to **hide a column** (initially) give its header a property `checked` with the value `false`.
+> If you want to **give the column a different name in the column sorter** give its header a property `headingalias` with the desirable value.
 > If you want to **sort a column** refer to the [Tink sort table documentation](https://github.com/tinkkit/tink-sort-table-angular).
 
 ```javascript
@@ -135,6 +136,7 @@ scope.headers = [
   {
     field: 'username',
     alias: 'Gebruikersnaam',
+    headingalias: 'User'
     sort: '',
     checked: true
   }
