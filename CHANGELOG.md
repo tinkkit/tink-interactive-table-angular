@@ -15,6 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 
 
+## [3.2.1] - 2015-11-20
+
+### Changed
+- changed `headeralias` to `sortalias` as it was a clearer property
+
+
+
 ## [3.2.0] - 2015-11-20
 
 ### Added

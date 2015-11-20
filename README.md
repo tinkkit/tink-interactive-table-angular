@@ -115,7 +115,7 @@ scope.data = [
 ```
 
 > If you want to **hide a column** (initially) give its header a property `checked` with the value `false`.
-> If you want to **give the column a different name in the column sorter** give its header a property `headingalias` with the desirable value.
+> If you want to **give the column a different name in the column sorter** give its header a property `sortalias` with the desirable value.
 > If you want to **sort a column** refer to the [Tink sort table documentation](https://github.com/tinkkit/tink-sort-table-angular).
 
 ```javascript
@@ -136,7 +136,7 @@ scope.headers = [
   {
     field: 'username',
     alias: 'Gebruikersnaam',
-    headingalias: 'User'
+    sortalias: 'User'
     sort: '',
     checked: true
   }
