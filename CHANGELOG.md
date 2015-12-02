@@ -15,11 +15,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 
 
+## [3.2.2] - 2015-12-02
+
+### Added
+- Added option to disable buttons all the time and only use buttons when all selected.
+
 ## [3.2.1] - 2015-11-20
 
 ### Changed
 - changed `headeralias` to `sortalias` as it was a clearer property
-
 
 
 ## [3.2.0] - 2015-11-20
