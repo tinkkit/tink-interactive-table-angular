@@ -251,6 +251,23 @@
               }
             };
 
+
+            scope.elemDisabled = function(action){
+              if(action){
+                if(action.alwaysDisabled){
+                  return true;
+                }
+                if(action.checkedAll){
+                 if(scope.tinkData.length == scope.checked().length){
+                    return false;
+                  }else{
+                    return true;
+                  }
+                }
+                return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysVisible != true;
+              }              
+            }
+
             scope.switchPosition = function(a,b){
               scope.tinkHeaders.swap(a,b);
               controller.changeColumn(a,b);
