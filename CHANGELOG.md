@@ -18,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.2.3] - 2015-12-03
 
 ### Fixed
-- Fixed an issue where subactions would enable even when `checkedAll` was set to `true`
+- Fixed an issue where subactions would become enabled even when `checkedAll` was set to `true`
 
 
 ## [3.2.2] - 2015-12-02
