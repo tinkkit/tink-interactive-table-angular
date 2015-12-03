@@ -15,15 +15,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 
 
+## [3.2.3] - 2015-12-03
+
+### Fixed
+- Fixed an issue where subactions would enable even when `checkedAll` was set to `true`
+
+
 ## [3.2.2] - 2015-12-02
 
 ### Added
-- Added option to disable buttons all the time and only use buttons when all selected.
+- Added option to permanently disable action buttons
+- Added option that enables an action button only when all rows are selected
+
 
 ## [3.2.1] - 2015-11-20
 
 ### Changed
-- changed `headeralias` to `sortalias` as it was a clearer property
+- Changed `headeralias` to `sortalias` as it was a clearer property
+
 
 
 ## [3.2.0] - 2015-11-20

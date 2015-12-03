@@ -1,7 +1,7 @@
 <div class="popover-menu-list">
   <!-- Mobile -->
   <ul ng-if="!actionConf.menu" >
-    <li  data-ng-repeat="action in tinkActions | tinkSlice:5 | orderBy:'+order'"  data-ng-disabled="(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true"  data-ng-click="actionCallBack(action)">
+    <li  data-ng-repeat="action in tinkActions | tinkSlice:5 | orderBy:'+order'" data-ng-disabled="elemDisabled(action)" data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
       <span >{{action.name}}</span>
     </li>
@@ -9,12 +9,12 @@
 
   <!-- Desktop -->
   <ul ng-if="actionConf.menu">
-    <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: true }" data-ng-disabled="(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true"  data-ng-click="actionCallBack(action)">
+    <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: true }" data-ng-disabled="elemDisabled(action)" data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
       <span>{{action.name}}</span>
     </li>
     <hr ng-if="masterObject() > 0 && subObject() > 0">
-    <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: false }" data-ng-disabled="(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true" data-ng-click="actionCallBack(action)">
+    <li data-ng-repeat="action in tinkActions | orderBy:'+order' | filter: { master: false }" data-ng-disabled="elemDisabled(action)" data-ng-click="actionCallBack(action)">
       <i class="fa {{action.icon}} fa-fw"></i>
       <span>{{action.name}}</span>
     </li>

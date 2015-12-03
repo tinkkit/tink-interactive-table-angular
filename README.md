@@ -151,14 +151,16 @@ scope.actions = [
     name: 'remove',
     callback: function(items) {
       angular.forEach(items, function(val) {
-        scope.data.content.splice(scope.data.content.indexOf(val),1);
+        scope.data.content.splice(scope.data.content.indexOf(val), 1);
       });
     },
-    order:0, //orde of the button
-    master:true, //required !
-    icon:'fa-close', //the icon required.
-    single:true, // only when one checkbox is selected
-    alwaysVisible:true // only when one checkbox is selected
+    master: true, // Whether it's a main action or not. Required.
+    icon: 'fa-close', // The (Font Awesome) icon. Required.
+    order: 0, // If you want to customize the order
+    single: true, // Indicates that the action is only available when one row is checked. Defaults to false.
+    checkedAll: false // Indicates that the action is only available when all rows are checked. Defaults to false.
+    alwaysVisible: true // Indicates that the action is always available, even if no row is checked. Defaults to false.
+    alwaysDisabled: true // Indicates that the action is never available, even if all rows are checked. Defaults to false.
   }
 ];
 ```
