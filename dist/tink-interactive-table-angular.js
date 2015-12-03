@@ -551,9 +551,9 @@
   'use strict';
 
   $templateCache.put('templates/actions.html',
-    "<div class=popover-menu-list>  <ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> </ul>  <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </li> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" data-ng-disabled=\"(checked().length === 0 || (action.single && checked().length > 1)) && action.alwaysVisible != true\" data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<div class=popover-menu-list>  <ul ng-if=!actionConf.menu> <li data-ng-repeat=\"action in tinkActions | tinkSlice:5 | orderBy:'+order'\" data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> </ul>  <ul ng-if=actionConf.menu> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true }\" data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </li> <hr ng-if=\"masterObject() > 0 && subObject() > 0\"> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false }\" data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </li> </ul> </div>"
   );
 
