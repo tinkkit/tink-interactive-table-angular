@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.2.3
+v3.2.4
 
 ## What is this repository for?
 
@@ -159,7 +159,7 @@ scope.actions = [
     order: 0, // If you want to customize the order
     single: true, // Indicates that the action is only available when one row is checked. Defaults to false.
     checkedAll: false // Indicates that the action is only available when all rows are checked. Defaults to false.
-    alwaysVisible: true // Indicates that the action is always available, even if no row is checked. Defaults to false.
+    alwaysEnabled: true // Indicates that the action is always available, even if no row is checked. Defaults to false.
     alwaysDisabled: true // Indicates that the action is never available, even if all rows are checked. Defaults to false.
   }
 ];

@@ -15,6 +15,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 
 
+## [3.2.4] - 2015-12-04
+
+### Changed
+- Changed `alwaysVisible` to `alwaysEnabled` to keep the variable naming consistent
+
+
 ## [3.2.3] - 2015-12-03
 
 ### Fixed

@@ -191,7 +191,7 @@
             };
 
             scope.actionCallBack = function(c){
-              if(scope.checked().length !== 0 || c.alwaysVisible === true){
+              if(scope.checked().length !== 0 || c.alwaysEnabled === true){
                 var array = $.grep(scope.tinkData, function( a ) {
                   return a.checked;
                 });
@@ -264,8 +264,8 @@
                     return true;
                   }
                 }
-                return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysVisible != true;
-              }              
+                return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysEnabled != true;
+              }
             }
 
             scope.switchPosition = function(a,b){
