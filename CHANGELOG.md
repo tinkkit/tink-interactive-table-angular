@@ -13,7 +13,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [3.2.4] - 2015-12-07
 
+### Changed
+- Changed the way how alwaysVisible buttons are aligned.
 
 ## [3.2.4] - 2015-12-04
 

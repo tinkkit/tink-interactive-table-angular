@@ -1,6 +1,6 @@
 # Tink interactive table Angular directive
 
-v3.2.4
+v3.2.5
 
 ## What is this repository for?
 
@@ -161,6 +161,7 @@ scope.actions = [
     checkedAll: false // Indicates that the action is only available when all rows are checked. Defaults to false.
     alwaysEnabled: true // Indicates that the action is always available, even if no row is checked. Defaults to false.
     alwaysDisabled: true // Indicates that the action is never available, even if all rows are checked. Defaults to false.
+    notSmall:true, //Works in combination with alwaysEnabled to show the buttons with text and not with a tooltip.
   }
 ];
 ```

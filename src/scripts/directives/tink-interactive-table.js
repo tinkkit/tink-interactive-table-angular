@@ -11,8 +11,8 @@
       priority: 1500.1,
       replace:true,
       compile: function compile(tElement, tAttrs) {
-        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="hasActions() || tinkShowCheckboxes" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
-        var td = $('<td ng-show="hasActions() || tinkShowCheckboxes" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
+        $(tElement.find('thead tr')[0]).prepend($('<th ng-if="(hasActions() && NotAllActionsAreVisibleAllTheTime()) || tinkShowCheckboxes" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
+        var td = $('<td ng-show="(hasActions() && NotAllActionsAreVisibleAllTheTime()) || tinkShowCheckboxes" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td colspan="{{tinkHeaders.length+1}}">{{tinkEmptyMessage}}</td></tr>`');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
@@ -176,18 +176,22 @@
             };
             scope.allChecked = false;
 
+            function getDataWithNoAlwaysEnabledButtons(master){
+              var data = [];
+                for (var i = scope.tinkActions.length - 1; i >= 0; i--) {
+                  if(scope.tinkActions[i] && scope.tinkActions[i].alwaysEnabled !== true && scope.tinkActions[i].master === master){
+                    data.push(scope.tinkActions[i]);
+                  }
+                }
+              return data;
+            }
+
             scope.masterObject = function(){
-              if(scope.tinkActions){
-                return $filter('filter')(scope.tinkActions, {master: true}).length;
-              }
-              return 0;
+              return getDataWithNoAlwaysEnabledButtons(true);
             };
 
             scope.subObject = function(){
-              if(scope.tinkActions){
-                return $filter('filter')(scope.tinkActions, {master: false}).length;
-              }
-              return 0;
+              return getDataWithNoAlwaysEnabledButtons(false);
             };
 
             scope.actionCallBack = function(c){
@@ -258,19 +262,23 @@
                   return true;
                 }
                 if(action.checkedAll){
-                 if(scope.tinkData.length == scope.checked().length){
+                 if(scope.tinkData.length === scope.checked().length){
                     return false;
                   }else{
                     return true;
                   }
                 }
-                return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysEnabled != true;
+                return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysEnabled !== true;
               }
-            }
+            };
 
             scope.switchPosition = function(a,b){
               scope.tinkHeaders.swap(a,b);
               controller.changeColumn(a,b);
+            };
+
+            scope.NotAllActionsAreVisibleAllTheTime = function(){
+              return scope.tinkActions && $filter('filter')(scope.tinkActions, {alwaysEnabled: true}).length !== scope.tinkActions.length;
             };
 
             scope.hasActions = function(){
@@ -315,28 +323,61 @@
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
   return function(input, optional1, optional2) {
-    var output;
+    
 
-    var master = $filter('filter')(optional1, {master: true});
+    var data = [];
+    for (var i = input.length - 1; i >= 0; i--) {
+      if(input[i] && input[i].alwaysEnabled !== true){
+        data.push(input[i]);
+      }
+    }
 
+    var master = $filter('filter')(data, {master: true});
     if(!master){
       return [];
     }
 
     if(optional2 === 'master'){
       if(master.length < 5){
-        return input;
+        return data;
       }else{
-        return input.slice(0,5);
+        return data.slice(0,5);
       }
     }else{
       if(master.length >=5){
         return [];
       }else{
-        return input.slice(0,5-master.length);
+        return data.slice(0,5-data.length);
       }
     }
-    return output;
+    return [];
+
+  };
+
+}])
+.filter('tinkFilterFalse',['$filter',function($filter) {
+
+  // In the return function, we must pass in a single parameter which will be the data we will work on.
+  // We have the ability to support multiple other parameters that can be passed into the filter optionally
+  return function(input, optional1, optional2) {
+    
+
+    var newInput = $filter('filter')(input,optional1),
+    data = [];
+    if(newInput && newInput.length > 0){
+      for (var i = newInput.length - 1; i >= 0; i--) {
+        if(newInput[i] && newInput[i][optional2] !== true){
+          data.push(newInput[i]);
+        }
+      }
+    }
+    
+
+    if(data.length <=0){
+      return [];
+    }
+
+    return data;
 
   };
 

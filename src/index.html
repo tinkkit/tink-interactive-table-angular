@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-show-checkboxes="true" tink-empty-message="Geen resultaten">
+<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-empty-message="Geen resultaten">
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
@@ -121,7 +121,7 @@
           order:1,
           master:true,
           icon:'fa-close',
-          single:true
+          alwaysEnabled:true,
         },{
           name: 'add',
           callback: function(items) {
@@ -137,7 +137,7 @@
           },
           order:2,
           master:true,
-          checkedAll:true,
+          alwaysEnabled:true,
           icon:'fa-edit'
         },{
           name: 'search',
@@ -149,7 +149,7 @@
           },
           order:100,
           master:true,
-          alwaysDisabled:true,
+          alwaysEnabled:true,
           icon:'fa-search'
         },
         {
@@ -161,7 +161,7 @@
             });
           },
           order:100,
-          master:true,
+          master:false,
           icon:'fa-arrows-h',
           alwaysEnabled:true
         },
@@ -175,7 +175,8 @@
           },
           order:100,
           master:false,
-          icon:'fa-bell-o'
+          icon:'fa-bell-o',
+          alwaysEnabled:true
         }
         ,
         {
@@ -188,7 +189,7 @@
           },
           order:100,
           master:false,
-          checkedAll:true,
+          alwaysEnabled:true,
           icon:'fa-calculator'
         }
       ];
