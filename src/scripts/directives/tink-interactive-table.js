@@ -55,7 +55,7 @@
 
           tbody.find('tr:first td').each(function(index){
             if(index>0){
-              if($scope.tinkHeaders[(index-1)]){
+              if($scope.tinkHeaders && $scope.tinkHeaders[(index-1)]){
                 $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
               }
             }
@@ -281,6 +281,22 @@
               return scope.tinkActions && $filter('filter')(scope.tinkActions, {alwaysEnabled: true}).length !== scope.tinkActions.length;
             };
 
+            scope.MoreActions = function(){
+              var moreArry = [];
+              var notEnabled = $filter('tinkFilterFalse')(scope.tinkActions,{},'alwaysEnabled',false);
+              var master = $filter('filter')(notEnabled, {master: true});
+              var sub = $filter('filter')(notEnabled, {master: false});
+              master =  $filter('orderBy')(master, 'order',false);
+              sub =  $filter('orderBy')(sub, 'order',false);
+              if(master && master.length> 5){
+                moreArry =  master.slice(5);
+                moreArry.concat(sub);
+              }else if(master && sub && (master.length + sub.length) > 5){
+                return sub.slice(5-sub.length-1);
+              }
+              return moreArry;
+            }
+
             scope.hasActions = function(){
               if(scope.tinkActions !== undefined || scope.tinkActions !== null){
                 if(scope.tinkActions instanceof Array && scope.tinkActions.length > 0){
@@ -331,7 +347,7 @@
         data.push(input[i]);
       }
     }
-
+    data.reverse();
     var master = $filter('filter')(data, {master: true});
     if(!master){
       return [];
@@ -347,7 +363,7 @@
       if(master.length >=5){
         return [];
       }else{
-        return data.slice(0,5-data.length);
+        return data.slice(0,4-data.length);
       }
     }
     return [];
@@ -359,14 +375,17 @@
 
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
-  return function(input, optional1, optional2) {
+  return function(input, optional1, optional2,optinal3) {
     
+    if(optinal3 !== false || optinal3 !== true){
+      optinal3 = true;
+    }
 
     var newInput = $filter('filter')(input,optional1),
     data = [];
     if(newInput && newInput.length > 0){
       for (var i = newInput.length - 1; i >= 0; i--) {
-        if(newInput[i] && newInput[i][optional2] !== true){
+        if(newInput[i] && newInput[i][optional2] !== optinal3){
           data.push(newInput[i]);
         }
       }

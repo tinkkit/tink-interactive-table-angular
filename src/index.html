@@ -120,8 +120,7 @@
           },
           order:1,
           master:true,
-          icon:'fa-close',
-          alwaysEnabled:true,
+          icon:'fa-close'
         },{
           name: 'add',
           callback: function(items) {
@@ -137,7 +136,6 @@
           },
           order:2,
           master:true,
-          alwaysEnabled:true,
           icon:'fa-edit'
         },{
           name: 'search',
@@ -149,48 +147,33 @@
           },
           order:100,
           master:true,
-          alwaysEnabled:true,
           icon:'fa-search'
         },
         {
-          name: 'do something',
+          name: 'Jens',
           callback: function(items) {console.log('callback go');
             angular.forEach(items, function(val) {
               // scope.data.content.splice(scope.data.content.indexOf(val),1);
               console.log('Did something with ' + val.firstname);
             });
           },
-          order:100,
+          order:1,
           master:false,
           icon:'fa-arrows-h',
-          alwaysEnabled:true
+          single:true
         },
         {
-          name: 'open',
-          callback: function(items) {
-            angular.forEach(items, function(val) {
-              // scope.data.content.splice(scope.data.content.indexOf(val),1);
-              console.log('Opened ' + val.firstname);
-            });
-          },
-          order:100,
-          master:false,
-          icon:'fa-bell-o',
-          alwaysEnabled:true
-        }
-        ,
-        {
-          name: 'do something else',
+          name: 'alwaysV',
           callback: function(items) {
             angular.forEach(items, function(val) {
               // scope.data.content.splice(scope.data.content.indexOf(val),1);
               console.log('Did something else with ' + val.firstname);
             });
           },
-          order:100,
+          order:5,
           master:false,
-          alwaysEnabled:true,
-          icon:'fa-calculator'
+          icon:'fa-calculator',
+          alwaysEnabled:true
         }
       ];
       scope.headers = [{
