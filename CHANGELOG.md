@@ -13,7 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
-## [3.2.4] - 2015-12-07
+## [3.2.6] - 2015-12-08
+
+### Fixed
+- Fixed the bug when there are more then 5 elements, and he show the 5 same elements in 'meer acties' menu.
+
+
+## [3.2.5] - 2015-12-07
 
 ### Changed
 - Changed the way how alwaysVisible buttons are aligned.
