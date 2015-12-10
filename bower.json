@@ -27,7 +27,8 @@
     "tink-core": "~1.9.0",
     "tink-popover-angular": "latest",
     "tink-sort-table-angular": "latest",
-    "tink-tooltip-angular": "latest"
+    "tink-tooltip-angular": "latest",
+    "tink-pagination-angular":"latest"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.3",
