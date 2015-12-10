@@ -39,6 +39,9 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
    `<script src="bower_components/tink-sort-table-angular/dist/tink-sort-table-angular.js"></script>`
 
+   `<script src="bower_components/tink-pagination-angular/dist/tink-pagination-angular.js"></script>`
+
+
 3. Add `tink.interactivetable` to your app module's dependency.
 
    `angular.module('myApp', ['tink.interactivetable']);`
@@ -164,38 +167,6 @@ scope.actions = [
     notSmall:true, //Works in combination with alwaysEnabled to show the buttons with text and not with a tooltip.
   }
 ];
-```
-
-
-
-----------
-
-
-
-## Tink pagination
-
-See the top-most example for how to implement pagination.
-
-### Options
-
-Attr | Type | Default | Details
---- | --- | --- | ---
-data-tink-pagination-id (required) | `string` | `''` | An id that specifies to which table it belongs.
-tink-current-page (required) | `number` | `undefined` | The number of the current page.
-tink-total-items (required) | `number` | `undefined` | Total number of items you want to show.
-tink-items-per-page (required) | `number` | `undefined` | How many items you want to show!
-tink-items-per-page-values (required) | `array` | `undefined` | Array of numbers that will be shown as per page value.
-tink-change | `function` | `undefined` | To receive information if the pagination or perPage value change!
-
-
-```javascript
-scope.changed = function(change,next){
-  /* change will give you an  object if the page or peerage is changed.
-  * {type:'page',value:2}
-  * {type:'perPage',value:20}
-  * If you do not change the data ! use next();
-  */
-}
 ```
 
 ## Contribution guidelines
