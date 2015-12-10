@@ -55,7 +55,7 @@
 
           tbody.find('tr:first td').each(function(index){
             if(index>0){
-              if($scope.tinkHeaders[(index-1)]){
+              if($scope.tinkHeaders && $scope.tinkHeaders[(index-1)]){
                 $(this).attr('ng-if','tinkHeaders['+(index-1)+'].checked');
               }
             }
@@ -361,7 +361,9 @@
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
   return function(input, optional1, optional2) {
     
-
+    if(input){
+      return [];
+    }
     var newInput = $filter('filter')(input,optional1),
     data = [];
     if(newInput && newInput.length > 0){
