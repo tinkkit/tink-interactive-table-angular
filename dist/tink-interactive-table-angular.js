@@ -284,18 +284,16 @@
             scope.MoreActions = function(){
               var moreArry = [];
               var notEnabled = $filter('tinkFilterFalse')(scope.tinkActions,{},'alwaysEnabled',false);
-              var master = $filter('filter')(notEnabled, {master: true});
-              var sub = $filter('filter')(notEnabled, {master: false});
-              master =  $filter('orderBy')(master, 'order',false);
-              sub =  $filter('orderBy')(sub, 'order',false);
+              var master = $filter('filter')(notEnabled, {master: true}).reverse();
+              var sub = $filter('filter')(notEnabled, {master: false}).reverse();
               if(master && master.length> 5){
                 moreArry =  master.slice(5);
-                moreArry.concat(sub);
+                moreArry = moreArry.concat(sub);
               }else if(master && sub && (master.length + sub.length) > 5){
-                return sub.slice(5-sub.length-1);
+                return sub.slice(5-sub.length);
               }
               return moreArry;
-            }
+            };
 
             scope.hasActions = function(){
               if(scope.tinkActions !== undefined || scope.tinkActions !== null){
@@ -363,7 +361,7 @@
       if(master.length >=5){
         return [];
       }else{
-        return data.slice(0,4-data.length);
+        return data.slice(0,5-master.length);
       }
     }
     return [];
@@ -436,177 +434,6 @@
   };
 }]);
 })();
-;'use strict';
-(function(module) {
-  try {
-    module = angular.module('tink.interactivetable');
-  } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
-  }
-  module.directive('tinkPagination',['lodash',function(_){
-  return{
-    restrict:'EA',
-    templateUrl:'templates/pagination.html',
-    scope:{
-      tinkTotalItems:'=',
-      tinkItemsPerPage:'=',
-      tinkItemsPerPageValues:'=',
-      tinkCurrentPage:'=',
-      tinkChange:'&',
-      tinkPaginationId:'@'
-    },
-    controllerAs:'ctrl',
-    controller:['$scope','$rootScope','$timeout',function($scope,$rootScope,timeout){
-      var ctrl = this;
-
-      //ctrl.init = function(){
-        /*ctrl.tinkTotalItems = $scope.tinkTotalItems;
-        $scope.tinkItemsPerPage = $scope.tinkItemsPerPage;
-        $scope.tinkItemsPerPageValues = $scope.tinkItemsPerPageValues;
-        $scope.tinkCurrentPage =  $scope.tinkCurrentPage;
-      //}*/
-      ctrl.itemsPerPage = function(){
-        if($scope.tinkItemsPerPageValues && $scope.tinkItemsPerPageValues instanceof Array && $scope.tinkItemsPerPageValues.length >0){
-          if($scope.tinkItemsPerPageValues.indexOf(parseInt($scope.tinkItemsPerPage)) === -1){
-            $scope.tinkItemsPerPage = $scope.tinkItemsPerPageValues[0];
-          }
-          return $scope.tinkItemsPerPageValues;
-        }else{
-          var basic = [5,10,20,30];
-          if(basic.indexOf(parseInt($scope.tinkItemsPerPage)) === -1){
-            $scope.tinkItemsPerPage = basic[0];
-          }
-          return basic;
-        }
-      };
-
-
-      ctrl.perPageChange = function(){
-        $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        timeout(function(){
-          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
-            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          }});
-        },0);
-      };
-
-      ctrl.setPage = function(page){
-        $scope.tinkCurrentPage = page;
-        sendMessage();
-      };
-
-
-      ctrl.setPrev = function(){
-        if($scope.tinkCurrentPage > 1){
-          $scope.tinkCurrentPage = $scope.tinkCurrentPage -1;
-        }
-        sendMessage();
-      };
-
-      ctrl.setNext = function(){
-        if($scope.tinkCurrentPage < ctrl.pages){
-          $scope.tinkCurrentPage = $scope.tinkCurrentPage +1;
-        }
-        sendMessage();
-      };
-
-      function sendMessage(){
-        $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'loading');
-        timeout(function(){
-          $scope.tinkChange({page:$scope.tinkCurrentPage,perPage:$scope.tinkItemsPerPage,next:function(){
-            $rootScope.$broadcast('tink-pagination-'+$scope.tinkPaginationId,'ready');
-          }});
-        },0);
-      }
-
-      ctrl.calculatePages = function(){
-        var num = $scope.tinkCurrentPage;
-        ctrl.pages = Math.ceil($scope.tinkTotalItems/$scope.tinkItemsPerPage);
-        if(ctrl.pages <=0 || ctrl.pages === undefined || ctrl.pages === null || isNaN(ctrl.pages)){
-          ctrl.pages = 1;
-        }
-
-        if(num > ctrl.pages){
-          num = $scope.tinkCurrentPage = ctrl.pages;
-        }else if(num <=0 || num === undefined || num === null){
-          $scope.tinkCurrentPage = 1;
-        }
-
-        var arrayNums;
-        if(ctrl.pages <6){
-          arrayNums = _.range(2,ctrl.pages);
-        }else{
-          if(num < 4){
-            arrayNums = _.range(2,4);
-            arrayNums.push(-1);
-          }else if(num >= ctrl.pages -2){
-            arrayNums = [-1].concat(_.range(ctrl.pages-2,ctrl.pages));
-          }else{
-            arrayNums = [-1,num,-1];
-          }
-        }
-        if(ctrl.pages >1 ){
-          arrayNums.push(ctrl.pages);
-        }
-        return arrayNums;
-      };
-
-    }]
-  };
-  }]).filter('limitNum', [function() {
-   return function(input, limit) {
-      if (input > limit) {
-          return limit;
-      }
-      return input;
-   };
-  }])
-  .filter('tinkMin', [function() {
-   return function(input, limit) {
-    if(limit === undefined){
-      limit = 0;
-    }
-      if (input < limit) {
-          return limit;
-      }
-      return input;
-   };
-  }])
-  .filter('tinkNumber', [function() {
-   return function(input, limit) {
-    if(limit === undefined){
-      limit = 0;
-    }
-      if (input < limit) {
-          return limit;
-      }
-      return input;
-   };
-  }]).directive('tinkPaginationKey',['$rootScope',function(rootScope){
-    return {
-      link:function($scope,element,attrs){
-
-        rootScope.$on('tink-pagination-'+attrs.tinkPaginationKey,function(e,value){
-
-          var table;
-          if(element[0].tagName === 'TABLE'){
-            table = $(element[0]);
-          }else {
-            table = $(element).find('table');
-          }
-          if(value === 'loading'){
-            table.addClass('is-loading');
-          }else if(value === 'ready'){
-            table.removeClass('is-loading');
-          }
-
-        });
-
-      }
-    };
-
-  }]);
-})();
 ;angular.module('tink.interactivetable').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -629,18 +456,10 @@
 
   $templateCache.put('templates/interactive-table.html',
     "<div> <div class=\"bar table-interactive-bar\"> <ul data-ng-if=!actionConf.menu class=\"bar-left table-interactive-actions\"> <li data-ng-if=\"(masterObject().length + subObject().length) > 0\" data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true } | tinkActionFilter: tinkActions : 'master'\"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"hasActions() && masterObject().length > 0 && subObject().length > 0\"></li> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: false } | tinkActionFilter: tinkActions \"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"hasActions() && masterObject().length > 0 && subObject().length > 0\"></li> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | tinkActionFilter: tinkActions \"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"MoreActions().length > 0\" tink-popover tink-popover-group=option-table tink-popover-template=templates/actions.html> <span> <button class=btn-sm data-ng-disabled=elemDisabled(action)> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
     "<span>Meer acties</span> </button> </span> </li> </ul> <ul data-ng-if=actionConf.menu class=\"bar-left table-interactive-popover-actions\"> <li ng-if=\"(masterObject().length + subObject().length) > 0\"> <button class=btn-sm tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/actions.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-right> <li data-ng-repeat=\"action in tinkActions | tinkFilterFalse: {alwaysEnabled:true} : 'notSmall'  | orderBy:'+order'\"> <button class=btn-sm data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top> <i class=\"fa {{action.icon}} fa-fw\"></i>  </button> </li> <li data-ng-repeat=\"action in tinkActions | tinkFilterFalse: { alwaysEnabled: true,notSmall:true}  | orderBy:'+order'\"> <button class=btn-sm data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"tinkAllowColumnReorder !== false\"> <button class=btn-sm tink-popover tink-popover-group=option-table tink-popover-template=templates/columns.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> <div data-ng-transclude></div> </div>"
-  );
-
-
-  $templateCache.put('templates/pagination.html',
-    "<div class=table-sort-options> <div class=table-sort-info> <strong>{{tinkTotalItems > 0 ? (tinkItemsPerPage*(tinkCurrentPage-1)+1 | number:0) : '0'}} - {{tinkItemsPerPage*tinkCurrentPage | limitNum:tinkTotalItems | tinkMin:0 | number:0}}</strong> van {{tinkTotalItems | tinkMin:0 | number:0}} <div class=select> <select data-ng-change=ctrl.perPageChange() data-ng-model=tinkItemsPerPage ng-options=\"o as o for o in ctrl.itemsPerPage()\">> </select> </div> items per pagina </div> <div class=table-sort-pagination> <div class=\"btn-group btn-group-sm\"> <a href=\"\" class=\"btn prev\" data-ng-class=\"{disabled:tinkCurrentPage===1}\" data-ng-click=\"tinkCurrentPage===1 || ctrl.setPrev()\" ng-disabled=\"tinkCurrentPage===1\"><span>Vorige</span></a>\n" +
-    "<a href=\"\" class=btn data-ng-class=\"{active:tinkCurrentPage===1}\" data-ng-click=ctrl.setPage(1)><span>1</span></a>\n" +
-    "<a href=\"\" class=btn data-ng-repeat=\"pag in ctrl.calculatePages() track by $index\" data-ng-class=\"{active:pag===tinkCurrentPage}\" data-ng-click=\"pag === -1 || ctrl.setPage(pag)\"><span data-ng-if=\"pag !== -1\">{{pag | number:0}}</span> <span data-ng-show=\"pag === -1\">…<span></span></span></a>\n" +
-    "<a href=\"\" class=\"btn next\" data-ng-click=\"tinkCurrentPage===ctrl.pages || ctrl.setNext()\" data-ng-class=\"{disabled:tinkCurrentPage===ctrl.pages}\" ng-disabled=\"tinkCurrentPage===ctrl.pages\"><span>Volgende</span></a> </div> </div> </div>"
   );
 
 }]);
