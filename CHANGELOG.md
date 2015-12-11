@@ -13,6 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+
+## [3.2.7] - 2015-12-11
+
+### Fixed
+- Fixed the bug when there are all primaire actions.
+
+
 ## [3.2.6] - 2015-12-08
 
 ### Fixed

@@ -284,18 +284,16 @@
             scope.MoreActions = function(){
               var moreArry = [];
               var notEnabled = $filter('tinkFilterFalse')(scope.tinkActions,{},'alwaysEnabled',false);
-              var master = $filter('filter')(notEnabled, {master: true});
-              var sub = $filter('filter')(notEnabled, {master: false});
-              master =  $filter('orderBy')(master, 'order',false);
-              sub =  $filter('orderBy')(sub, 'order',false);
+              var master = $filter('filter')(notEnabled, {master: true}).reverse();
+              var sub = $filter('filter')(notEnabled, {master: false}).reverse();
               if(master && master.length> 5){
                 moreArry =  master.slice(5);
-                moreArry.concat(sub);
+                moreArry = moreArry.concat(sub);
               }else if(master && sub && (master.length + sub.length) > 5){
-                return sub.slice(5-sub.length-1);
+                return sub.slice(5-sub.length);
               }
               return moreArry;
-            }
+            };
 
             scope.hasActions = function(){
               if(scope.tinkActions !== undefined || scope.tinkActions !== null){
@@ -363,7 +361,7 @@
       if(master.length >=5){
         return [];
       }else{
-        return data.slice(0,4-data.length);
+        return data.slice(0,5-master.length);
       }
     }
     return [];
