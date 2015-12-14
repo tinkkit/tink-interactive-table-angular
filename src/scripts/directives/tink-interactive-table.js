@@ -338,6 +338,9 @@
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
   return function(input, optional1, optional2) {
     
+    if(!input){
+      return [];
+    }
 
     var data = [];
     for (var i = input.length - 1; i >= 0; i--) {
