@@ -110,7 +110,7 @@
           username: '@trianglejuice'
         }
       ];
-      /*scope.actions = [
+      scope.actions = [
         {
           name: 'remove',
           callback: function(items) {
@@ -175,22 +175,54 @@
           icon:'fa-calculator',
           alwaysEnabled:true
         }
-      ];*/
+      ];
 
 
-      scope.actions = [{
-           name: 'Verwijderen', // the name of the actions
+     scope.actions = [{
+           name: 'Verwijderen f', // the name of the actions
            callback: function (items) {
                // here you are going to write what happen when they clicked on the button.
                // The items variable contains the items that are checked.
            },
            order: 0, // The order the button is viewed in the bar
-           master: true, // If the button is a master button or not ! this value is required.
+           master: false, // If the button is a master button or not ! this value is required.
            icon: 'fa-remove' // The icon ('font-awesome') thats going to be showed. this is required !
        }
-       /*,
+       ,
        {
-           name: 'Toevoegen', // the name of the actions
+           name: 'Toevoegen f', // the name of the actions
+           callback: function (items) {
+               // here you are going to write what happen when they clicked on the button.
+               // The items variable contains the items that are checked.
+           },
+           order: 0, // The order the button is viewed in the bar
+           master: false, // If the button is a master button or not ! this value is required.
+           icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
+        
+       },
+       {
+           name: 'Wijzigen f', // the name of the actions
+           callback: function (items) {
+               // here you are going to write what happen when they clicked on the button.
+               // The items variable contains the items that are checked.
+           },
+           order: 2, // The order the button is viewed in the bar
+           master: false, // If the button is a master button or not ! this value is required.
+           icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
+       },
+       {
+           name: 'Toevoegen t', // the name of the actions
+           callback: function (items) {
+               // here you are going to write what happen when they clicked on the button.
+               // The items variable contains the items that are checked.
+           },
+           order: 0, // The order the button is viewed in the bar
+           master: true, // If the button is a master button or not ! this value is required.
+           icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
+        
+       },
+        {
+           name: 'pl t', // the name of the actions
            callback: function (items) {
                // here you are going to write what happen when they clicked on the button.
                // The items variable contains the items that are checked.
@@ -201,67 +233,16 @@
         
        },
        {
-           name: 'Wijzigen', // the name of the actions
+           name: 'Wijzigen t', // the name of the actions
            callback: function (items) {
                // here you are going to write what happen when they clicked on the button.
                // The items variable contains the items that are checked.
            },
            order: 2, // The order the button is viewed in the bar
            master: true, // If the button is a master button or not ! this value is required.
-           icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
-       },
-       {
-           name: 'Toevoegen', // the name of the actions
-           callback: function (items) {
-               // here you are going to write what happen when they clicked on the button.
-               // The items variable contains the items that are checked.
-           },
-           order: 0, // The order the button is viewed in the bar
-           master: true, // If the button is a master button or not ! this value is required.
-           icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
-        
-       },
-       {
-           name: 'Wijzigen', // the name of the actions
-           callback: function (items) {
-               // here you are going to write what happen when they clicked on the button.
-               // The items variable contains the items that are checked.
-           },
-           order: 2, // The order the button is viewed in the bar
-           master: true, // If the button is a master button or not ! this value is required.
-           icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
-       },
-       {
-           name: 'meer', // the name of the actions
-           callback: function (items) {
-               // here you are going to write what happen when they clicked on the button.
-               // The items variable contains the items that are checked.
-           },
-           order: 2, // The order the button is viewed in the bar
-           master: true, // If the button is a master button or not ! this value is required.
-           icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
-       },
-       {
-           name: 'meeterfalser', // the name of the actions
-           callback: function (items) {
-               // here you are going to write what happen when they clicked on the button.
-               // The items variable contains the items that are checked.
-           },
-           order: 2, // The order the button is viewed in the bar
-           master: false, // If the button is a master button or not ! this value is required.
-           icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
-       },
-       {
-           name: 'meeterfalse2', // the name of the actions
-           callback: function (items) {
-               // here you are going to write what happen when they clicked on the button.
-               // The items variable contains the items that are checked.
-           },
-           order: 2, // The order the button is viewed in the bar
-           master: false, // If the button is a master button or not ! this value is required.
            icon: 'fa-edit' // The icon ('font-awesome') thats going to be showed. this is required !
        }
-       */];
+       ];
 
       scope.headers = [{
         alias:'Voornaam',

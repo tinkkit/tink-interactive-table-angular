@@ -284,8 +284,8 @@
             scope.MoreActions = function(){
               var moreArry = [];
               var notEnabled = $filter('tinkFilterFalse')(scope.tinkActions,{},'alwaysEnabled',false);
-              var master = $filter('filter')(notEnabled, {master: true}).reverse();
-              var sub = $filter('filter')(notEnabled, {master: false}).reverse();
+              var master = $filter('filter')(notEnabled, {master: true});
+              var sub = $filter('filter')(notEnabled, {master: false});
               if(master && master.length> 5){
                 moreArry =  master.slice(5);
                 moreArry = moreArry.concat(sub);
@@ -349,7 +349,7 @@
       }
     }
     data.reverse();
-    var master = $filter('filter')(data, {master: true});
+    var master = $filter('filter')(optional1, {master: true});
     if(!master){
       return [];
     }
