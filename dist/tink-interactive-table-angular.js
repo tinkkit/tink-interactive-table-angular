@@ -284,8 +284,8 @@
             scope.MoreActions = function(){
               var moreArry = [];
               var notEnabled = $filter('tinkFilterFalse')(scope.tinkActions,{},'alwaysEnabled',false);
-              var master = $filter('filter')(notEnabled, {master: true}).reverse();
-              var sub = $filter('filter')(notEnabled, {master: false}).reverse();
+              var master = $filter('filter')(notEnabled, {master: true});
+              var sub = $filter('filter')(notEnabled, {master: false});
               if(master && master.length> 5){
                 moreArry =  master.slice(5);
                 moreArry = moreArry.concat(sub);
@@ -349,7 +349,7 @@
       }
     }
     data.reverse();
-    var master = $filter('filter')(data, {master: true});
+    var master = $filter('filter')(optional1, {master: true});
     if(!master){
       return [];
     }
@@ -459,7 +459,7 @@
 
   $templateCache.put('templates/interactive-table.html',
     "<div> <div class=\"bar table-interactive-bar\"> <ul data-ng-if=!actionConf.menu class=\"bar-left table-interactive-actions\"> <li data-ng-if=\"(masterObject().length + subObject().length) > 0\" data-ng-repeat=\"action in tinkActions | orderBy:'+order' | filter: { master: true } | tinkActionFilter: tinkActions : 'master'\"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
-    "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"hasActions() && masterObject().length > 0 && subObject().length > 0\"></li> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | tinkFilterFalse : 'master' |tinkActionFilter: tinkActions \"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
+    "<span>{{action.name}}</span> </button> </li> <li class=hr data-ng-if=\"hasActions() && masterObject().length > 0 && subObject().length > 0\"></li> <li data-ng-repeat=\"action in tinkActions | orderBy:'+order' | tinkFilterFalse :{}: 'master' |tinkActionFilter: tinkActions \"> <button class=btn-sm data-ng-disabled=elemDisabled(action) data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"MoreActions().length > 0\" tink-popover tink-popover-group=option-table tink-popover-template=templates/actions.html> <span> <button class=btn-sm data-ng-disabled=elemDisabled(action)> <i class=\"fa fa-ellipsis-h fa-fw\"></i>\n" +
     "<span>Meer acties</span> </button> </span> </li> </ul> <ul data-ng-if=actionConf.menu class=\"bar-left table-interactive-popover-actions\"> <li ng-if=\"(masterObject().length + subObject().length) > 0\"> <button class=btn-sm tink-popover tink-popover-group=option-table-1 tink-popover-template=templates/actions.html>Acties <i class=\"fa fa-caret-down\"></i></button> </li> </ul> <ul class=bar-right> <li data-ng-repeat=\"action in tinkActions | tinkFilterFalse: {alwaysEnabled:true} : 'notSmall'  | orderBy:'+order'\"> <button class=btn-sm data-ng-click=actionCallBack(action) tink-tooltip={{action.name}} tink-tooltip-align=top> <i class=\"fa {{action.icon}} fa-fw\"></i>  </button> </li> <li data-ng-repeat=\"action in tinkActions | tinkFilterFalse: { alwaysEnabled: true,notSmall:true}  | orderBy:'+order'\"> <button class=btn-sm data-ng-click=actionCallBack(action)> <i class=\"fa {{action.icon}} fa-fw\"></i>\n" +
     "<span>{{action.name}}</span> </button> </li> <li data-ng-if=\"tinkAllowColumnReorder !== false\"> <button class=btn-sm tink-popover tink-popover-group=option-table tink-popover-template=templates/columns.html>Kolommen <i class=\"fa fa-caret-down\"></i></button> </li> </ul> </div> <div data-ng-transclude></div> </div>"
