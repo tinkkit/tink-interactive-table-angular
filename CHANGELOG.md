@@ -14,10 +14,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+
+
+## [3.2.9] - 2015-12-18
+
+### Fixed
+- Fixed Bower
+
+
+
 ## [3.2.8] - 2015-12-14
 
 ### Fixed
 - Fixed issues
+
+
 
 ## [3.2.7] - 2015-12-11
 
@@ -25,10 +36,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed the bug when there are all primaire actions.
 
 
+
 ## [3.2.6] - 2015-12-08
 
 ### Fixed
 - Fixed the bug when there are more then 5 elements, and he show the 5 same elements in 'meer acties' menu.
+
 
 
 ## [3.2.5] - 2015-12-07
@@ -42,10 +55,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changed `alwaysVisible` to `alwaysEnabled` to keep the variable naming consistent
 
 
+
 ## [3.2.3] - 2015-12-03
 
 ### Fixed
 - Fixed an issue where subactions would become enabled even when `checkedAll` was set to `true`
+
 
 
 ## [3.2.2] - 2015-12-02
@@ -53,6 +68,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added option to permanently disable action buttons
 - Added option that enables an action button only when all rows are selected
+
 
 
 ## [3.2.1] - 2015-11-20
