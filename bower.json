@@ -1,6 +1,6 @@
 {
   "name": "tink-interactive-table-angular",
-  "version": "3.2.9",
+  "version": "3.2.10",
   "main": [
     "dist/tink-interactive-table-angular.js"
   ],
@@ -25,6 +25,7 @@
     "ng-lodash": "~0.2.0",
     "Sortable": "~1.1.1",
     "tink-core": "latest",
+    "tink-pagination-angular": "latest",
     "tink-popover-angular": "latest",
     "tink-sort-table-angular": "latest",
     "tink-tooltip-angular": "latest",

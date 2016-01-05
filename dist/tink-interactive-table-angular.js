@@ -3,7 +3,7 @@
   try {
     module = angular.module('tink.interactivetable');
   } catch (e) {
-    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply']);
+    module = angular.module('tink.interactivetable', ['tink.popover','tink.sorttable','tink.tooltip','tink.safeApply','tink.pagination']);
   }
   module.directive('tinkInteractiveTable',[function(){
     return{
@@ -337,7 +337,7 @@
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
   return function(input, optional1, optional2) {
-    
+
     if(!input){
       return [];
     }
@@ -377,7 +377,7 @@
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
   return function(input, optional1, optional2,optinal3) {
-    
+
     if(optinal3 !== false || optinal3 !== true){
       optinal3 = true;
     }
@@ -391,7 +391,7 @@
         }
       }
     }
-    
+
 
     if(data.length <=0){
       return [];

@@ -16,6 +16,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## [3.2.10] - 2016-01-05
+
+### Fixed
+- The Tink pagination is now an automatic dependency
+
+
+
 ## [3.2.9] - 2015-12-18
 
 ### Fixed
