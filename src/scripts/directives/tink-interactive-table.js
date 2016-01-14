@@ -14,6 +14,9 @@
         $(tElement.find('thead tr')[0]).prepend($('<th ng-if="(hasActions() && NotAllActionsAreVisibleAllTheTime()) || tinkShowCheckboxes" class="has-checkbox"><div class="checkbox"><input type="checkbox" ng-click="checkAll($event)" ng-class="{indeterminate:true}"  ng-checked="checked().length === tinkData.length" indeterminate id="{{$id}}-all" name="{{$id}}-all" value=""><label for="{{$id}}-all"></label></div></th>'));
         var td = $('<td ng-show="(hasActions() && NotAllActionsAreVisibleAllTheTime()) || tinkShowCheckboxes" ng-click="prevent($event)"><input type="checkbox" ng-change="checkChange(tinkData[$index])" ng-model="tinkData[$index].checked" id="{{$id}}-{{$index}}" name="{{$id}}-{{$index}}" value=""><label for="{{$id}}-{{$index}}"></label></td>');
         $(tElement.find('tbody tr')[0]).prepend(td);
+        if(tAttrs.tinkHideBackgroundOfSelectedRows !== true && tAttrs.tinkHideBackgroundOfSelectedRows !== 'true'){
+          $(tElement.find('tbody tr')[0]).attr('ng-class', '{\'is-selected\':tinkData[$index].checked}');
+        }
         $(tElement.find('tbody')[0]).append('</tr><tr ng-show="!tinkLoading && (tinkData.length === 0 || tinkData === undefined || tinkData === null)"><td colspan="{{tinkHeaders.length+1}}">{{tinkEmptyMessage}}</td></tr>`');
         $(tElement.find('thead tr')[0]).find('th').each(function(index){
             if(index>0){
@@ -102,7 +105,8 @@
         tinkEmptyMessage:'@',
         tinkForceResponsive:'=',
         tinkChecked:'&',
-        tinkShowCheckboxes:'='
+        tinkShowCheckboxes:'=',
+        tinkHideBackgroundOfSelectedRows:'='
       },
       controller:'interactiveCtrl',
       templateUrl:'templates/interactive-table.html',

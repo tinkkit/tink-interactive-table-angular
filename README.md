@@ -89,6 +89,7 @@ data-tink-show-checkboxes | `Boolean` | `true` | If true the table will add a co
 data-tink-loading | `Boolean` | `false` | If true the table will have a loading icon and rows won't be clickable.
 data-tink-empty-message | `string` | `''` | This will the message that will be shown when there is no data.
 data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
+data-tink-hide-background-of-selected-rows | `Boolean` | `false` | Whether a selected row is also highlighted or not.
 
 ### Script example
 
