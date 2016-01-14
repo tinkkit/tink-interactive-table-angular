@@ -44,7 +44,7 @@
 
 <br/><br/><br/>
 
-<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-empty-message="Geen resultaten">
+<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-empty-message="Geen resultaten" tink-hide-background-of-selected-rows="false">
   <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
     <thead>
       <tr>
@@ -198,7 +198,7 @@
            order: 0, // The order the button is viewed in the bar
            master: false, // If the button is a master button or not ! this value is required.
            icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
-        
+
        },
        {
            name: 'Wijzigen f', // the name of the actions
@@ -219,7 +219,7 @@
            order: 0, // The order the button is viewed in the bar
            master: true, // If the button is a master button or not ! this value is required.
            icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
-        
+
        },
         {
            name: 'pl t', // the name of the actions
@@ -230,7 +230,7 @@
            order: 0, // The order the button is viewed in the bar
            master: true, // If the button is a master button or not ! this value is required.
            icon: 'fa-plus'// The icon ('font-awesome') thats going to be showed. this is required !
-        
+
        },
        {
            name: 'Wijzigen t', // the name of the actions
