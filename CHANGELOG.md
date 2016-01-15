@@ -16,6 +16,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
+## [3.3.0] - 2016-01-15
+
+### Added
+- Added a default active state (background color) for selected rows
+- Added an option to turn of the active state
+
+
+
 ## [3.2.10] - 2016-01-05
 
 ### Fixed
