@@ -90,6 +90,7 @@ data-tink-loading | `Boolean` | `false` | If true the table will have a loading 
 data-tink-empty-message | `string` | `''` | This will the message that will be shown when there is no data.
 data-tink-force-responsive | `Boolean` | `false` | This will add a responsive wrapper class (`.table-force-responsive`) when true.
 data-tink-hide-background-of-selected-rows | `Boolean` | `false` | Whether a selected row is also highlighted or not.
+data-tink-allow-column-reorder | `Boolean` | `true` | If false the button that allows column reordering will be hidden.
 
 ### Script example
 
@@ -118,9 +119,7 @@ scope.data = [
 ];
 ```
 
-> If you want to **hide a column** (initially) give its header a property `checked` with the value `false`.
-> If you want to **give the column a different name in the column sorter** give its header a property `sortalias` with the desirable value.
-> If you want to **sort a column** refer to the [Tink sort table documentation](https://github.com/tinkkit/tink-sort-table-angular).
+> If you want to **hide a column** (initially) give its header a property `checked` with the value `false`. If you want to **give the column a different name in the column sorter** give its header a property `sortalias` with the desirable value. If you want to **sort a column** refer to the [Tink sort table documentation](https://github.com/tinkkit/tink-sort-table-angular).
 
 ```javascript
 scope.headers = [
