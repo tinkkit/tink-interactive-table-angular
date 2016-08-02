@@ -151,16 +151,19 @@
             };
 
             //on resize check wich view we are
-            $(window).resize(function () {
-              safeApply(scope,function(){
-                breakpoint.refreshValue();
+            function startResize() {
+              $(window).bind('resize.tink',function () {
+                safeApply(scope,function(){
+                  breakpoint.refreshValue();
+                });
               });
-            });
+            }
+            startResize();
             //when the directive start check for new view
             breakpoint.refreshValue();
 
             //watch on the tinkLoading
-            scope.$watch('tinkLoading',function(newV){
+            var tinkLoad = scope.$watch('tinkLoading',function(newV){
               if(newV){
                 iElement.find('table').addClass('is-loading');
                }else{
@@ -215,14 +218,14 @@
             };
 
             scope.checkAll = function(){
-              var array = [];
+              var checkAllArray = [];
               if(scope.tinkData){
-                array = $.grep(scope.tinkData, function( a ) {
+                checkAllArray = $.grep(scope.tinkData, function( a ) {
                   return a.checked;
                 });
               }
 
-              if(array.length === scope.tinkData.length){
+              if(checkAllArray.length === scope.tinkData.length){
                 for (var i = 0, len = scope.tinkData.length; i < len; i++) {
                   scope.tinkData[i].checked = false;
                 }
@@ -244,21 +247,25 @@
               return [];
             };
             scope.checkChange = function(data){
-              var array = $.grep(scope.tinkData, function( a ) {
+              var checkChangeArray = $.grep(scope.tinkData, function( a ) {
                 return a.checked;
               });
               if(scope.tinkChecked){
                 scope.tinkChecked({$data:data,$checked:data.checked});
               }
-              if(array.length === scope.tinkData.length){
+              if(checkChangeArray.length === scope.tinkData.length){
                 scope.allChecked = true;
-              }else if(array.length === 0 ){
+              }else if(checkChangeArray.length === 0 ){
                 scope.allChecked = false;
               }else{
                 scope.allChecked = false;
               }
             };
 
+            scope.$on('$destroy', function() {
+                $(window).unbind('resize.tink');
+                tinkLoad();
+            });
 
             scope.elemDisabled = function(action){
               if(action){
@@ -277,7 +284,7 @@
             };
 
             scope.switchPosition = function(a,b){
-              scope.tinkHeaders.swap(a,b);
+              scope.tinkHeaders.move(a,b);
               controller.changeColumn(a,b);
             };
 
@@ -329,6 +336,16 @@
               var temp = this[a];
               this[a] = this[b];
               this[b] = temp;
+            };
+            Array.prototype.move = function (oldIndex, newIndex) {
+                if (newIndex >= this.length) {
+                    var k = newIndex - this.length;
+                    while ((k--) + 1) {
+                        this.push(undefined);
+                    }
+                }
+                this.splice(newIndex, 0, this.splice(oldIndex, 1)[0]);
+                return this; // for testing purposes
             };
 
           }
