@@ -34,7 +34,6 @@
     <li data-ng-repeat="action in tinkActions | tinkFilterFalse: {alwaysEnabled:true} : 'notSmall'  | orderBy:'+order'">
         <button class="btn-sm" data-ng-click="actionCallBack(action)"  tink-tooltip="{{action.name}}" tink-tooltip-align="top">
           <i class="fa {{action.icon}} fa-fw"></i>
-          <!--<span>{{action.name}}</span>-->
         </button>
       </li>
       <li data-ng-repeat="action in tinkActions | tinkFilterFalse: { alwaysEnabled: true,notSmall:true}  | orderBy:'+order'">
@@ -44,7 +43,7 @@
         </button>
       </li>
       <li data-ng-if="tinkAllowColumnReorder !== false">
-        <!--<button class="btn-sm" tink-popover tink-popover-group="option-table" tink-popover-template="templates/columns.html">Kolommen <i class="fa fa-caret-down"></i></button>-->
+        <button class="btn-sm" tink-popover tink-popover-group="option-table" tink-popover-template="templates/columns.html">Kolommen <i class="fa fa-caret-down"></i></button>
       </li>
     </ul>
 
