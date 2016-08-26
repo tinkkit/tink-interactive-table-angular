@@ -281,6 +281,7 @@
                 }
                 return (scope.checked().length === 0 || (action.single && scope.checked().length > 1)) && action.alwaysEnabled !== true;
               }
+              return scope.checked().length === 0
             };
 
             scope.switchPosition = function(a,b){
@@ -388,8 +389,6 @@
         return data.slice(0,5-master.length);
       }
     }
-    return [];
-
   };
 
 }])
