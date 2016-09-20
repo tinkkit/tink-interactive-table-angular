@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html ng-app="tink.interactivetable">
 <head>
   <meta charset="utf-8">
@@ -23,6 +23,25 @@
 <body ng-controller="ctrl as ct">
 
 <div class="container">
+    <br /><br /><br />
+    <tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-empty-message="Geen resultaten" tink-hide-background-of-selected-rows="false">
+        <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
+            <thead>
+                <tr>
+                    <th ng-repeat="view in tinkHeaders" tink-sort-header="{{view.sort}}">{{ view.alias }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
+                    <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ view.lastname }}</td>
+                    <td>{{ view.username }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <tink-pagination tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
+    </tink-interactive-table>
+</div>
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
@@ -41,30 +60,6 @@
 <script src="bower_components/tink-tooltip-angular/dist/tink-tooltip-angular.js"></script>
 <!-- endbower -->
 <script src="scripts/directives/tink-interactive-table.js"></script>
-
-<br/><br/><br/>
-
-<tink-interactive-table tink-actions="actions" class="table-interactive" tink-checked="boxChecked($data,$checked)" tink-loading="ct.loading" tink-headers="headers" tink-data="data.content" tink-empty-message="Geen resultaten" tink-hide-background-of-selected-rows="false">
-  <table tink-sort-table="data.content" tink-callback="sorted($property,$order,$type)" tink-asc="ctrl.asc" tink-sort-field="firstname">
-    <thead>
-      <tr>
-        <th ng-repeat="view in tinkHeaders" tink-sort-header="{{view.sort}}">{{ view.alias }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-click="$parent.$parent.load()" ng-repeat='view in tinkData'>
-        <td>{{ view.firstname | date:'dd/MM/yyyy' }}</td>
-        <td>{{ view.lastname }}</td>
-        <td>{{ view.username }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <tink-pagination  tink-current-page="$parent.ct.nums" tink-change="$parent.changed(type,value,next)" tink-total-items="$parent.ct.totalitems" tink-items-per-page="$parent.ct.numpp"></tink-pagination>
-
-</tink-interactive-table>
-
-
 
 <script>
   var myApp;

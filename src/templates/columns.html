@@ -1,8 +1,8 @@
 <div class="table-interactive-options" tink-shift-sort>
   <!-- arrows to sort the columns -->
   <div class="table-interactive-sort">
-    <button class="btn-borderless" data-ng-disabled="selected.value<1" data-ng-click="arrowUp()"><i class="fa fa-arrow-up"> </i></button>
-    <button class="btn-borderless" data-ng-disabled="selected.value<0 || selected.value === tinkHeaders.length-1" data-ng-click="arrowDown()"><i class="fa fa-arrow-down"></i></button>
+    <button type="button" class="btn-borderless" data-ng-disabled="selected.value<1" data-ng-click="arrowUp()"><i class="fa fa-arrow-up"> </i></button>
+    <button type="button" class="btn-borderless" data-ng-disabled="selected.value<0 || selected.value === tinkHeaders.length-1" data-ng-click="arrowDown()"><i class="fa fa-arrow-down"></i></button>
   </div>
   <!-- checkboxlist in pop-up-menu -->
   <ul data-ng-model="tinkHeaders" class="table-interactive-cols"> <!-- data-ng-if="header.alias || !header.disabled" -->
@@ -21,6 +21,6 @@
 
   <div class="table-interactive-sort">
     <!-- save / cancel button in pop-up-menu -->
-    <button class="btn-xs" data-ng-click="close()">Sluiten</button>
+    <button type="button" class="btn-xs" data-ng-click="close()">Sluiten</button>
   </div>
 </div>
